@@ -1,0 +1,101 @@
+#! /usr/bin/env python
+from __future__ import print_function
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
+import os.path
+import subprocess
+import sys
+
+import requests
+
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
+URL = "https://api.github.com/gists"
+
+
+def getoutput(cmd_str):
+    return subprocess.check_output(cmd_str.split()).decode("utf-8")\
+        .rstrip("\n")
+
+
+def get_gh_login():
+    cmd = getoutput("which git")
+    if not cmd:
+        return
+
+    user = getoutput('{0} config --includes --global github.user'.format(cmd))
+    token = getoutput('{0} config --includes --global github.token'.format(cmd))
+
+    return user, token
+
+
+def get_params(files, description=None, is_private=False):
+    params = {}
+
+    if description:
+        params['description'] = description
+
+    params['public'] = not is_private
+
+    processed_files = {}
+    for f_path in files:
+        if not os.path.isfile(f_path):
+            print("'{}' does not exist or is not a regular file".format(
+                f_path))
+            sys.exit()
+
+        with open(f_path, "r") as f:
+            content = f.read()
+
+        _, f_name = os.path.split(f_path)
+
+        processed_files[f_name] = {"content": content}
+
+    params["files"] = processed_files
+    return params
+
+
+def main():
+    parser = ArgumentParser(description=__doc__,
+                            formatter_class=RawDescriptionHelpFormatter)
+    parser.add_argument('-e', dest='edit', help='Edit an existing gist',
+                        nargs='?', default="", const=None)
+    parser.add_argument('-d', dest='description',
+                        help='description of the gist')
+    parser.add_argument('-p', dest='is_private', action='store_true',
+                        help='set for private gist')
+    parser.add_argument('files', nargs='*', help='file(s) to paste to gist')
+    args = parser.parse_args()
+
+    if args.edit is None:
+        print("-e flag requires one option: the id to edit")
+        sys.exit()
+
+    user, token = get_gh_login()
+    request_params = get_params(description=args.description,
+                                is_private=args.is_private,
+                                files=args.files)
+
+    if args.edit not in (None, ""):
+        request_params.pop('public', None)
+        global URL
+        URL += "/{}".format(args.edit)
+
+    resp = requests.post(URL, data=json.dumps(request_params),
+                         auth=(user, token))
+    if (args.edit and resp.status_code == 200) or \
+            (not args.edit and resp.status_code == 201):
+        r_text = resp.json()
+        print(r_text.get("html_url", "'html_url' not in resp! "
+                         "Response was '{}'".format(resp.text)))
+        sys.exit()
+    else:
+        print("Non-standard resp code! Code was: {}, Response text was: {}"
+              .format(resp.status_code, resp.text))
+        sys.exit()
+
+
+if __name__ == '__main__':
+    main()

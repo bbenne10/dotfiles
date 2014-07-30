@@ -1,0 +1,14 @@
+! Switch caps lock and (left) control
+!remove Lock = Caps_Lock
+!remove Control = Control_L
+!keysym Control_L = Caps_Lock
+!keysym Caps_Lock = Control_L
+!add Lock = Caps_Lock
+!add Control = Control_L
+
+
+! Swap caps lock and escape
+remove Lock = Caps_Lock
+keysym Escape = Caps_Lock
+keysym Caps_Lock = Escape
+add Lock = Caps_Lock

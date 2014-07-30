@@ -1,0 +1,12 @@
+#! /bin/zsh
+
+typeset -A directories
+directories=("Work" "$HOME/.mail/work/Inbox/new/")
+
+ for name dir in ${(kv)directories}; do
+    mail_count=$(ls $dir | wc -l)
+    if [ $mail_count -gt 0 ]; then
+        echo /usr/bin/notify-send "$name: $mail_count new mails"
+        mpg123 ~/.bin/kelly.mp3 2>/dev/null
+    fi
+done

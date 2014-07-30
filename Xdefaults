@@ -1,0 +1,24 @@
+#include "/home/bryan/.colors/tomorrow_night"
+Xft.hintstyle:              hintslight
+URxvt.perl-ext-common:      default,url-select,keyboard-select,font-size
+URxvt.url-select.launcher:  /usr/bin/firefox
+URxvt.url-select.underline: true
+URxvt.keysym.C-Up:          perl:font-size:increase
+URxvt.keysym.C-Down:        perl:font-size:decrease
+URxvt.keysym.M-u:           perl:url-select:select_next
+URxvt.keysym.M-Escape:      perl:keyboard-select:activate
+URxvt.keysym.M-s:           perl:keyboard-select:search
+URxvt.font:                 xft:Meslo LG M for Powerline:size=9
+!!URxvt.boldFont:             xft:Meslo LG M for Powerline:style=Bold
+URxvt.scrollBar:            false
+URxvt.internalBorder:       6
+URxvt.letterSpace:            -1
+
+!! True Transparency
+URxvt.depth:                  32
+URxvt.background:             [85]#1d1f21
+
+!! Fake Transparency
+!!URxvt*.transparent: true
+!!URxvt*.shading: 80
+!!URxvt*.tintColor: #7D7D7D
