@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+NOTIFICATION_STR=$1
+
+if [ -z $NOTIFICATION_STR ]; then
+    exit 1
+else 
+    ~/.bin/pushover_notify aN1zELwYfHsSaDXx5u8B1tCDSnyFQD "$NOTIFICATION_STR" > /dev/null
+fi
+
+/usr/bin/notify-send -u critical "Reminder" "$NOTIFICATION_STR"

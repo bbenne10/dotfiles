@@ -1,0 +1,203 @@
+# Collect DBUS_SESSION_BUS_ADDRESS from running process
+function set_dbus_adress {
+    USER=$1
+    PROCESS=$2
+    PID=`pgrep -o -u $USER $PROCESS`
+    ENVIRON=/proc/$PID/environ
+
+    if [ -e $ENVIRON ]; then
+        export $(grep -z DBUS_SESSION_BUS_ADDRESS $ENVIRON)>/dev/null
+    else
+        echo "Unable to set DBUS_SESSION_BUS_ADDRESS."
+        exit 1
+    fi
+}
+
+function detect_player() {
+    if pidof spotify > /dev/null; then
+        spotify_is_running=1;
+    else
+        spotify_is_running=0;
+    fi;
+
+    if pidof mocp > /dev/null; then
+        mocp_is_running=1;
+    else
+        mocp_is_running=0;
+    fi;
+
+    if [ $spotify_is_running -eq 1 -a $mocp_is_running -eq 1 ]; then
+        # both mocp and spotify are running. Check if spotify is playing 
+        # and if it is playing, use it. Else use mocp.
+        spotify_status=$(dbus-send --print-reply \
+                                   --dest=org.mpris.MediaPlayer2.spotify \
+                                   /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get \
+                                   string:"org.mpris.MediaPlayer2.Player" \
+                                   string:"PlaybackStatus" \
+                        | grep variant \
+                        | awk -F\" '{print $(NF-1)}')
+        mocp_status=$(mocp -Q %state 2>/dev/null)
+        if [ "$spotify_status" == "Playing" -a "$mocp_status" != "PLAY" ]; then
+            # spotify is playing; use it
+            echo "spotify";
+            return;
+        elif [ "$mocp_status" == "PLAY" -a "$spotify_status" != "Playing" ]; then
+            # mocp is playing; use it
+            echo "mocp";
+            return;
+        elif [ "$mocp_status" != "PLAY" -a "$spotify_status" != "Playing" ]; then
+            # neither is playing; use spotify
+            echo "spotify"
+            return;
+        elif [ "$mocp_status" == "PLAY" -a "$spotify_status" == "Playing" ]; then
+            # both are playing; BAIL
+            echo "Detected that both are playing; Don't know what to do; baining"
+            exit 1
+        else
+            # If neither is playing, pick spotify
+            echo "spotify"
+            return
+
+        fi
+    elif [ $spotify_is_running -eq 1 ]; then
+        echo "spotify";
+        return;
+    elif [ $mocp_is_running -eq 1 ]; then
+        echo "mocp";
+        return;
+    elif pidof mpv > /dev/null; then
+        echo "mpv"
+        return;
+    fi
+}
+
+function spotify_cmd {
+    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.$1
+}
+
+function play() {
+    case $player in 
+        "spotify") 
+            spotify_cmd Play;
+            ;;
+        "mocp")
+            mocp --play;
+            ;;
+        *)
+            echo $player;
+            ;;
+    esac
+}
+
+function stop() {
+    case $player in 
+        "spotify") 
+            spotify_cmd Stop;
+            ;;
+        "mocp")
+            mocp --stop;
+            ;;
+        *)
+            echo $player;
+            ;;
+    esac
+}
+
+function toggle() {
+    case $player in 
+        "spotify") 
+            spotify_cmd PlayPause;
+            ;;
+        "mocp")
+            mocp --toggle-pause;
+            ;;
+        *)
+            echo $player;
+            ;;
+    esac
+}
+
+function next() {
+    case $player in 
+        "spotify") 
+            spotify_cmd Next;
+            ;;
+        "mocp")
+            mocp --next;
+            ;;
+        *)
+            echo $player;
+            ;;
+    esac
+}
+
+function prev() {
+    case $player in 
+        "spotify") 
+            spotify_cmd Previous;
+            ;;
+        "mocp")
+            mocp --previous;
+            ;;
+        *)
+            echo $player;
+            ;;
+    esac
+}
+
+function pause() {
+    case $player in 
+        "spotify") 
+            spotify_cmd Pause;
+            ;;
+        "mocp")
+            mocp --pause;
+            ;;
+        *)
+            echo $player;
+            ;;
+    esac
+}
+
+function usage() {
+    echo -e "USAGE: $0 [command]"
+    echo -e "\t play, pause, toggle, stop, prev, next"
+    exit 1
+}
+
+if [ "$#" -ne "1" ]; then 
+    usage;
+fi;
+
+command=$1;
+player=$(detect_player)
+if [[ "$player" == "spotify" ]]; then
+     # Check if DBUS_SESSION is set
+     if [ -z $DBUS_SESSION_BUS_ADDRESS ]; then
+         echo "DBUS_SESSION_BUS_ADDRESS not set. Guessing."
+         set_dbus_adress $(whoami) spotify
+     fi
+fi
+case $command in
+    play)
+        toggle;
+        ;;
+    pause)
+        pause;
+        ;;
+    toggle)
+        toggle;
+        ;;
+    stop)
+        stop;
+        ;;
+    prev)
+        prev;
+        ;;
+    next)
+        next;
+        ;;
+    *)
+        usage;
+        ;;
+esac

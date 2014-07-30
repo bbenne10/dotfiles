@@ -1,0 +1,20 @@
+[user]
+	name = Bryan Bennett
+	email = Bryan.Bennett@gtri.gatech.edu
+[core]
+	excludesfile = /home/bryan/.config/git/ignore
+	symlinks = false
+[push]
+	default = simple
+[diff]
+	tool = vimdiff
+[diftool]
+	prompt = false
+[difftool]
+	prompt = false
+[color]
+	ui = true
+
+[include]
+    path = /home/bryan/.gitconfig.local
+  

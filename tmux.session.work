@@ -1,0 +1,7 @@
+new-window -n 'chat' "weechat-curses"
+new-window -n 'code' "vim"
+new-window -n "music" 'mocp' 
+new-window -n "mail" 'mutt'
+split-window -n "cal" 'wyrd'
+new-window -t $1 -n "zsh" 'zsh'
+

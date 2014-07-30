@@ -1,0 +1,3 @@
+#!/bin/sh
+eval $(dmenu_path | slmenu "$@")
+#| ${SHELL:-"/bin/sh"} &
