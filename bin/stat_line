@@ -22,6 +22,7 @@ try:
     SENSORS_LOADED = True
 except:
     pass
+    SENSORS_LOADED = False
 
 XCB_CONN = None                 # Holds open connection to X
 
