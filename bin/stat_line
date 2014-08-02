@@ -59,7 +59,7 @@ class Info():
             with open(ls_path, 'r') as f:
                 station = f.read().strip('\n')
             if station:
-                to_ret = station.title() + ' Radio'
+                to_ret = '{} Radio'.format(station.title())
 
         # SPOTIFY
         spotify_pid = cls.run_cmd(['pgrep', 'spotify'])
@@ -75,13 +75,16 @@ class Info():
                 'utf-8', 'ignore')
             title = metadata.get('xesam:title', 'Unknown').encode(
                 'utf-8', 'ignore')
-            to_ret = artist + " - " + title
+            to_ret = "{} - {}".format(artist, title)
 
         # MOCP
         mocp_pid = cls.run_cmd(['pgrep', 'mocp'])
         if mocp_pid:
             mocp_np = cls.run_cmd(['mocp', '-Q', '%artist - %song'])
-            to_ret = mocp_np
+            if mocp_np != "-":
+                to_ret = mocp_np
+            else:
+                to_ret = ""
 
         # MPD
         mpd_pid = cls.run_cmd(['pgrep', 'mpd'])
