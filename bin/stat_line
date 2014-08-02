@@ -8,13 +8,13 @@ import os
 import psutil
 import re
 from time import sleep
-import xcb
+import xcffib
 
 from datetime import datetime
 from subprocess import Popen, PIPE
 from urllib2 import urlopen
 from urllib import urlencode
-from xcb.xproto import Atom, PropMode
+from xcffib.xproto import Atom, PropMode
 
 try:
     import sensors
@@ -212,7 +212,7 @@ def update_text(text):
 def get_conn():
     global XCB_CONN
     if not XCB_CONN:
-        XCB_CONN = xcb.connect()
+        XCB_CONN = xcffib.connect("")
     return XCB_CONN
 
 
