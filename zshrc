@@ -103,7 +103,6 @@ alias rm="rm -Iv"
 alias zipfldr='zip -9 -r'
 alias grep='grep --color=ALWAYS'
 alias gr='ag'
-alias gvim='vim -g'
 alias less=$PAGER
 
 function sprunge() {
