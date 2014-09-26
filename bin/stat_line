@@ -8,13 +8,13 @@ import os
 import psutil
 import re
 from time import sleep
-import xcb
+import xcffib
 
 from datetime import datetime
 from subprocess import Popen, PIPE
 from urllib2 import urlopen
 from urllib import urlencode
-from xcb.xproto import Atom, PropMode
+from xcffib.xproto import Atom, PropMode
 
 try:
     import sensors
@@ -22,6 +22,7 @@ try:
     SENSORS_LOADED = True
 except:
     pass
+    SENSORS_LOADED = False
 
 XCB_CONN = None                 # Holds open connection to X
 
@@ -58,7 +59,7 @@ class Info():
             with open(ls_path, 'r') as f:
                 station = f.read().strip('\n')
             if station:
-                to_ret = station.title() + ' Radio'
+                to_ret = '{} Radio'.format(station.title())
 
         # SPOTIFY
         spotify_pid = cls.run_cmd(['pgrep', 'spotify'])
@@ -74,13 +75,16 @@ class Info():
                 'utf-8', 'ignore')
             title = metadata.get('xesam:title', 'Unknown').encode(
                 'utf-8', 'ignore')
-            to_ret = artist + " - " + title
+            to_ret = "{} - {}".format(artist, title)
 
         # MOCP
         mocp_pid = cls.run_cmd(['pgrep', 'mocp'])
         if mocp_pid:
             mocp_np = cls.run_cmd(['mocp', '-Q', '%artist - %song'])
-            to_ret = mocp_np
+            if mocp_np != "-":
+                to_ret = mocp_np
+            else:
+                to_ret = ""
 
         # MPD
         mpd_pid = cls.run_cmd(['pgrep', 'mpd'])
@@ -212,7 +216,7 @@ def update_text(text):
 def get_conn():
     global XCB_CONN
     if not XCB_CONN:
-        XCB_CONN = xcb.connect()
+        XCB_CONN = xcffib.connect("")
     return XCB_CONN
 
 

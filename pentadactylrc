@@ -1,5 +1,12 @@
 loadplugins '\.(js|penta)$'
 group user
 set guioptions=Cs
+set showtabline=never
 
-" vim: set ft=pentadactyl:
+nmap -builtin ,w :b 
+
+hi FontCode -a font-family: Meslo LG M for Powerline important; font-size: 8pt !important;
+hi FontFixed -a font-family: Meslo LG M for Powerline !important; font-size: 8pt !important;
+hi Normal -a font-family: Meslo LG M for Powerline !important; font-size: 8pt !important;
+
+" vim: set ft=:
