@@ -18,7 +18,7 @@ export PAGER=vimpager
 export PANEL_FIFO=/home/bryan/.config/bspwm/panel_fifo
 
 export PATH=/home/bryan/.bin:/opt/java/jre/bin:$PATH:/sbin:/usr/sbin:/home/bryan/.gem/ruby/2.1.0/bin/
-export PYTHONSTARTUP="$HOME/pythonrc"
+export PYTHONSTARTUP="$HOME/.pythonrc"
 
 if [ -f ${HOME}/.termcap ]; then
   TERMCAP=$(< ${HOME}/.termcap)
