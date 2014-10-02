@@ -1,4 +1,6 @@
-#Fix java fuckwittery.
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 export JAVA_HOME="/usr/lib/jvm/java-7-openjdk/"
 export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 
