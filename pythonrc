@@ -1,0 +1,18 @@
+try:
+    import models
+except ImportError:
+    print "Failed to import models"
+else:
+    print "Imported models"
+
+
+try:
+    import readline
+except ImportError:
+    print "No readline module available"
+else:
+    import rlcompleter
+    if 'libedit' in readline.__doc__:
+        readline.parse_and_bind("bind ^I rl_complete")
+    else:
+        readline.parse_and_bind("tab: complete")
