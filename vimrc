@@ -22,6 +22,7 @@ else
     let g:simpleburn_transparent_term=1
     let g:airline_powerline_fonts = 1
     let g:syntastic_python_python_exec = "/usr/bin/python2.7"
+    let g:syntastic_python_checkers = ['pylama']
 
     set rtp+=~/.vim/bundle/neobundle.vim
     call neobundle#begin(expand('~/.vim/bundle'))
@@ -190,9 +191,9 @@ EOF
 
     " Now modify the colorscheme like so...
     if g:colors_name == "github"
-    highlight CursorLine          cterm=None 
+        highlight CursorLine          cterm=None 
     elseif g:colors_name == "simpleburn" 
-    highlight ColorColumn         guibg=#2e2e2e
+        highlight ColorColumn         guibg=#2e2e2e
     endif
 
     "draw a bar at 80 characters
