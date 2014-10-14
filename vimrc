@@ -24,6 +24,8 @@ else
     let g:syntastic_python_python_exec = "/usr/bin/python2.7"
     let g:syntastic_python_checkers = ['pylama']
 
+    let g:user_emmet_leader_key='<c-z>'
+
     set rtp+=~/.vim/bundle/neobundle.vim
     call neobundle#begin(expand('~/.vim/bundle'))
     NeoBundleFetch 'Shougo/neobundle.vim'
@@ -59,21 +61,6 @@ else
 
     call neobundle#end()
     NeoBundleCheck
-
-    " If we're using st, enable auto-paste 
-    if &term =~ "st.*"
-        let &t_ti = &t_ti . "\e[?2004h"
-        let &t_te = "\e[?2004l" . &t_te
-        function XTermPasteBegin(ret)
-            set pastetoggle=<Esc>[201~
-            set paste
-        return a:ret
-        endfunction
-        map <expr> <Esc>[200~ XTermPasteBegin("i")
-        imap <expr> <Esc>[200~ XTermPasteBegin("")
-        cmap <Esc>[200~ <nop>
-        cmap <Esc>[201~ <nop>
-    endif
 
     "Change filetype for HTML to htmldjango - this colors some additional syntax
     au BufNewFile,BufRead *.html set filetype=htmldjango
@@ -199,7 +186,7 @@ EOF
     "draw a bar at 80 characters
     set colorcolumn=80
 
-    "show line numbers relative to the current line
+    "show line numbers
     set number
 
     "hilight the line with the cursor
@@ -217,8 +204,8 @@ EOF
     "Use console rather than popups
     set go+=c
 
-    "change font
-    set guifont=Meslo\ LG\ M\ for\ Powerline\ 9
+    "change gui font
+    set guifont=TamzenForPowerlineMod\ 13
 
     "Always show the status line
     set laststatus=2
@@ -226,9 +213,8 @@ EOF
     "Fix the ugly vertical split thing
     set fillchars=vert:│
 
-
     "How should whitespace be shown when it is being shown?
-    set listchars=trail:·,precedes:«,extends:»,eol:↲,tab:➜\ 
+    set listchars=trail:·,precedes:«,extends:»,eol:↲,tab:➝\
 
     "sane filename matching when searching the filesystem (:e and the like)
     set wildmenu
@@ -287,17 +273,21 @@ EOF
     nmap <leader>m :call PreviewMarkdown()<CR>
     nmap <leader>M :!python -m markdown -o html4 -x tables -x outline<cr>
 
-    "Run line under cursor in user's shell
+    "Run line under cursor in user's shell (or in python if it's a py "script)
     autocmd BufRead *.sh nmap <buffer> <leader>r :.w !$SHELL<CR>
-
-    " Run file with 'python', but only if it's a python file
     autocmd BufRead *.py nmap <buffer> <leader>r :.w !python2 %<CR>
 
-    "Allow us to launch Rainbow (to inspect colors) 
-    nnoremap <leader>R :silent !rainbow < % &<cr> 
+    "Strip trailing whitespace (and save cursor position) when saving files
+    fun! <SID>StripTrailingWhitespaces()
+        let l = line(".")
+        let c = col(".")
+        %s/\s\+$//e
+        call cursor(l, c)
+    endfun
+    autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
-    "Map to compile less files to css
-    nnoremap <leader>l :w <BAR> !lessc % > %:t:r.css<CR><space>
+    "Allow us to launch Rainbow (to inspect colors)
+    nnoremap <leader>R :silent !rainbow < % &<cr>
 
     "Search buffers with <leader>w
     nnoremap <leader>w :CtrlPBuffer<cr>
