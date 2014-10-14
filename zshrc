@@ -57,6 +57,9 @@ function zle-line-finish() {
 zle -N zle-line-init
 zle -N zle-line-finish
 
+# Set erase to bkspc
+stty erase 
+
 #-SANE VIM HISTORY SEARCHING---------------------------------------------------
 bindkey -M vicmd '/' history-incremental-pattern-search-backward
 bindkey -M vicmd '?' history-incremental-pattern-search-forward
