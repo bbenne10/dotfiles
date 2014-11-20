@@ -99,10 +99,15 @@ if [ -f $HOME/.dircolors ]; then
 fi;
 
 #-ALIASES----------------------------------------------------------------------
-alias ls='ls --color=auto'
-alias mkdir='mkdir -p'
+
+if [[ $(uname -s) == "Linux" ]]; then
+    # OSX's ls and rm don't have these options
+    alias ls='ls --color=auto'
+    alias rm="rm -Iv"
+fi
+
 alias rmr="rm -r"
-alias rm="rm -Iv"
+alias mkdir='mkdir -p'
 alias zipfldr='zip -9 -r'
 alias grep='grep --color=ALWAYS'
 alias gr='ag'
