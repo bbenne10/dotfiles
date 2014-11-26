@@ -36,6 +36,10 @@ set editor="vim -c 'set spell syntax=mail ft=mail enc=utf-8 colorcolumn=72'"
 # Use the contents of ~/.signature as a signature
 set signature="~/.signature"
 
+# forward everything when forwarding a message
+set mime_forward=yes
+set mime_forward_rest=yes
+
 ###############################################################################
 # MUTT INTERFACE CHANGES
 ###############################################################################
@@ -60,6 +64,8 @@ set pager_format = " %C - %[%H:%M] %.20v, %s%* %?H? [%H] ?"
 
 # we want to see some MIME types inline, see below this code listing for explanation
 auto_view text/html
+alternative_order text/plain text/html
+
 auto_view application/msword
 auto_view application/pdf
 
@@ -68,18 +74,16 @@ set pager_context = 5
 set pager_stop
 set menu_scroll
 set smart_wrap
-set tilde 
+set tilde
 unset markers
 
 # sidebar stuffs
-#set sidebar_shortpath=yes
 set sidebar_width = 30
 set sidebar_visible = yes
  set sidebar_delim = '  │'
-#set sidebar_sort = yes
 
 set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
-set index_format="%s %?M?(%2M hidden) & ?%> %-30.30L  %{%b %d} (%Z)" 
+set index_format="%s %?M?(%2M hidden) & ?%> %-30.30L  %{%b %d} (%Z)"
 
 set query_command = "/home/bryan/.mutt/ldap_addr_query '%s'"
 
@@ -106,9 +110,7 @@ macro pager <f2> "<change-folder>$my_account_gmail/Inbox<enter>"
 macro index <f3> "<change-folder>$my_account_work/Inbox<enter>"
 macro pager <f3> "<change-folder>$my_account_work/Inbox<enter>"
 
-#macro index,pager ,r ":unset wait_key; set pipe_decode\n|mutt_add_reminder\n:set wait_key; unset pipe_decode\n" "record a reminder"
 macro index,pager ,r ":unset wait_key;\n|mutt_add_reminder\n:set wait_key; unset pipe_decode\n" "record a reminder"
-
 
 folder-hook $my_account_gmail/Inbox   source ~/.mutt/gmail-local.rc
 folder-hook $my_account_work/Inbox    source  ~/.mutt/work-local.rc

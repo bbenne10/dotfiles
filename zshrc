@@ -33,32 +33,34 @@ antigen-apply
 
 #-ZLE / BINDKEY CHANGES--------------------------------------------------------
 #(THESE ARE MAINLY FOR ST)
-bindkey ${terminfo[khome]} beginning-of-line
-bindkey ${terminfo[kend]}  end-of-line
-bindkey ${terminfo[kich1]} overwrite-mode
-bindkey ${terminfo[kdch1]} delete-char
-bindkey ${terminfo[kcuu1]} up-line-or-history
-bindkey ${terminfo[kcud1]} down-line-or-history
-bindkey ${terminfo[kcub1]} backward-char
-bindkey ${terminfo[kcuf1]} forward-char
+if [[ $TERM == "st-256color" ]]; then
+    bindkey ${terminfo[khome]} beginning-of-line
+    bindkey ${terminfo[kend]}  end-of-line
+    bindkey ${terminfo[kich1]} overwrite-mode
+    bindkey ${terminfo[kdch1]} delete-char
+    bindkey ${terminfo[kcuu1]} up-line-or-history
+    bindkey ${terminfo[kcud1]} down-line-or-history
+    bindkey ${terminfo[kcub1]} backward-char
+    bindkey ${terminfo[kcuf1]} forward-char
 
-function zle-line-init() {
-    if [[ "$TERM" == "st-256color" ]]; then
-        echoti smkx;
-    fi;
-}
+    function zle-line-init() {
+        if [[ "$TERM" == "st-256color" ]]; then
+            echoti smkx;
+        fi;
+    }
 
-function zle-line-finish() {
-    if [[ "$TERM" == "st-256color" ]]; then
-        echoti rmkx
-    fi;
-}
+    function zle-line-finish() {
+        if [[ "$TERM" == "st-256color" ]]; then
+            echoti rmkx
+        fi;
+    }
 
-zle -N zle-line-init
-zle -N zle-line-finish
+    zle -N zle-line-init
+    zle -N zle-line-finish
 
-# Set erase to bkspc
-stty erase 
+    # Set erase to bkspc
+    stty erase 
+fi
 
 #-SANE VIM HISTORY SEARCHING---------------------------------------------------
 bindkey -M vicmd '/' history-incremental-pattern-search-backward
