@@ -5,7 +5,7 @@ test_and_run() {
 }
 
 ## MACHINE SPECIFIC STUFF =====================================================
-if [ "$(hostname)" = "CTISL-bbennett-arch-desktop" ]; then
+if [ "$HOST" = "CTISL-bbennett-arch-desktop" ]; then
     # == WORK ==
     #xrandr --output VGA1 --auto --right-of HDMI1;
     #xrandr --output HDMI1 --primary --rotate left;
