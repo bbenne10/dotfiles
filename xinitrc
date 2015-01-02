@@ -7,8 +7,6 @@ test_and_run() {
 ## MACHINE SPECIFIC STUFF =====================================================
 if [ "$HOST" = "CTISL-bbennett-arch-desktop" ]; then
     # == WORK ==
-    #xrandr --output VGA1 --auto --right-of HDMI1;
-    #xrandr --output HDMI1 --primary --rotate left;
     xrandr --output VGA1 --primary --rotate left --output HDMI1 --auto --right-of VGA1 --output HDMI2 --auto --right-of HDMI1
     test_and_run remind -z -k'~/.bin/remind_notify "%s"' ~/.remind/work.rem &
 fi
