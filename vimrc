@@ -2,11 +2,11 @@ if &diff || exists("vimpager")
     " We're running as 'vimpager' or 'vimdiff'
     set diffopt+=iwhite
     set noloadplugins
-else 
+else
 
     "We're running as either "vim" or "gvim"
 
-    " Make vim not work EXACTLY as vi did 
+    " Make vim not work EXACTLY as vi did
     set nocompatible
     filetype plugin indent on
 
@@ -23,6 +23,8 @@ else
     let g:airline_powerline_fonts = 1
     let g:syntastic_python_python_exec = "/usr/bin/python2.7"
     let g:syntastic_python_checkers = ['pylama']
+
+    let g:jsx_ext_required = 0
 
     let g:user_emmet_leader_key='<c-z>'
 
@@ -52,6 +54,7 @@ else
     NeoBundle "honza/vim-snippets"
     NeoBundle 'voithos/vim-python-matchit'
     NeoBundle 'rodjek/vim-puppet'
+    NeoBundle 'jsx/jsx.vim'
 
     " colorschemes
     NeoBundle 'bbenne10/simpleburn'
@@ -94,7 +97,7 @@ EOF
     "When reindenting, how many spaces to shift?
     set shiftwidth=4
 
-    "Round to nearest shiftwidth when using << or >> 
+    "Round to nearest shiftwidth when using << or >>
     set shiftround
 
     "When you hit tab, how many characters will be inserted?
@@ -124,7 +127,7 @@ EOF
     " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     " How should navigation around the file work?
     " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    "don't wrap long lines 
+    "don't wrap long lines
     set nowrap
 
     "start scrolling 5 lines from the screen edge
@@ -140,7 +143,7 @@ EOF
     set hidden
 
     "How should the backspace be handled?
-    "This is somewhat complex. Please google for what this does. 
+    "This is somewhat complex. Please google for what this does.
     set backspace=indent,eol,start
 
     " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,7 +151,10 @@ EOF
     " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     " change the leader key
-    let mapleader = ","
+    let mapleader = "\<Space>"
+
+    "Don't add a space when joining
+    set nojoinspaces
 
     "Turn off both backing up files and swap files - these are just annoying
     set nobackup
@@ -178,8 +184,8 @@ EOF
 
     " Now modify the colorscheme like so...
     if g:colors_name == "github"
-        highlight CursorLine          cterm=None 
-    elseif g:colors_name == "simpleburn" 
+        highlight CursorLine          cterm=None
+    elseif g:colors_name == "simpleburn"
         highlight ColorColumn         guibg=#2e2e2e
     endif
 
@@ -240,10 +246,10 @@ EOF
     cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
 
     "Turn off the help system's keybind (and bind it to toggle paste mode)
-    nnoremap <F1> :set paste!<CR> 
+    nnoremap <F1> :set paste!<CR>
 
     "Convert markdown to html. This doesn't work in the reverse, but you may
-    "simply undo the change to 'preview' the changes before saving. 
+    "simply undo the change to 'preview' the changes before saving.
     "Keychain: <leader>+m
     function! PreviewMarkdown()
     silent update
@@ -255,10 +261,10 @@ EOF
         \ '<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">',
         \ '<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssbase/base-min.css">',
         \ '<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssfonts/fonts-min.css">',
-        \ '<style>body{padding:20px;}', 
+        \ '<style>body{padding:20px;}',
         \ '    div#container{background-color:#F2F2F2;padding:0 20px;margin:0 auto;border:solid #D0D0D0 1px;width: 90%; max-width: 80em}',
-        \ '    .section1, .section2{border-bottom: 1px solid #D0D0D0;}', 
-        \ '    .section2{margin-left: 1em;} .section3{ margin-left: 2em;}', 
+        \ '    .section1, .section2{border-bottom: 1px solid #D0D0D0;}',
+        \ '    .section2{margin-left: 1em;} .section3{ margin-left: 2em;}',
         \ '    p { margin-left: 2em; }</style>',
         \ '</head>', '<body>', '<div id="container">']
 

@@ -10,7 +10,7 @@ fi
 ## FONTS ======================================================================
 if [ -d /usr/share/fonts/local ]; then
     xset fp+ /usr/share/fonts/local;
-fi; 
+fi;
 
 if [ -d $HOME/.fonts ]; then
     xset fp+ $HOME/.fonts;
@@ -22,10 +22,10 @@ xautolock -time 3 -locker sxlock &
 nitrogen --restore
 unclutter -noevents &
 urxvtd -f -q -o
-firefox &
+#firefox &
 
-if [ $(which compton) ]; then 
-    compton -cCGfF -o 0.38 -O 200 -I 200 -t 0 -l 0 -r 3 -D2 -m 0.88 &
+if [ $(which compton) ]; then
+    compton -cCGfb --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc -b
 fi;
 
 if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
@@ -34,3 +34,5 @@ fi
 
 ~/.bin/stat_line &
 exec ~/.bin/dwm 1>&2 2>/tmp/dwm.log
+
+#exec ~/code/piswm/main.py
