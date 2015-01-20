@@ -24,12 +24,12 @@ export WORKON_HOME=~/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
 source ~/.bin/antigen/antigen.zsh
 antigen-use oh-my-zsh
-#antigen-bundle zsh-users/zsh-syntax-highlighting
-antigen-bundle command-not-found
-antigen-bundle pip
-antigen-bundle virtualenvwrapper
-antigen-theme bbenne10/antigen-themes themes/bbennett2
-antigen-apply
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle command-not-found
+antigen bundle pip
+antigen bundle virtualenvwrapper
+antigen theme bbenne10/antigen-themes themes/bbennett2
+antigen apply
 
 #-ZLE / BINDKEY CHANGES--------------------------------------------------------
 if [[ $TERM == "st-256color" ]]; then
