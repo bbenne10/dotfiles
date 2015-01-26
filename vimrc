@@ -23,6 +23,7 @@ else
     let g:airline_powerline_fonts = 1
     let g:syntastic_python_python_exec = "/usr/bin/python2.7"
     let g:syntastic_python_checkers = ['pylama']
+    let g:syntastic_javascript_jshint_exec='jsxhint'
 
     let g:jsx_ext_required = 0
 
@@ -55,12 +56,13 @@ else
     NeoBundle 'voithos/vim-python-matchit'
     NeoBundle 'rodjek/vim-puppet'
     NeoBundle 'jsx/jsx.vim'
+    NeoBundle 'groenewege/vim-less'
 
     " colorschemes
     NeoBundle 'bbenne10/simpleburn'
-    NeoBundle 'endel/vim-github-colorscheme'
-    NeoBundle 'jeetsukumaran/vim-mochalatte'
     NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+    NeoBundle 'altercation/vim-colors-solarized'
+
 
     call neobundle#end()
     NeoBundleCheck
@@ -146,6 +148,12 @@ EOF
     "This is somewhat complex. Please google for what this does.
     set backspace=indent,eol,start
 
+    "When joining commented lines, delete the leading comment char.
+    set formatoptions+=j
+
+    "Don't insert an additional space when joining lines
+    set nojoinspaces
+
     " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     " Misc small changes
     " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -180,7 +188,7 @@ EOF
     set background=dark
     syntax enable
 
-    colorscheme Tomorrow-Night
+    colorscheme solarized
 
     " Now modify the colorscheme like so...
     if g:colors_name == "github"
@@ -251,33 +259,7 @@ EOF
     "Convert markdown to html. This doesn't work in the reverse, but you may
     "simply undo the change to 'preview' the changes before saving.
     "Keychain: <leader>+m
-    function! PreviewMarkdown()
-    silent update
-    let output_name = '/tmp/' . expand('%:t') . '.html'
-
-    let file_header = ['<html>', '<head>',
-        \ '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">',
-        \ '<title>'.expand('%:p').'</title>',
-        \ '<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">',
-        \ '<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssbase/base-min.css">',
-        \ '<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssfonts/fonts-min.css">',
-        \ '<style>body{padding:20px;}',
-        \ '    div#container{background-color:#F2F2F2;padding:0 20px;margin:0 auto;border:solid #D0D0D0 1px;width: 90%; max-width: 80em}',
-        \ '    .section1, .section2{border-bottom: 1px solid #D0D0D0;}',
-        \ '    .section2{margin-left: 1em;} .section3{ margin-left: 2em;}',
-        \ '    p { margin-left: 2em; }</style>',
-        \ '</head>', '<body>', '<div id="container">']
-
-    call writefile(file_header, output_name)
-
-    silent exec '!python -m markdown -o html4 -x tables -x outline ' . expand('%:p') . ' >> ' . output_name
-    silent exec '!echo "</div></body></html>" >> "' . output_name . '"'
-    silent exec '!firefox "' . output_name . '" &'
-    silent exec '!redraw'
-    endfunction
-
-    nmap <leader>m :call PreviewMarkdown()<CR>
-    nmap <leader>M :!python -m markdown -o html4 -x tables -x outline<cr>
+    nmap <leader>m :silent !~/.bin/compile_markdown %:p<cr>:redraw!<cr>
 
     "Run line under cursor in user's shell (or in python if it's a py "script)
     autocmd BufRead *.sh nmap <buffer> <leader>r :.w !$SHELL<CR>
@@ -300,4 +282,6 @@ EOF
 
     "<leader>bd to delete a window
     nnoremap <leader>bd :BD<CR>
+
+    call togglebg#map("<F5>")
 endif
