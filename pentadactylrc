@@ -1,9 +1,9 @@
 loadplugins '\.(js|penta)$'
 group user
 set guioptions=Cs
-set showtabline=never
+set showtabline=always
 
-nmap -builtin ,w :b 
+nmap -builtin ,w :b
 
 hi FontCode -a font-family: Meslo LG M for Powerline important; font-size: 8pt !important;
 hi FontFixed -a font-family: Meslo LG M for Powerline !important; font-size: 8pt !important;
