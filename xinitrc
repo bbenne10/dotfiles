@@ -25,11 +25,13 @@ test_and_run urxvtd -f -q -o
 xmodmap ~/.xmodmap;
 
 test_and_run compton -cCGfb --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc -b
-test_and_run dunst &
 test_and_run xautolock -time 3 -locker sxlock &
 test_and_run unclutter -noevents &
 test_and_run nitrogen --restore
 test_and_run firefox &
+if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+    dbus-launch --sh-syntax --exit-with-session
+fi
 
 ~/.bin/stat_line &
-exec ~/.bin/dwm 1>&2 2>/tmp/dwm.log
+exec ~/.bin/dwm
