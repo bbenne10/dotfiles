@@ -26,6 +26,28 @@ except:
 
 XCB_CONN = None                 # Holds open connection to X
 
+COLORS = {
+    # light
+    "yellow": "#b58900",
+    "orange": "#cb4b16",
+    "red": "#dc322f",
+    "magenta": "#d33682",
+    "violet": "#6c71c4",
+    "blue": "#268bd2",
+    "cyan": "#2aa198",
+    "green": "#859900",
+
+    # dark
+    "base03": "#002b36",
+    "base02": "#073642",
+    "base01": "#586e75",
+    "base00": "#657b83",
+    "base0": "#839496",
+    "base1": "#93a1a1",
+    "base2": "#eee8d5",
+    "base3": "#fdf6e3",
+}
+
 
 class Info():
     check_interval = 1800
@@ -221,35 +243,37 @@ def get_conn():
 
 
 def get_colored_statustext(notification=''):
-    if not notification:
-        w = INFO.weather()
-        if w[0]:
-            output = "<span color='#7F9F7F'>{}</span>  ".format(w[1])
-        else:
-            output = ""
-
-        m = INFO.media()
-        if m and m[1]:
-            output += "<span color='#DC8CC3'>{}</span>  ".format(m[1])
-
-        battery = INFO.battery()
-        if battery:
-            output += "<span color='#EC93D3'>{}</span>  ".format(battery[1])
-
-        tmp = INFO.temperature()
-        if tmp:
-            output += "<span color='#DFAF8F'>{}</span>  ".format(tmp)
-
-        c = INFO.cpu_perc()
-        if c and c[1]:
-            output += "<span color='#CC9393'>{}</span>  ".format(c[1])
-
-        r = INFO.ram_perc()
-        if r and r[1]:
-            output += "<span color='#8CD0D3'>{}</span>  ".format(r[1])
-
+    w = INFO.weather()
+    if w[0]:
+        output = "<span color='{}'>{}</span> ".format(COLORS['green'],
+                                                        w[1])
     else:
-        output = notification.encode('utf-8', 'ignore')
+        output = ""
+
+    m = INFO.media()
+    if m and m[1]:
+        output += "<span color='{}'>{}</span> ".format(COLORS['magenta'],
+                                                        m[1])
+
+    battery = INFO.battery()
+    if battery:
+        output += "<span color='{}'>{}</span> ".format(COLORS['red'],
+                                                        battery[1])
+
+    tmp = INFO.temperature()
+    if tmp:
+        output += "<span color='{}'>{}</span> ".format(COLORS['cyan'],
+                                                        tmp)
+
+    c = INFO.cpu_perc()
+    if c and c[1]:
+        output += "<span color='{}'>{}</span> ".format(COLORS['orange'],
+                                                        c[1])
+
+    r = INFO.ram_perc()
+    if r and r[1]:
+        output += "<span color='{}'>{}</span> ".format(COLORS['violet'],
+                                                        r[1])
 
     output = unicode(output, "utf-8")
     return output
