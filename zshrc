@@ -19,20 +19,26 @@ zstyle ':completion:*:(all-|)files' ignored-patterns "(*.pyc|*~)"
 zstyle ':completion:*:ls:*:(all-|)files' ignored-patterns
 zstyle ':completion:*:rm:*:(all-|)files' ignored-patterns
 
+# Work around some weirdness in the zsh-syntax-highlighter plugin
+repo_dir=$(echo $HOME/.antigen/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-syntax-highlighting.git)
+if [ -f "$repo_dir/zsh-syntax-highlighting.plugin.zsh" ]; then
+    rm $repo_dir/zsh-syntax-highlighting.plugin.zsh
+    ln -s $repo_dir/zsh-syntax-highlighting.zsh $repo_dir/zsh-syntax-highlighting.plugin.zsh
+fi
+
 #-LOAD AND INITIALIZE ANTIGEN--------------------------------------------------
 export WORKON_HOME=~/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
 source ~/.bin/antigen/antigen.zsh
 antigen-use oh-my-zsh
-antigen-bundle zsh-users/zsh-syntax-highlighting
-antigen-bundle command-not-found
-antigen-bundle pip
-antigen-bundle virtualenvwrapper
-antigen-theme bbenne10/antigen-themes themes/bbennett2
-antigen-apply
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle command-not-found
+antigen bundle pip
+antigen bundle virtualenvwrapper
+antigen theme bbenne10/antigen-themes themes/bbennett2
+antigen apply
 
 #-ZLE / BINDKEY CHANGES--------------------------------------------------------
-#(THESE ARE MAINLY FOR ST)
 if [[ $TERM == "st-256color" ]]; then
     bindkey ${terminfo[khome]} beginning-of-line
     bindkey ${terminfo[kend]}  end-of-line
@@ -96,7 +102,7 @@ compctl -v echo
 compctl -b bindkey
 
 #-"USER MODE" SHELL CUSTOMIZATION----------------------------------------------
-if [ -f $HOME/.dircolors ]; then 
+if [ -f $HOME/.dircolors ]; then
     eval $(dircolors ~/.dircolors);
 fi;
 
@@ -106,6 +112,8 @@ if [[ $(uname -s) == "Linux" ]]; then
     # OSX's ls and rm don't have these options
     alias ls='ls --color=auto'
     alias rm="rm -Iv"
+
+    unset GREP_OPTIONS
 fi
 
 alias rmr="rm -r"
@@ -122,16 +130,3 @@ function sprunge() {
 function ix() {
     cat $1 | curl -n -F 'f:1=<-' http://ix.io
 }
-
-function build_done() {
-    notification="Build Completed"
-    if [ -n "$1" ]; then
-        notification=$1
-    fi
-    ~/.bin/pushover_notify {{PUSHOVER_BUILD_DONE_APP_KEY }} $notification >/dev/null
-}
-
-function push_bf() {
-    rsync -a $HOME/code/black_forest/neo4j-schema-tests/ bf:/users/bbennett37/black_forest/
-}
-
