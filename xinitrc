@@ -1,3 +1,5 @@
+# vim:set ft=sh:
+
 test_and_run() {
     if which "$1" >/dev/null; then
         $@
@@ -22,7 +24,6 @@ fi;
 
 ## EVERY MACHINE ==============================================================
 test_and_run urxvtd -f -q -o
-xmodmap ~/.xmodmap;
 
 test_and_run compton -cCGfb --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc -b
 test_and_run xautolock -time 3 -locker sxlock &
