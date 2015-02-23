@@ -252,6 +252,9 @@ else
         " Search buffers with <leader>w
         nnoremap <leader>w :Unite -start-insert buffer<cr>
 
+        " Emulate LustyJuggler with <leader>l
+        nnoremap <leader>l :Unite buffer -quick-match<CR>
+
         " Open new buffers w/ fuzzy finding
         nnoremap <leader>e :Unite -start-insert file_rec/async:!<cr>
 
