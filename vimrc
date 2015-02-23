@@ -84,9 +84,7 @@ else
 
         " colorschemes
         NeoBundle 'bbenne10/simpleburn'
-        NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
-        NeoBundle 'altercation/vim-colors-solarized'
-
+        NeoBundle 'chriskempson/base16-vim'
 
         call neobundle#end()
         NeoBundleCheck
@@ -180,7 +178,7 @@ else
         set background=dark
         syntax enable
 
-        colorscheme solarized
+        colorscheme base16-ocean
 
         " Now modify the colorscheme like so...
         if g:colors_name == "github"
@@ -211,7 +209,7 @@ else
         set go+=c
 
         "change gui font
-        set guifont=TamzenForPowerlineMod\ 13
+        set guifont=Input\ 10
 
         "Always show the status line
         set laststatus=2
