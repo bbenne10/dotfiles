@@ -265,7 +265,13 @@ else
         nnoremap <leader>bd :BD<CR>
 
         " Toggle between 'dark' and 'light' background.
-        call togglebg#map("<F5>")
+        function! ToggleBG()
+            let &background = ( &background == "dark"? "light" : "dark" )
+            if exists("g:colors_name")
+                exe "colorscheme " . g:colors_name
+            endif
+        endfunction
+        nnoremap <F5> :call ToggleBG()<cr>
 
         " Convert markdown to html. This doesn't work in the reverse, but you may
         " simply undo the change to 'preview' the changes before saving.
