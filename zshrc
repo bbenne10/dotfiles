@@ -1,4 +1,6 @@
 #-ZSH LEVEL CHANGES------------------------------------------------------------
+. ~/.zaliases
+
 autoload colors zsh/terminfo
 autoload -U compinit promptinit
 compinit
