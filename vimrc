@@ -282,7 +282,7 @@ else
 
     let ft = getbufvar(bufnum, '&ft')
     if !empty(ft)
-      let stat .= Color(active, 3, ' ← ') . ft . ' '
+      let stat .= Color(active, 3, '← ') . ft . ' '
     endif
 
     return stat
