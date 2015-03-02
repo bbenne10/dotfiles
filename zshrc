@@ -21,13 +21,6 @@ zstyle ':completion:*:(all-|)files' ignored-patterns "(*.pyc|*~)"
 zstyle ':completion:*:ls:*:(all-|)files' ignored-patterns
 zstyle ':completion:*:rm:*:(all-|)files' ignored-patterns
 
-# Work around some weirdness in the zsh-syntax-highlighter plugin
-repo_dir=$(echo $HOME/.antigen/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-syntax-highlighting.git)
-if [ -f "$repo_dir/zsh-syntax-highlighting.plugin.zsh" ]; then
-    rm $repo_dir/zsh-syntax-highlighting.plugin.zsh
-    ln -s $repo_dir/zsh-syntax-highlighting.zsh $repo_dir/zsh-syntax-highlighting.plugin.zsh
-fi
-
 #-LOAD AND INITIALIZE ANTIGEN--------------------------------------------------
 export WORKON_HOME=~/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
