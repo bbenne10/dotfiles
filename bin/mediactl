@@ -27,7 +27,7 @@ function detect_player() {
     fi;
 
     if [ $spotify_is_running -eq 1 -a $mocp_is_running -eq 1 ]; then
-        # both mocp and spotify are running. Check if spotify is playing 
+        # both mocp and spotify are running. Check if spotify is playing
         # and if it is playing, use it. Else use mocp.
         spotify_status=$(dbus-send --print-reply \
                                    --dest=org.mpris.MediaPlayer2.spotify \
@@ -76,26 +76,32 @@ function spotify_cmd {
 }
 
 function play() {
-    case $player in 
-        "spotify") 
+    case $player in
+        "spotify")
             spotify_cmd Play;
             ;;
         "mocp")
             mocp --play;
             ;;
+        "mpv")
+            echo "pause" > ~/.ztream_fifo
+            ;;
         *)
-            echo $player;
+            echo $player
             ;;
     esac
 }
 
 function stop() {
-    case $player in 
-        "spotify") 
+    case $player in
+        "spotify")
             spotify_cmd Stop;
             ;;
         "mocp")
             mocp --stop;
+            ;;
+        "mpv")
+            echo "stop" > ~/.ztream_fifo
             ;;
         *)
             echo $player;
@@ -104,12 +110,15 @@ function stop() {
 }
 
 function toggle() {
-    case $player in 
-        "spotify") 
+    case $player in
+        "spotify")
             spotify_cmd PlayPause;
             ;;
         "mocp")
             mocp --toggle-pause;
+            ;;
+        "mpv")
+            echo "pause" > ~/.ztream_fifo
             ;;
         *)
             echo $player;
@@ -118,12 +127,15 @@ function toggle() {
 }
 
 function next() {
-    case $player in 
-        "spotify") 
+    case $player in
+        "spotify")
             spotify_cmd Next;
             ;;
         "mocp")
             mocp --next;
+            ;;
+        "mpv")
+            echo "playlist_next" > ~/.ztream_fifo
             ;;
         *)
             echo $player;
@@ -132,12 +144,15 @@ function next() {
 }
 
 function prev() {
-    case $player in 
-        "spotify") 
+    case $player in
+        "spotify")
             spotify_cmd Previous;
             ;;
         "mocp")
             mocp --previous;
+            ;;
+        "mpv")
+            echo "playlist_prev" > ~/.ztream_fifo
             ;;
         *)
             echo $player;
@@ -146,12 +161,15 @@ function prev() {
 }
 
 function pause() {
-    case $player in 
-        "spotify") 
+    case $player in
+        "spotify")
             spotify_cmd Pause;
             ;;
         "mocp")
             mocp --pause;
+            ;;
+        "mpv")
+            echo "pause" > ~/.ztream_fifo
             ;;
         *)
             echo $player;
@@ -165,7 +183,7 @@ function usage() {
     exit 1
 }
 
-if [ "$#" -ne "1" ]; then 
+if [ "$#" -ne "1" ]; then
     usage;
 fi;
 
