@@ -1,3 +1,4 @@
+printf "Sourcing zshrc\n"
 #-ZSH LEVEL CHANGES------------------------------------------------------------
 autoload colors zsh/terminfo
 autoload -U compinit promptinit
