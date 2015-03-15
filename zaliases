@@ -1,0 +1,14 @@
+# vim: ft=sh
+if [[ $(uname -s) == "Linux" ]]; then
+    # OSX's ls and rm don't have these options
+    alias ls='ls --color=auto'
+    alias rm="rm -Iv"
+
+    unset GREP_OPTIONS
+fi
+
+alias rmr="rm -r"
+alias mkdir='mkdir -p'
+alias zipfldr='zip -9 -r'
+alias grep='grep --color=ALWAYS'
+alias t=todo.sh
