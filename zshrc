@@ -1,5 +1,7 @@
 printf "Sourcing zshrc\n"
 #-ZSH LEVEL CHANGES------------------------------------------------------------
+. ~/.zaliases
+
 autoload colors zsh/terminfo
 autoload -U compinit promptinit
 compinit
@@ -20,13 +22,6 @@ zstyle ':completion:*:(all-|)files' ignored-patterns "(*.pyc|*~)"
 zstyle ':completion:*:ls:*:(all-|)files' ignored-patterns
 zstyle ':completion:*:rm:*:(all-|)files' ignored-patterns
 
-# Work around some weirdness in the zsh-syntax-highlighter plugin
-repo_dir=$(echo $HOME/.antigen/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-syntax-highlighting.git)
-if [ -f "$repo_dir/zsh-syntax-highlighting.plugin.zsh" ]; then
-    rm $repo_dir/zsh-syntax-highlighting.plugin.zsh
-    ln -s $repo_dir/zsh-syntax-highlighting.zsh $repo_dir/zsh-syntax-highlighting.plugin.zsh
-fi
-
 #-LOAD AND INITIALIZE ANTIGEN--------------------------------------------------
 export WORKON_HOME=~/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
@@ -41,32 +36,19 @@ antigen apply
 
 #-ZLE / BINDKEY CHANGES--------------------------------------------------------
 if [[ $TERM == "st-256color" ]]; then
-    bindkey ${terminfo[khome]} beginning-of-line
-    bindkey ${terminfo[kend]}  end-of-line
-    bindkey ${terminfo[kich1]} overwrite-mode
-    bindkey ${terminfo[kdch1]} delete-char
-    bindkey ${terminfo[kcuu1]} up-line-or-history
-    bindkey ${terminfo[kcud1]} down-line-or-history
-    bindkey ${terminfo[kcub1]} backward-char
-    bindkey ${terminfo[kcuf1]} forward-char
+    bindkey  delete-char
+    stty erase 
 
     function zle-line-init() {
-        if [[ "$TERM" == "st-256color" ]]; then
-            echoti smkx;
-        fi;
+        echoti smkx;
     }
 
     function zle-line-finish() {
-        if [[ "$TERM" == "st-256color" ]]; then
-            echoti rmkx
-        fi;
+        echoti rmkx
     }
 
     zle -N zle-line-init
     zle -N zle-line-finish
-
-    # Set erase to bkspc
-    stty erase 
 fi
 
 #-SANE VIM HISTORY SEARCHING---------------------------------------------------

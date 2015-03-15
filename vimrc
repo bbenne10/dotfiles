@@ -6,8 +6,6 @@ if &diff || exists("vimpager")
   " }}}
 else
   " "Normal" Run {{{
-
-
   " Plugin setup {{{
   " Make vim not work EXACTLY as vi did
   set nocompatible
@@ -46,6 +44,14 @@ else
     \ '--ignore ''**/*.pyc'' -g ""'
   let g:unite_source_grep_recursive_opt = ''
   " }}}
+  " NeoComplete {{{
+  " (taken straight from the example)
+  let g:acp_enableAtStartup = 0
+  let g:neocomplete#enable_at_startup = 1
+  let g:neocomplete#enable_smart_case = 1
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+  " }}}
   " Misc (JSX, Emmet, SuperTab) {{{
   let g:jsx_ext_required = 0
 
@@ -63,14 +69,14 @@ else
   " Plugins {{{
   " 'interface' plugins {{{
   NeoBundle 'Shougo/unite.vim'
+  NeoBundle 'Shougo/vimproc.vim', { 'build': { 'linux': 'make' } }
+  NeoBundle 'Shougo/neocomplete.vim'
   " }}}
 
   " 'utility' plugins {{{
-  NeoBundle 'bufkill.vim'
   NeoBundle 'airblade/vim-rooter'
   NeoBundle 'rking/ag.vim'
   NeoBundle 'tpope/vim-fugitive'
-  NeoBundle 'ervandew/supertab'
   NeoBundle 'mattn/emmet-vim'
   " }}}
 
@@ -78,9 +84,6 @@ else
   NeoBundle 'scrooloose/syntastic'
   NeoBundle 'hynek/vim-python-pep8-indent'
   NeoBundle 'MarcWeber/vim-addon-mw-utils'
-  NeoBundle 'tomtom/tlib_vim'
-  NeoBundle 'garbas/vim-snipmate'
-  NeoBundle "honza/vim-snippets"
   NeoBundle 'voithos/vim-python-matchit'
   NeoBundle 'rodjek/vim-puppet'
   NeoBundle 'jsx/jsx.vim'
@@ -89,8 +92,6 @@ else
 
   " colorschemes {{{
   NeoBundle 'bbenne10/simpleburn'
-  NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
-  NeoBundle 'altercation/vim-colors-solarized'
   NeoBundle 'chriskempson/base16-vim'
   " }}}
 
@@ -295,7 +296,6 @@ else
   endfunction
   " }}}
 
-
   " }}}
   " Key Remapping {{{
 
@@ -329,8 +329,13 @@ else
   " delete a window
   nnoremap <leader>bd :BD<CR>
 
-  " Toggle between 'dark' and 'light' background.
-  call togglebg#map("<F5>")
+  " neocomplete maps {{{
+  inoremap <expr><C-g> neocomplete#undo_completion()
+  inoremap <expr><C-l> neocomplete#complete_common_string()
+  inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+  inoremap <expr><Esc> pumvisible() ? neocomplete#close_popup() : "\<Esc>"
+  " }}}
+
 
   " Convert markdown to html. This doesn't work in the reverse, but you may
   " simply undo the change to 'preview' the changes before saving.
@@ -343,7 +348,7 @@ else
   autocmd BufRead *.sh nmap <buffer> <leader>r :.w !$SHELL<CR>
   autocmd BufRead *.py nmap <buffer> <leader>r :.w !python2 %<CR>
 
-  " Strip trailing whitespace (and save cursor position) when saving files
+  " Strip trailing whitespace (and save cursor position) when saving files {{{
   fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
     let c = col(".")
@@ -351,6 +356,7 @@ else
     call cursor(l, c)
   endfun
   autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+  " }}}
 
   " Change filetype for HTML to htmldjango - this colors some additional syntax
   au BufNewFile,BufRead *.html set filetype=htmldjango
@@ -358,21 +364,25 @@ else
   " Set Rooter to run on sh files as well
   au BufEnter *.sh :Rooter
 
-  " Change omnicomplete for python files
-  au FileType python set omnifunc=pythoncomplete#Complete
-
-  " Make Unite close when we hit escape
+  " Make Unite close when we hit escape {{{
   function! s:UniteSettings()
     imap <buffer> <Esc> <Plug>(unite_exit)
   endfunction
-
   autocmd FileType unite :call s:UniteSettings()
-
-  " Update the status bar when window is changed
+  " }}}
+  " Update the status bar when window is changed {{{
   augroup status
     autocmd!
     autocmd VimEnter,WinEnter,BufWinEnter * call <SID>RefreshStatus()
   augroup END
+  " }}}
+  " NeoComplete's AutoCommands (enable omnicomplete) {{{
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+  " }}}
 
   " }}}
   " Python VirtualEnv {{{
