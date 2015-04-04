@@ -1,4 +1,3 @@
-printf "Sourcing zshrc\n"
 #-ZSH LEVEL CHANGES------------------------------------------------------------
 . ~/.zaliases
 

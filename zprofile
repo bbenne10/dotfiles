@@ -1,4 +1,3 @@
-printf "Sourcing zprofile\n"
 if which keychain >/dev/null; then
     eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
 fi
