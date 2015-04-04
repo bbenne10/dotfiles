@@ -88,28 +88,3 @@ compctl -b bindkey
 if [ -f $HOME/.dircolors ]; then
     eval $(dircolors ~/.dircolors);
 fi;
-
-#-ALIASES----------------------------------------------------------------------
-
-if [[ $(uname -s) == "Linux" ]]; then
-    # OSX's ls and rm don't have these options
-    alias ls='ls --color=auto'
-    alias rm="rm -Iv"
-
-    unset GREP_OPTIONS
-fi
-
-alias rmr="rm -r"
-alias mkdir='mkdir -p'
-alias zipfldr='zip -9 -r'
-alias grep='grep --color=ALWAYS'
-alias gr='ag'
-alias less=$PAGER
-
-function sprunge() {
-    cat $1 | curl -F 'sprunge=<-' http://sprunge.us
-}
-
-function ix() {
-    cat $1 | curl -n -F 'f:1=<-' http://ix.io
-}
