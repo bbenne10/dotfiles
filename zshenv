@@ -19,4 +19,7 @@ if [ -f ${HOME}/.termcap ]; then
   export TERMCAP=$(< ${HOME}/.termcap)
 fi
 
+export WORKON_HOME=~/.virtualenvs
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
+
 
