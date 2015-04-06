@@ -286,9 +286,16 @@ else
       let stat .= Color(active, 3, ' ← ') . head . ' '
     endif
 
+    " file type
     let ft = getbufvar(bufnum, '&ft')
     if !empty(ft)
       let stat .= Color(active, 3, '← ') . ft . ' '
+    endif
+
+    " Syntax errs
+    let sf = "%{SyntasticStatuslineFlag()}"
+    if !empty(sf)
+      let stat .= Color(active, 2, sf)
     endif
 
     return stat
