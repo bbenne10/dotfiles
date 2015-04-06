@@ -342,10 +342,9 @@ else
   nnoremap <leader>bd :BD<CR>
 
   " neocomplete maps {{{
-  inoremap <expr><C-g> neocomplete#undo_completion()
-  inoremap <expr><C-l> neocomplete#complete_common_string()
   inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-  inoremap <expr><Esc> pumvisible() ? neocomplete#close_popup() : "\<Esc>"
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+  inoremap <expr><CR> pumvisible() ? neocomplete#close_popup() : "\<CR>"
   " }}}
 
 
