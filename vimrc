@@ -1,4 +1,5 @@
 " vim:foldmethod=marker:foldlevel=0:ts=2:sts=2:sw=2
+
 " Vimpager or Diff {{{
 if &diff || exists("vimpager")
   set diffopt+=iwhite
@@ -52,7 +53,7 @@ else
   " }}}
   " NeoComplete {{{
   " (taken straight from the example)
-  let g:acp_enableAtStartup = 0
+  " let g:acp_enableAtStartup = 0
   let g:neocomplete#enable_at_startup = 1
   let g:neocomplete#enable_smart_case = 1
   let g:neocomplete#sources#syntax#min_keyword_length = 3
@@ -338,8 +339,12 @@ else
   " Call 'grep' (really ag)
   nnoremap <leader>y :Unite grep:.<cr>
 
-  " delete a window
-  nnoremap <leader>bd :BD<CR>
+  " Jump to the next or previous in the location window (works with pylama)
+  nnoremap <leader>ln :lnext<cr>
+  nnoremap <leader>lp :lprev<cr>
+
+  " Leave insert mode without hitting esc
+  imap jk <Esc>
 
   " neocomplete maps {{{
   inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -347,11 +352,8 @@ else
   inoremap <expr><CR> pumvisible() ? neocomplete#close_popup() : "\<CR>"
   " }}}
 
-
-  " Convert markdown to html. This doesn't work in the reverse, but you may
-  " simply undo the change to 'preview' the changes before saving.
+  " Convert markdown to html.
   nmap <leader>m :silent !~/.bin/compile_markdown %:p<cr>
-  ":redraw!<cr>
 
   " }}}
   " Auto Commands {{{
