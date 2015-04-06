@@ -27,7 +27,13 @@ else
   let g:syntastic_python_python_exec = "/usr/bin/python2.7"
   let g:syntastic_python_checkers = ['pylama']
   let g:syntastic_javascript_jshint_exec='jsxhint'
-  " }}}
+  let g:syntastic_go_checkers = ["go", "gofmt"]
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_auto_loc_list = 1
+  let g:syntastic_check_on_open = 1
+  let g:syntastic_loc_list_height = 5
+  let g:syntastic_stl_format = "← %t err(s) @ ln %F"
+  " }}}"
   " Unite {{{
   let g:unite_split_rule = "botright"
   let g:unite_winheight = 10
