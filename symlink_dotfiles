@@ -39,4 +39,3 @@ def parse_excludes():
 if __name__ == "__main__":
     files = get_files()
     run(files)
-    pass
