@@ -12,3 +12,11 @@ alias mkdir='mkdir -p'
 alias zipfldr='zip -9 -r'
 alias grep='grep --color=ALWAYS'
 alias t=todo.sh
+
+function sprunge() {
+    cat $1 | curl -F 'sprunge=<-' http://sprunge.us
+}
+
+function ix() {
+    cat $1 | curl -n -F 'f:1=<-' http://ix.io
+}
