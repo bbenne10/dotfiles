@@ -196,11 +196,10 @@ else
   colorscheme base16-ocean
 
   " used for statusline coloring
-  hi StatusLine ctermbg=18    ctermfg=blue  guibg=#a7adba guifg=#343d46
-  hi User1      ctermbg=blue  ctermfg=black guibg=green   guifg=red
-  hi User2      ctermbg=18    ctermfg=red   guibg=18      guifg=red
-  hi User3      ctermbg=18    ctermfg=blue  guibg=blue    guifg=green
-
+  hi StatusLine ctermbg=18    ctermfg=blue  guibg=#343D46 guifg=#8fa1b3
+  hi User1      ctermbg=blue  ctermfg=black guibg=#8fa1b3 guifg=#3b303b
+  hi User2      ctermbg=18    ctermfg=red   guibg=#343D46 guifg=#bf616a
+  hi User3      ctermbg=18    ctermfg=green guibg=#343D46 guifg=#a3be8c
 
   "draw a bar at 80 characters
   set colorcolumn=80
