@@ -1,4 +1,3 @@
-#include "/home/bryan/.colors/tomorrow_night"
 Xft.hintstyle:              hintslight
 URxvt.perl-ext-common:      default,url-select,keyboard-select,font-size
 URxvt.url-select.launcher:  /usr/bin/firefox
@@ -8,37 +7,16 @@ URxvt.keysym.C-Down:        perl:font-size:decrease
 URxvt.keysym.M-u:           perl:url-select:select_next
 URxvt.keysym.M-Escape:      perl:keyboard-select:activate
 URxvt.keysym.M-s:           perl:keyboard-select:search
-URxvt.font:                 xft:TamzenForPowerlineMod:size=14:antialias=False
+URxvt.font:                 xft:Input-9
 URxvt.scrollBar:            false
 URxvt.internalBorder:       6
-!!URxvt.letterSpace:            -1
-
-!! True Transparency
-!!URxvt.depth:                  32
-!!URxvt.background:             [85]#1d1f21
+URxvt.fading:               20
 
 !! Fake Transparency
-URxvt*.transparent: true
-URxvt*.shading: 80
-URxvt*.tintColor: #262626
+URxvt.background:    #2B303B
+URxvt.transparent:   true
+URxvt.shading:              40
 
-*.color0:  #000000
-*.color1:  #912226
-*.color2:  #778900
-*.color3:  #ae7b00
-*.color4:  #1d2594
-*.color5:  #682a9b
-*.color6:  #2b6651
-*.color7:  #929593
-*.color8:  #666666
-*.color9:  #cc6666
-*.color10: #b5bd68
-*.color11: #f0c674
-*.color12: #81a2be
-*.color13: #b274bb
-*.color14: #8abeb7
-*.color15: #ecebec
-
-*.foreground:  #c5c8c6
-*.background:  #262626
-*.cursorColor: #aeafad
+!! True Transparency
+!!URxvt.depth: 32
+!!URxvt.background: [80]#2b303b
