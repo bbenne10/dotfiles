@@ -23,14 +23,15 @@ zstyle ':completion:*:ls:*:(all-|)files' ignored-patterns
 zstyle ':completion:*:rm:*:(all-|)files' ignored-patterns
 
 #-LOAD AND INITIALIZE ANTIGEN--------------------------------------------------
-export WORKON_HOME=~/.virtualenvs
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
+
 source ~/.bin/antigen/antigen.zsh
+
 antigen-use oh-my-zsh
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle command-not-found
 antigen bundle pip
 antigen bundle virtualenvwrapper
+antigen bundle golang
 antigen theme bbenne10/antigen-themes themes/bbennett2
 antigen apply
 
@@ -88,28 +89,3 @@ compctl -b bindkey
 if [ -f $HOME/.dircolors ]; then
     eval $(dircolors ~/.dircolors);
 fi;
-
-#-ALIASES----------------------------------------------------------------------
-
-if [[ $(uname -s) == "Linux" ]]; then
-    # OSX's ls and rm don't have these options
-    alias ls='ls --color=auto'
-    alias rm="rm -Iv"
-
-    unset GREP_OPTIONS
-fi
-
-alias rmr="rm -r"
-alias mkdir='mkdir -p'
-alias zipfldr='zip -9 -r'
-alias grep='grep --color=ALWAYS'
-alias gr='ag'
-alias less=$PAGER
-
-function sprunge() {
-    cat $1 | curl -F 'sprunge=<-' http://sprunge.us
-}
-
-function ix() {
-    cat $1 | curl -n -F 'f:1=<-' http://ix.io
-}
