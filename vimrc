@@ -1,4 +1,5 @@
 " vim:foldmethod=marker:foldlevel=0:ts=2:sts=2:sw=2
+
 " Vimpager or Diff {{{
 if &diff || exists("vimpager")
   set diffopt+=iwhite
@@ -27,7 +28,13 @@ else
   let g:syntastic_python_python_exec = "/usr/bin/python2.7"
   let g:syntastic_python_checkers = ['pylama']
   let g:syntastic_javascript_jshint_exec='jsxhint'
-  " }}}
+  let g:syntastic_go_checkers = ["go", "gofmt"]
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_auto_loc_list = 1
+  let g:syntastic_check_on_open = 1
+  let g:syntastic_loc_list_height = 5
+  let g:syntastic_stl_format = "← %t err(s) @ ln %F"
+  " }}}"
   " Unite {{{
   let g:unite_split_rule = "botright"
   let g:unite_winheight = 10
@@ -46,7 +53,7 @@ else
   " }}}
   " NeoComplete {{{
   " (taken straight from the example)
-  let g:acp_enableAtStartup = 0
+  " let g:acp_enableAtStartup = 0
   let g:neocomplete#enable_at_startup = 1
   let g:neocomplete#enable_smart_case = 1
   let g:neocomplete#sources#syntax#min_keyword_length = 3
@@ -190,11 +197,10 @@ else
   colorscheme base16-ocean
 
   " used for statusline coloring
-  hi StatusLine ctermbg=18    ctermfg=blue  guibg=#a7adba guifg=#343d46
-  hi User1      ctermbg=blue  ctermfg=black guibg=green   guifg=red
-  hi User2      ctermbg=18    ctermfg=red   guibg=18      guifg=red
-  hi User3      ctermbg=18    ctermfg=blue  guibg=blue    guifg=green
-
+  hi StatusLine ctermbg=18    ctermfg=blue  guibg=#343D46 guifg=#8fa1b3
+  hi User1      ctermbg=blue  ctermfg=black guibg=#8fa1b3 guifg=#3b303b
+  hi User2      ctermbg=18    ctermfg=red   guibg=#343D46 guifg=#bf616a
+  hi User3      ctermbg=18    ctermfg=green guibg=#343D46 guifg=#a3be8c
 
   "draw a bar at 80 characters
   set colorcolumn=80
@@ -281,9 +287,16 @@ else
       let stat .= Color(active, 3, ' ← ') . head . ' '
     endif
 
+    " file type
     let ft = getbufvar(bufnum, '&ft')
     if !empty(ft)
       let stat .= Color(active, 3, '← ') . ft . ' '
+    endif
+
+    " Syntax errs
+    let sf = "%{SyntasticStatuslineFlag()}"
+    if !empty(sf)
+      let stat .= Color(active, 2, sf)
     endif
 
     return stat
@@ -326,21 +339,21 @@ else
   " Call 'grep' (really ag)
   nnoremap <leader>y :Unite grep:.<cr>
 
-  " delete a window
-  nnoremap <leader>bd :BD<CR>
+  " Jump to the next or previous in the location window (works with pylama)
+  nnoremap <leader>ln :lnext<cr>
+  nnoremap <leader>lp :lprev<cr>
+
+  " Leave insert mode without hitting esc
+  imap jk <Esc>
 
   " neocomplete maps {{{
-  inoremap <expr><C-g> neocomplete#undo_completion()
-  inoremap <expr><C-l> neocomplete#complete_common_string()
   inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-  inoremap <expr><Esc> pumvisible() ? neocomplete#close_popup() : "\<Esc>"
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+  inoremap <expr><CR> pumvisible() ? neocomplete#close_popup() : "\<CR>"
   " }}}
 
-
-  " Convert markdown to html. This doesn't work in the reverse, but you may
-  " simply undo the change to 'preview' the changes before saving.
+  " Convert markdown to html.
   nmap <leader>m :silent !~/.bin/compile_markdown %:p<cr>
-  ":redraw!<cr>
 
   " }}}
   " Auto Commands {{{

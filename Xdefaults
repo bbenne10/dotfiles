@@ -7,10 +7,16 @@ URxvt.keysym.C-Down:        perl:font-size:decrease
 URxvt.keysym.M-u:           perl:url-select:select_next
 URxvt.keysym.M-Escape:      perl:keyboard-select:activate
 URxvt.keysym.M-s:           perl:keyboard-select:search
-URxvt.font:                 xft:Input-9:encoding=UTF8
+URxvt.font:                 xft:Input-9
 URxvt.scrollBar:            false
 URxvt.internalBorder:       6
+URxvt.fading:               20
 
-*fading: 40
+!! Fake Transparency
+URxvt.background:    #2B303B
+URxvt.transparent:   true
+URxvt.shading:              40
 
-*background: #2b303b
+!! True Transparency
+!!URxvt.depth: 32
+!!URxvt.background: [80]#2b303b
