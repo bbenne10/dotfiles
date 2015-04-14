@@ -37,9 +37,6 @@ antigen apply
 
 #-ZLE / BINDKEY CHANGES--------------------------------------------------------
 if [[ $TERM == "st-256color" ]]; then
-    bindkey  delete-char
-    stty erase 
-
     function zle-line-init() {
         echoti smkx;
     }
