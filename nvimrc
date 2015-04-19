@@ -68,42 +68,39 @@ else
   " }}}
   " }}}
 
-  set rtp+=~/.vim/bundle/neobundle.vim
-  call neobundle#begin(expand('~/.vim/bundle'))
-  NeoBundleFetch 'Shougo/neobundle.vim'
+  call plug#begin(expand('~/.vim/bundle'))
 
   " }}}
   " Plugins {{{
   " 'interface' plugins {{{
-  NeoBundle 'Shougo/unite.vim'
-  NeoBundle 'Shougo/vimproc.vim', { 'build': { 'linux': 'make' } }
-  NeoBundle 'Shougo/neocomplete.vim'
+  Plug 'Shougo/unite.vim'
+  Plug 'Shougo/vimproc.vim', { 'do':  'make' }
+  Plug 'Shougo/neocomplete.vim'
   " }}}
 
   " 'utility' plugins {{{
-  NeoBundle 'airblade/vim-rooter'
-  NeoBundle 'rking/ag.vim'
-  NeoBundle 'tpope/vim-fugitive'
-  NeoBundle 'mattn/emmet-vim'
+  Plug 'airblade/vim-rooter'
+  Plug 'rking/ag.vim'
+  Plug 'tpope/vim-fugitive'
+  Plug 'mattn/emmet-vim'
   " }}}
 
   " 'syntax' plugins {{{
-  NeoBundle 'scrooloose/syntastic'
-  NeoBundle 'hynek/vim-python-pep8-indent'
-  NeoBundle 'MarcWeber/vim-addon-mw-utils'
-  NeoBundle 'voithos/vim-python-matchit'
-  NeoBundle 'rodjek/vim-puppet'
-  NeoBundle 'jsx/jsx.vim'
-  NeoBundle 'groenewege/vim-less'
+  Plug 'scrooloose/syntastic'
+  Plug 'hynek/vim-python-pep8-indent',
+  Plug 'MarcWeber/vim-addon-mw-utils'
+  Plug 'voithos/vim-python-matchit'
+  Plug 'rodjek/vim-puppet'
+  Plug 'jsx/jsx.vim'
+  Plug 'groenewege/vim-less'
   " }}}
 
   " colorschemes {{{
-  NeoBundle 'bbenne10/simpleburn'
-  NeoBundle 'chriskempson/base16-vim'
+  Plug 'bbenne10/simpleburn'
+  Plug 'chriskempson/base16-vim'
   " }}}
 
-  call neobundle#end()
-  NeoBundleCheck
+  call plug#end()
 
   " }}}
   " Spaces and Tabs {{{
