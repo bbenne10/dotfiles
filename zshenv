@@ -1,5 +1,5 @@
 export LANG=en_US.utf8
-export EDITOR=vim
+export EDITOR=nvim
 
 export HISTSIZE=2000
 export SAVEHIST=$HISTSIZE
