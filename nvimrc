@@ -258,8 +258,7 @@ else
 
     " file name
     let stat .= Color(active, 2, active ? ' »' : ' «')
-    let stat .= ' %<'
-    let stat .= '%f'
+    let stat .= ' %<%f'
     let stat .= ' ' . Color(active, 2, active ? '«' : '»')
 
     " file modfied
@@ -276,7 +275,7 @@ else
     let stat .= '%='
 
     " git branch
-    if exists('*fugitive#head')
+    if active && exists('*fugitive#head')
       let head = fugitive#head()
       if empty(head) && exists('*fugitive#detect') && !exists('b:git_dir')
         call fugitive#detect(getcwd())
@@ -284,13 +283,13 @@ else
       endif
     endif
 
-    if !empty(head)
+    if active && !empty(head)
       let stat .= Color(active, 3, ' ← ') . head . ' '
     endif
 
     " file type
     let ft = getbufvar(bufnum, '&ft')
-    if !empty(ft)
+    if active && !empty(ft)
       let stat .= Color(active, 3, '← ') . ft . ' '
     endif
 
