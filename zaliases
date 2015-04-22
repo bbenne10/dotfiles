@@ -11,7 +11,11 @@ alias rmr="rm -r"
 alias mkdir='mkdir -p'
 alias zipfldr='zip -9 -r'
 alias grep='grep --color=ALWAYS'
-alias t=todo.sh
+alias t='todo.sh'
+
+alias vim='nvim'
+
+alias vssh='vagrant ssh'
 
 function sprunge() {
     cat $1 | curl -F 'sprunge=<-' http://sprunge.us
