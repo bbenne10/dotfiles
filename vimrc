@@ -27,6 +27,7 @@ else
   let g:syntastic_python_checkers = ['pylama']
   let g:syntastic_javascript_jshint_exec='jsxhint'
   let g:syntastic_go_checkers = ["go", "gofmt"]
+  let g:syntastic_puppet_checkers = ['puppetlint']
   let g:syntastic_always_populate_loc_list = 1
   let g:syntastic_auto_loc_list = 1
   let g:syntastic_check_on_open = 1
@@ -189,7 +190,7 @@ else
   set background=dark
   syntax enable
 
-  colorscheme base16-ocean
+  colorscheme gruvbox
 
   " used for statusline coloring
   hi StatusLine ctermbg=18    ctermfg=blue  guibg=#343D46 guifg=#8fa1b3
@@ -341,14 +342,11 @@ else
   " Leave insert mode without hitting esc
   imap jk <Esc>
 
-  " neocomplete maps {{{
-  inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-  inoremap <expr><CR> pumvisible() ? neocomplete#close_popup() : "\<CR>"
-  " }}}
-
   " Convert markdown to html.
   nmap <leader>m :silent !~/.bin/compile_markdown %:p<cr>
+
+  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+  nmap ga <Plug>(EasyAlign)
 
   " }}}
   " Auto Commands {{{
@@ -369,9 +367,6 @@ else
   " Change filetype for HTML to htmldjango - this colors some additional syntax
   au BufNewFile,BufRead *.html set filetype=htmldjango
 
-  " Set Rooter to run on sh files as well
-  au BufEnter *.sh :Rooter
-
   " Make Unite close when we hit escape {{{
   function! s:UniteSettings()
     imap <buffer> <Esc> <Plug>(unite_exit)
@@ -384,19 +379,6 @@ else
     autocmd VimEnter,WinEnter,BufWinEnter * call <SID>RefreshStatus()
   augroup END
 
-  " }}}
-  " Python VirtualEnv {{{
-  " Add the virtualenv's site-packages to vim path
-  py << EOF
-import os.path
-import sys
-import vim
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir = os.environ['VIRTUAL_ENV']
-  sys.path.insert(0, project_base_dir)
-  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
-EOF
-    " }}}
-  endif
-  " }}}
+  au FileType python setlocal formatprg=autopep8\ -
+endif
+" }}}
