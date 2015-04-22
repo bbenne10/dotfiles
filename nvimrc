@@ -192,11 +192,16 @@ else
 
   colorscheme gruvbox
 
+  " Modify colorschemes when they don't quite work right
+  if g:colors_name == "gruvbox"
+    hi StatusLine   cterm=NONE ctermbg=237 ctermfg=15
+    hi StatusLineNC cterm=NONE ctermbg=237 ctermfg=240
+  endif
+
   " used for statusline coloring
-  hi StatusLine ctermbg=18    ctermfg=blue  guibg=#343D46 guifg=#8fa1b3
-  hi User1      ctermbg=blue  ctermfg=black guibg=#8fa1b3 guifg=#3b303b
-  hi User2      ctermbg=18    ctermfg=red   guibg=#343D46 guifg=#bf616a
-  hi User3      ctermbg=18    ctermfg=green guibg=#343D46 guifg=#a3be8c
+  hi User1        cterm=NONE ctermbg=4   ctermfg=0
+  hi User2        cterm=NONE ctermbg=237 ctermfg=9
+  hi User3        cterm=NONE ctermbg=237 ctermfg=6
 
   "draw a bar at 80 characters
   set colorcolumn=80
