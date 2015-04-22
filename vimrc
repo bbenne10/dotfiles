@@ -21,8 +21,6 @@ else
   " Plugin variables {{{
   " Colorschemes {{{
   let g:simpleburn_transparent_term=1
-  let g:solarized_italic = 0
-  let base16colorspace=256
   " }}}
   " Syntastic {{{
   let g:syntastic_python_python_exec = "/usr/bin/python2.7"
