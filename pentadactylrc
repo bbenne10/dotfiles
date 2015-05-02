@@ -1,12 +1,9 @@
+" vim: ft=vim
 loadplugins '\.(js|penta)$'
 group user
 set guioptions=Cs
-set showtabline=always
+set showtabline=never
 
-nmap -builtin ,w :b
-
-"hi FontCode -a font-family: TamzenForPowerlineMod, Monospace !important; font-size: 13px !important;
-"hi FontFixed -a font-family: TamzenForPowerlineMod, Monospace !important; font-size: 13px !important;
-"hi Normal -a font-family: TamzenForPowerlineMod, Monospace !important; font-size: 13px !important;
-
-"vim: set ft=viml:
+nmap -builtin <Space>w :b 
+nmap -builtin <Space>bd :bd<cr>
+colorscheme gruvbox-dark
