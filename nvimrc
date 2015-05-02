@@ -21,14 +21,13 @@ else
   " Plugin variables {{{
   " Colorschemes {{{
   let g:simpleburn_transparent_term=1
-  let g:solarized_italic = 0
-  let base16colorspace=256
   " }}}
   " Syntastic {{{
   let g:syntastic_python_python_exec = "/usr/bin/python2.7"
   let g:syntastic_python_checkers = ['pylama']
   let g:syntastic_javascript_jshint_exec='jsxhint'
   let g:syntastic_go_checkers = ["go", "gofmt"]
+  let g:syntastic_puppet_checkers = ['puppetlint']
   let g:syntastic_always_populate_loc_list = 1
   let g:syntastic_auto_loc_list = 1
   let g:syntastic_check_on_open = 1
@@ -51,14 +50,6 @@ else
     \ '--ignore ''**/*.pyc'' -g ""'
   let g:unite_source_grep_recursive_opt = ''
   " }}}
-  " NeoComplete {{{
-  " (taken straight from the example)
-  " let g:acp_enableAtStartup = 0
-  let g:neocomplete#enable_at_startup = 1
-  let g:neocomplete#enable_smart_case = 1
-  let g:neocomplete#sources#syntax#min_keyword_length = 3
-
-  " }}}
   " Misc (JSX, Emmet, SuperTab) {{{
   let g:jsx_ext_required = 0
 
@@ -68,14 +59,19 @@ else
   " }}}
   " }}}
 
-  call plug#begin(expand('~/.vim/bundle'))
+  if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall
+  endif
+
+  call plug#begin('~/.vim/bundle')
 
   " }}}
   " Plugins {{{
   " 'interface' plugins {{{
   Plug 'Shougo/unite.vim'
-  Plug 'Shougo/vimproc.vim', { 'do':  'make' }
-  Plug 'Shougo/neocomplete.vim'
+  Plug 'Shougo/deoplete.nvim'
   " }}}
 
   " 'utility' plugins {{{
@@ -83,11 +79,12 @@ else
   Plug 'rking/ag.vim'
   Plug 'tpope/vim-fugitive'
   Plug 'mattn/emmet-vim'
+  Plug 'junegunn/vim-easy-align'
   " }}}
 
   " 'syntax' plugins {{{
   Plug 'scrooloose/syntastic'
-  Plug 'hynek/vim-python-pep8-indent',
+  Plug 'hynek/vim-python-pep8-indent'
   Plug 'MarcWeber/vim-addon-mw-utils'
   Plug 'voithos/vim-python-matchit'
   Plug 'rodjek/vim-puppet'
@@ -97,7 +94,7 @@ else
 
   " colorschemes {{{
   Plug 'bbenne10/simpleburn'
-  Plug 'chriskempson/base16-vim'
+  Plug 'morhetz/gruvbox'
   " }}}
 
   call plug#end()
@@ -191,13 +188,18 @@ else
   set background=dark
   syntax enable
 
-  colorscheme base16-ocean
+  colorscheme gruvbox
+
+  " Modify colorschemes when they don't quite work right
+  if g:colors_name == "gruvbox"
+    hi StatusLine   cterm=NONE ctermbg=237 ctermfg=15
+    hi StatusLineNC cterm=NONE ctermbg=237 ctermfg=240
+  endif
 
   " used for statusline coloring
-  hi StatusLine ctermbg=18    ctermfg=blue  guibg=#343D46 guifg=#8fa1b3
-  hi User1      ctermbg=blue  ctermfg=black guibg=#8fa1b3 guifg=#3b303b
-  hi User2      ctermbg=18    ctermfg=red   guibg=#343D46 guifg=#bf616a
-  hi User3      ctermbg=18    ctermfg=green guibg=#343D46 guifg=#a3be8c
+  hi User1        cterm=NONE ctermbg=4   ctermfg=0
+  hi User2        cterm=NONE ctermbg=237 ctermfg=9
+  hi User3        cterm=NONE ctermbg=237 ctermfg=6
 
   "draw a bar at 80 characters
   set colorcolumn=80
@@ -254,8 +256,7 @@ else
 
     " file name
     let stat .= Color(active, 2, active ? ' »' : ' «')
-    let stat .= ' %<'
-    let stat .= '%f'
+    let stat .= ' %<%f'
     let stat .= ' ' . Color(active, 2, active ? '«' : '»')
 
     " file modfied
@@ -272,7 +273,7 @@ else
     let stat .= '%='
 
     " git branch
-    if exists('*fugitive#head')
+    if active && exists('*fugitive#head')
       let head = fugitive#head()
       if empty(head) && exists('*fugitive#detect') && !exists('b:git_dir')
         call fugitive#detect(getcwd())
@@ -280,13 +281,13 @@ else
       endif
     endif
 
-    if !empty(head)
+    if active && !empty(head)
       let stat .= Color(active, 3, ' ← ') . head . ' '
     endif
 
     " file type
     let ft = getbufvar(bufnum, '&ft')
-    if !empty(ft)
+    if active && !empty(ft)
       let stat .= Color(active, 3, '← ') . ft . ' '
     endif
 
@@ -343,14 +344,11 @@ else
   " Leave insert mode without hitting esc
   imap jk <Esc>
 
-  " neocomplete maps {{{
-  inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-  inoremap <expr><CR> pumvisible() ? neocomplete#close_popup() : "\<CR>"
-  " }}}
-
   " Convert markdown to html.
   nmap <leader>m :silent !~/.bin/compile_markdown %:p<cr>
+
+  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+  nmap ga <Plug>(EasyAlign)
 
   " }}}
   " Auto Commands {{{
@@ -371,9 +369,6 @@ else
   " Change filetype for HTML to htmldjango - this colors some additional syntax
   au BufNewFile,BufRead *.html set filetype=htmldjango
 
-  " Set Rooter to run on sh files as well
-  au BufEnter *.sh :Rooter
-
   " Make Unite close when we hit escape {{{
   function! s:UniteSettings()
     imap <buffer> <Esc> <Plug>(unite_exit)
@@ -385,28 +380,7 @@ else
     autocmd!
     autocmd VimEnter,WinEnter,BufWinEnter * call <SID>RefreshStatus()
   augroup END
-  " }}}
-  " NeoComplete's AutoCommands (enable omnicomplete) {{{
-  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-  " }}}
 
-  " }}}
-  " Python VirtualEnv {{{
-  " Add the virtualenv's site-packages to vim path
-  py << EOF
-import os.path
-import sys
-import vim
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir = os.environ['VIRTUAL_ENV']
-  sys.path.insert(0, project_base_dir)
-  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
-EOF
-    " }}}
-  endif
-  " }}}
+  au FileType python setlocal formatprg=autopep8\ -
+endif
+" }}}

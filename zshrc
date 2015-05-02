@@ -1,6 +1,5 @@
 #-ZSH LEVEL CHANGES------------------------------------------------------------
 . ~/.zaliases
-. ~/.zcolors
 
 autoload colors zsh/terminfo
 autoload -U compinit promptinit
