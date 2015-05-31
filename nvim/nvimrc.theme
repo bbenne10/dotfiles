@@ -1,5 +1,6 @@
 " vim:foldmethod=marker:foldlevel=0:ts=2:sts=2:sw=2
 set background=dark
+let g:colors_name = ""
 colorscheme gruvbox
 
 " Modify colorschemes when they don't quite work right
