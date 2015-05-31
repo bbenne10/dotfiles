@@ -8,8 +8,6 @@ if &diff || exists("vimpager")
 else
   " "Normal" Run {{{
   " Plugin setup {{{
-  " Make vim not work EXACTLY as vi did
-  set nocompatible
   filetype plugin indent on
 
   " Always use utf-8
@@ -56,16 +54,17 @@ else
   let g:user_emmet_leader_key='<c-z>'
 
   let g:SuperTabDefaultCompletionType = 'context'
+
+  let g:deoplete#enable_at_startup = 1
   " }}}
   " }}}
 
-  if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  if empty(glob('~/.nvim/autoload/plug.vim'))
+    silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
     autocmd VimEnter * PlugInstall
   endif
 
-  call plug#begin('~/.vim/bundle')
+  call plug#begin('~/.nvim/bundle')
 
   " }}}
   " Plugins {{{
@@ -176,8 +175,8 @@ else
   set timeout ttimeoutlen=50
 
   "decent clipboard
-  "This adds integration to Xorg's 'Ctrl+V' type buffer
-  set clipboard=unnamedplus
+  "This adds integration to Xorg's primary register
+  set clipboard=unnamed
 
   " 'grep' should call ag instead of grep
   set grepprg=ag\ --nogroup\ --nocolor
@@ -332,7 +331,7 @@ else
   nnoremap <leader>w :Unite -start-insert buffer<cr>
 
   " Open new buffers w/ fuzzy finding
-  nnoremap <leader>e :Unite -start-insert file_rec/async:!<cr>
+  nnoremap <leader>e :Unite -start-insert file_rec/neovim:!<cr>
 
   " Call 'grep' (really ag)
   nnoremap <leader>y :Unite grep:.<cr>
@@ -345,7 +344,7 @@ else
   imap jk <Esc>
 
   " Convert markdown to html.
-  nmap <leader>m :silent !~/.bin/compile_markdown %:p<cr>
+  nmap <leader>m :silent !pandoc %:p -o %:r.html<cr>
 
   " Start interactive EasyAlign for a motion/text object (e.g. gaip)
   nmap ga <Plug>(EasyAlign)
