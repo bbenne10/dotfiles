@@ -1,0 +1,53 @@
+" Modifies base vim behavior to make it 'not suck'
+
+" Allow obscuring buffers
+set hidden
+
+" Round to the NEXT shiftwidth when shifting
+" (rather than always adding $SHIFTWIDTH chars)
+set shiftround
+
+" Don't wrap long lines
+set nowrap
+
+" show 5 lines above or below cursor at all times
+set scrolloff=5
+
+" Show 5 characters to the left / right of cursor at all times
+set sidescrolloff=5
+
+" Don't add space when joining lines
+set nojoinspaces
+
+" Highlight line containing the cursor
+set cursorline
+
+" display line numbers in a gutter
+set number
+
+" Color the 80th column
+set colorcolumn=80
+
+" Explicitly set a minimalistic set of 'frills' in gvim
+set guioptions=aegitc
+
+" Insert spaces instead of '\t' characters
+set expandtab
+
+" How many spaces is one pres of the Tab key when not expanding
+set tabstop=2
+
+" When expanding, how many spaces is one press of the Tab key?
+set softtabstop=2
+
+" How many spaces to shift (Ex. >> or <<)
+set shiftwidth=2
+
+" Smarter searching (:help smartcase for more)
+set smartcase
+
+" Ignore case in regex searches
+set ignorecase
+
+" Highlight search results
+set hlsearch

@@ -1,0 +1,32 @@
+" vim:foldmethod=marker:foldlevel=0:ts=2:sts=2:sw=2
+"
+if empty(glob('~/.nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
+  autocmd VimEnter * PlugInstall
+endif
+
+call plug#begin('~/.nvim/bundle')
+
+Plug 'tpope/vim-sensible'
+
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/deoplete.nvim'
+
+Plug 'airblade/vim-rooter'
+Plug 'rking/ag.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'mattn/emmet-vim'
+Plug 'junegunn/vim-easy-align'
+
+Plug 'scrooloose/syntastic'
+Plug 'hynek/vim-python-pep8-indent'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'voithos/vim-python-matchit'
+Plug 'rodjek/vim-puppet'
+Plug 'jsx/jsx.vim'
+Plug 'groenewege/vim-less'
+
+Plug 'bbenne10/simpleburn'
+Plug 'morhetz/gruvbox'
+
+call plug#end()
