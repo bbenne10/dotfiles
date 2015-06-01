@@ -1,4 +1,3 @@
-" vim:foldmethod=marker:foldlevel=0:ts=2:sts=2:sw=2
 " Colorschemes {{{
 let g:simpleburn_transparent_term=1
 " }}}
