@@ -3,7 +3,6 @@
 	email = Bryan.Bennett@gtri.gatech.edu
 [core]
 	excludesfile = /home/bryan/.config/git/ignore
-	symlinks = false
 [push]
 	default = current
 [diff]

@@ -1,4 +1,3 @@
-" vim:foldmethod=marker:foldlevel=0:ts=2:sts=2:sw=2
 " Handle drawing a custom status bar on every window change
 
 " First the function to output the status text {{{
