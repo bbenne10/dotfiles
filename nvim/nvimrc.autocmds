@@ -1,0 +1,12 @@
+" Run line under cursor in user's shell (or in python if it's a py "script)
+autocmd BufRead *.sh nmap <buffer> <leader>r :.w !$SHELL<CR>
+autocmd BufRead *.py nmap <buffer> <leader>r :.w !python2 %<CR>
+
+fun! <SID>StripTrailingWhitespaces()
+  " Strip trailing whitespace (and save cursor position) when saving files {{{
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e
+  call cursor(l, c)
+endfun
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()

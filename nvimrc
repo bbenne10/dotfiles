@@ -2,7 +2,6 @@
 if &diff || exists("vimpager")
   set diffopt+=iwhite
   set noloadplugins
-  " }}}
 else
   source ~/.nvim/nvimrc.plugin_settings
   source ~/.nvim/nvimrc.plugins
@@ -13,4 +12,3 @@ else
   source ~/.nvim/nvimrc.keys
   source ~/.nvim/nvimrc.autocmds
 endif
-" }}}
