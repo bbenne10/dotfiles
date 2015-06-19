@@ -1,10 +1,11 @@
-# vim:set ft=sh:
+# vim: set ft=sh:
 
 test_and_run() {
     if which "$1" >/dev/null; then
         $@
     fi
 }
+
 xmodmap ~/.xmodmap;
 
 ## MACHINE SPECIFIC STUFF =====================================================
@@ -23,7 +24,6 @@ if [ -d ~/.fonts ]; then
 fi;
 
 ## EVERY MACHINE ==============================================================
-test_and_run xrdb -load ~/.Xresources
 test_and_run urxvtd -f -q -o
 
 test_and_run compton -cCGfb --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc -b &
