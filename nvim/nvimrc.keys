@@ -16,18 +16,26 @@ nnoremap <F1> :set paste!<CR>
 " Allow us to launch Rainbow (to inspect colors)
 nnoremap <leader>R :silent !rainbow < % &<cr>
 
+"
 " Search buffers with <leader>w
-nnoremap <leader>w :Unite -start-insert buffer<cr>
+nnoremap <leader>w :CtrlPBuffer<cr>
 
 " Open new buffers w/ fuzzy finding
-nnoremap <leader>e :Unite -start-insert file_rec/neovim:!<cr>
+nnoremap <leader>e :CtrlP<cr>
 
 " Call 'grep' (really ag)
 nnoremap <leader>y :Unite grep:.<cr>
 
 " Jump to the next or previous in the location window (works with pylama)
+nnoremap <leader>lo :lopen<cr>
+nnoremap <leader>lc :lclose<cr>
 nnoremap <leader>ln :lnext<cr>
 nnoremap <leader>lp :lprev<cr>
+
+" deoplete binds to make tab-completion work
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
 
 " Convert markdown to html.
 nmap <leader>m :silent !pandoc %:p -o %:r.html<cr>
