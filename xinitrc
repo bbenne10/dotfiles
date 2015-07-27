@@ -27,7 +27,6 @@ fi;
 test_and_run urxvtd -f -q -o
 
 test_and_run compton -cCGfb --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc -b &
-test_and_run xautolock -time 3 -locker sxlock &
 test_and_run unclutter -noevents &
 if [ -e ~/.fehbg ]; then
     eval $(<~/.fehbg)
