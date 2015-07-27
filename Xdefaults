@@ -22,7 +22,8 @@ URxvt.internalBorder:       6
 
 ! hard contrast: *background: #1d2021
 ! soft contrast: *.background: #32302f
-URxvt.background:           #282828
+URxvt.depth: 32
+URxvt.background:           [85]#282828
 URxvt.foreground:           #ebdbb2
 ! Black + DarkGrey
 URxvt.color0:               #282828
