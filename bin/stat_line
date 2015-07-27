@@ -126,9 +126,10 @@ class Info():
 
     @staticmethod
     def ram_perc():
-        used_ram = psutil.used_phymem() - psutil.cached_phymem()
+        usage = psutil.virtual_memory()
+        used_ram = usage.used - usage.cached
         return ("", "{ram}%".format(
-            ram=int((used_ram / psutil.TOTAL_PHYMEM) * 100)))
+            ram=int((used_ram / usage.total) * 100)))
 
     @staticmethod
     def time():
@@ -143,8 +144,8 @@ class Info():
                 for feature in chip:
                     if "Core" in feature.label:
                         status += "{}° ".format(int(feature.get_value()))
-        except Exception, e:
-            print e
+        except Exception as e:
+            print(e)
 
         try:
             if not self.no_vid:
@@ -252,7 +253,7 @@ def get_colored_statustext(notification=''):
 
     m = INFO.media()
     if m and m[1]:
-        output += "<span color='{}'>{}</span> ".format(COLORS['magenta'],
+        output += "<span color='{}'>{}</span> ".format(COLORS['blue'],
                                                         m[1])
 
     battery = INFO.battery()
@@ -267,12 +268,12 @@ def get_colored_statustext(notification=''):
 
     c = INFO.cpu_perc()
     if c and c[1]:
-        output += "<span color='{}'>{}</span> ".format(COLORS['orange'],
+        output += "<span color='{}'>{}</span> ".format(COLORS['red'],
                                                         c[1])
 
     r = INFO.ram_perc()
     if r and r[1]:
-        output += "<span color='{}'>{}</span> ".format(COLORS['violet'],
+        output += "<span color='{}'>{}</span> ".format(COLORS['magenta'],
                                                         r[1])
 
     output = unicode(output, "utf-8")
