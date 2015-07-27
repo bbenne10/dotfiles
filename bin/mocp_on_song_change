@@ -1,4 +1,0 @@
-#! /bin/sh
-
-echo "$@"
-notify-send "$@" 1&>2 2>/tmp/mc_log
