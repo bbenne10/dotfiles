@@ -10,7 +10,7 @@ xmodmap ~/.xmodmap;
 
 ## MACHINE SPECIFIC STUFF =====================================================
 if [ "$(hostname)" = "CTISL-bbennett-arch-desktop" ]; then
-    xrandr --output VGA1 --auto --output HDMI1 --left-of VGA1 --auto --primary --output HDMI2 --right-of VGA1 --auto
+    xrandr --output VGA1 --auto --rotate left --output HDMI1 --left-of VGA1 --auto --primary --output HDMI2 --right-of VGA1 --auto
     test_and_run thunderbird &
 fi
 
