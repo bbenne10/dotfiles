@@ -15,3 +15,7 @@ let g:user_emmet_leader_key='<c-z>'
 
 " Jedi
 let g:jedi#use_tabs_not_buffers = 0
+
+" Taboo
+let g:taboo_renamed_tab_format = "\ %N: %l%m\ "
+let g:taboo_tab_format = "\ %N: %f%m\ "
