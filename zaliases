@@ -1,10 +1,10 @@
 # vim: ft=sh
 if [[ $(uname -s) == "Linux" ]]; then
-    # OSX's ls and rm don't have these options
-    alias ls='ls --color=auto'
-    alias rm="rm -Iv"
+  # OSX's ls and rm don't have these options
+  alias ls='ls --color=auto'
+  alias rm="rm -Iv"
 
-    unset GREP_OPTIONS
+  unset GREP_OPTIONS
 fi
 
 alias rmr="rm -r"
@@ -16,9 +16,13 @@ alias vim=nvim
 alias vssh='vagrant ssh'
 
 function sprunge() {
-    cat $1 | curl -F 'sprunge=<-' http://sprunge.us
+  cat $1 | curl -F 'sprunge=<-' http://sprunge.us
 }
 
 function ix() {
-    cat $1 | curl -n -F 'f:1=<-' http://ix.io
+  cat $1 | curl -n -F 'f:1=<-' http://ix.io
+}
+
+function deploy_web() {
+  scp -r build web.testnet:~ && ssh web.testnet -t sudo cp -r build/* /var/www/auth/static/
 }
