@@ -1,5 +1,5 @@
 " Toggle hilighting search results. Keychain: <leader>+n
-nmap <silent> <leader>n :silent :set hls!<CR>
+nmap <silent> <leader>h :silent :set hls!<CR>
 
 " Toggle showing whitespace. Keychain: <leader>+s
 nmap <silent> <leader>s :set nolist!<CR>
@@ -13,10 +13,9 @@ cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W')
 " Turn off the help system's keybind (and bind it to toggle paste mode)
 nnoremap <F1> :set paste!<CR>
 
-" Allow us to launch Rainbow (to inspect colors)
-nnoremap <leader>R :silent !rainbow < % &<cr>
+" Allow renaming the current tab
+nnoremap <leader>n :TabooRename
 
-"
 " Search buffers with <leader>w
 nnoremap <leader>w :CtrlPBuffer<cr>
 

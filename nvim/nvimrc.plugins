@@ -8,21 +8,22 @@ call plug#begin('~/.nvim/bundle')
 
 Plug 'tpope/vim-sensible'
 Plug 'kien/ctrlp.vim'
-" Plug 'Shougo/deoplete.nvim' (Reenable when this is more stable)
+Plug 'gcmt/taboo.vim'
 
 Plug 'airblade/vim-rooter'
 Plug 'rking/ag.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'mattn/emmet-vim'
-Plug 'junegunn/vim-easy-align'
+Plug 'godlygeek/tabular'
 
-" Plug 'scrooloose/syntastic'
 Plug 'benekastah/neomake'
 Plug 'davidhalter/jedi-vim'
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'voithos/vim-python-matchit'
+
 Plug 'rodjek/vim-puppet'
 Plug 'jsx/jsx.vim'
+Plug 'mitsuhiko/jinja2', { 'rtp': 'ext/Vim' }
 Plug 'groenewege/vim-less'
 
 Plug 'bbenne10/simpleburn'
