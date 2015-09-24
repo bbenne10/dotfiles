@@ -1,21 +1,25 @@
 [user]
-	name = Bryan Bennett
-	email = Bryan.Bennett@gtri.gatech.edu
+  name = Bryan Bennett
+  email = Bryan.Bennett@gtri.gatech.edu
 [core]
-	excludesfile = /home/bryan/.config/git/ignore
+  excludesfile = /home/bryan/.config/git/ignore
 [push]
-	default = current
+  default = current
 [diff]
-	tool = vimdiff
+  tool = vimdiff
 [diftool]
-	prompt = false
+  prompt = false
 [difftool]
-	prompt = false
+  prompt = false
 [color]
-	ui = true
+  ui = true
 
 [include]
-    path = /home/bryan/.gitconfig.local
+  path = /home/bryan/.gitconfig.local
 
 [alias]
-    graph = log --graph --oneline --decorate
+  graph = log --graph --oneline --decorate
+  up = pull --ff-only
+  ci = commit
+  st = status
+  br = branch
