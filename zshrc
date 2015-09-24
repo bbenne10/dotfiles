@@ -21,8 +21,19 @@ zstyle ':completion:*:ls:*:(all-|)files' ignored-patterns
 zstyle ':completion:*:rm:*:(all-|)files' ignored-patterns
 
 #-LOAD AND INITIALIZE ANTIGEN--------------------------------------------------
-
+if [ ! -f ~/.bin/antigen/antigen.zsh ]; then
+  pushd ~/.bin
+  git clone http://github.com/zsh-users/antigen
+  popd
+fi
 source ~/.bin/antigen/antigen.zsh
+
+if [ ! -d ~/.pyenv ]; then
+  git clone http://github.com/yyuu/pyenv ~/.pyenv
+  pushd ~/.pyenv/plugins
+  git clone http://github.com/yyuu/pyenv-virtualenv ~/.pyenv/plugins/virtualenv
+  popd
+fi
 
 antigen-use oh-my-zsh
 antigen bundle zsh-users/zsh-syntax-highlighting
