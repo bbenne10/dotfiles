@@ -23,13 +23,12 @@ zstyle ':completion:*:rm:*:(all-|)files' ignored-patterns
 #-LOAD AND INITIALIZE ANTIGEN--------------------------------------------------
 
 source ~/.bin/antigen/antigen.zsh
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
 
 antigen-use oh-my-zsh
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle command-not-found
 antigen bundle golang
+antigen bundle pyenv
 antigen theme bbenne10/antigen-themes themes/bbennett2
 antigen apply
 
