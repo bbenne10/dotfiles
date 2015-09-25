@@ -21,12 +21,13 @@ zstyle ':completion:*:ls:*:(all-|)files' ignored-patterns
 zstyle ':completion:*:rm:*:(all-|)files' ignored-patterns
 
 #-LOAD AND INITIALIZE ANTIGEN--------------------------------------------------
-if [ ! -f ~/.bin/antigen/antigen.zsh ]; then
+if [ ! -f ~/.bin/zgen/zgen.zsh ]; then
   pushd ~/.bin
-  git clone http://github.com/zsh-users/antigen
+  git clone http://github.com/tarjoilija/zgen
   popd
 fi
-source ~/.bin/antigen/antigen.zsh
+
+source ~/.bin/zgen/zgen.zsh
 
 if [ ! -d ~/.pyenv ]; then
   git clone http://github.com/yyuu/pyenv ~/.pyenv
@@ -35,13 +36,20 @@ if [ ! -d ~/.pyenv ]; then
   popd
 fi
 
-antigen-use oh-my-zsh
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle command-not-found
-antigen bundle golang
-antigen bundle pyenv
-antigen theme bbenne10/antigen-themes themes/bbennett2
-antigen apply
+if ! zgen saved; then
+  echo "Creating a zgen save..."
+  zgen oh-my-zsh
+  zgen load zsh-users/zsh-syntax-highlighting
+  zgen oh-my-zsh plugins/command-not-found
+  zgen oh-my-zsh plugins/golang
+  zgen oh-my-zsh plugins/httpie
+  zgen oh-my-zsh plugins/pyenv
+  zgen oh-my-zsh plugins/supervisor
+  zgen oh-my-zsh plugins/vagrant
+
+  zgen load bbenne10/antigen-themes themes/bbennett2
+  zgen save
+fi
 
 #-ZLE / BINDKEY CHANGES--------------------------------------------------------
 if [[ $TERM == "st-256color" ]]; then
