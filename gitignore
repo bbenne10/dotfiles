@@ -2,4 +2,4 @@
 *.swp
 *.swo
 .ropeproject
-
+.python-version
