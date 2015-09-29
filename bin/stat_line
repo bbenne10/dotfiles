@@ -49,8 +49,7 @@ COLORS = {
 class Info():
     check_interval = 1800
     last_w_str = ("", "")
-    dbus_bus = None
-    spotify_service = None
+    spotify_iface = None
     no_vid = False
 
     def battery(self):
@@ -83,16 +82,21 @@ class Info():
         # SPOTIFY
         spotify_pid = cls.run_cmd(['pgrep', 'spotify'])
         if spotify_pid:
-            if not cls.dbus_bus:
-                cls.dbus_bus = dbus.Bus(dbus.Bus.TYPE_SESSION)
-            cls.spotify_service = cls.dbus_bus.get_object(
-                'com.spotify.qt', '/')
-            func = cls.spotify_service.get_dbus_method(
-                'GetMetadata', 'org.freedesktop.MediaPlayer2')
-            metadata = func()
-            artist = metadata.get('xesam:artist', ['Unknown'])[0].encode(
+            if not cls.spotify_iface:
+                try:
+                    bus = dbus.Bus(dbus.Bus.TYPE_SESSION)
+                    obj = bus.get_object('org.mpris.MediaPlayer2.spotify',
+                                         '/org/mpris/MediaPlayer2')
+                    cls.spotify_iface = dbus.Interface(
+                        obj, 'org.freedesktop.DBus.Properties')
+                except dbus.exceptions.DBusException:
+                    to_ret = ""
+
+            results = cls.spotify_iface.Get('org.mpris.MediaPlayer2.Player',
+                                            'Metadata')
+            artist = '&'.join(results.get('xesam:artist', ['Unknown'])).encode(
                 'utf-8', 'ignore')
-            title = metadata.get('xesam:title', 'Unknown').encode(
+            title = results.get('xesam:title', 'Unknown').encode(
                 'utf-8', 'ignore')
             to_ret = "{} - {}".format(artist, title)
 
