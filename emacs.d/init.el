@@ -1,0 +1,23 @@
+(set-frame-font "Input-9")
+(load-theme 'gruvbox 1)
+(scroll-bar-mode 0)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(global-linum-mode 1)
+(show-paren-mode 1)
+(setq-default truncate-lines t)
+(global-hl-line-mode 1)
+
+(setq initial-scratch-message "")
+(setq inhibit-startup-message t)
+(setq visible-bell t)
+(setq make-backup-files nil)
+
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 2)
+(setq-default tab-stop-list (number-sequence 2 120 2))
+(setq-default sgml-basic-offset 2)
+(setq-default py-indent-offset 4)
+(setq-default python-indent 4)
+
+(defalias 'yes-or-no-p 'y-or-n-p)
