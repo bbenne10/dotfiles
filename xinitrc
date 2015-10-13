@@ -25,11 +25,11 @@ fi;
 
 ## EVERY MACHINE ==============================================================
 test_and_run urxvtd -f -q -o
+test_and_run dunst
 test_and_run compton -cCGfb --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc -b &
 test_and_run unclutter -noevents &
 test_and_run firefox &
 test_and_run spotify &
-test_and_run hipchat &
 
 if [ -e ~/.fehbg -a $(which feh) ]; then
     eval $(<~/.fehbg)
