@@ -1,0 +1,1 @@
+(evil-mode 1)
