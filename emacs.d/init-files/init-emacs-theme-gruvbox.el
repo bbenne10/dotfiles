@@ -1,2 +1,2 @@
-(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/emacs-theme-gruvbox")
+(add-to-list 'custom-theme-load-path default-directory)
 (load-theme 'gruvbox t)
