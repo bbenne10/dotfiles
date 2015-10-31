@@ -11,13 +11,19 @@
 (setq el-get-user-package-directory "~/.emacs.d/init-files")
 
 (el-get-bundle "evil")
+(el-get-bundle "evil-surround")
 (el-get-bundle "helm")
-;(el-get-bundle "projectile")
-;(el-get-bundle "helm-projectile")
+(el-get-bundle "helm-projectile")
+(el-get-bundle "projectile")
 (el-get-bundle "emacs-theme-gruvbox"
   :type "git"
   :url "https://github.com/greduan/emacs-theme-gruvbox"
-  :prepare (load-theme 'gruvbox t))
+)
 (el-get-bundle "fill-column-indicator")
 (el-get-bundle "flycheck")
 (el-get-bundle "smooth-scrolling")
+
+(el-get-bundle "org-mode")
+(el-get-bundle "evil-org-mode")
+
+(el-get-bundle "web-mode")

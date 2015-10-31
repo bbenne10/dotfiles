@@ -27,6 +27,8 @@
 ;; Audible bell and backup files are literally cancer
 (setq visible-bell t)
 (setq make-backup-files nil)
+(setq backup-inhibited t)
+(setq auto-save-default nil)
 
 ;; Tab character is bad and it should feel bad
 (setq-default indent-tabs-mode nil)
@@ -38,3 +40,8 @@
 
 ;; Don't make me type out the full word...even if it's important
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+;; "Clipboard" is terribad.
+(setq x-select-enable-clipboard nil)
+(setq x-select-enable-primary t)
+(setq mouse-drag-copy-region t)
