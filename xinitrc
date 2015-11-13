@@ -25,7 +25,7 @@ fi;
 
 ## EVERY MACHINE ==============================================================
 test_and_run urxvtd -f -q -o
-test_and_run dunst
+test_and_run dunst &
 test_and_run compton -cCGfb --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc -b &
 test_and_run unclutter -noevents &
 test_and_run firefox &
