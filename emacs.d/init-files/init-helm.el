@@ -12,7 +12,3 @@
 (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-
-; Now define some 'personal' keybinds
-(define-key evil-normal-state-map (kbd "<SPC>w") 'helm-buffers-list)
-(define-key evil-normal-state-map (kbd "<SPC>e") 'helm-find-files)
