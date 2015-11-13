@@ -17,6 +17,3 @@
                (reusable-frames . visible)
                (side . bottom)
                (window-height . 0.2)))
-
-
-

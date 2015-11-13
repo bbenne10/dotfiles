@@ -10,7 +10,7 @@
 
 ; change how emacs looks
 (set-frame-font "Input-9")
-;(load-theme 'gruvbox t)
+
 (scroll-bar-mode 0)
 (menu-bar-mode 0)
 (tool-bar-mode 0)
@@ -24,24 +24,28 @@
 (setq initial-scratch-message "")
 (setq inhibit-startup-message t)
 
-;; Audible bell and backup files are literally cancer
+;; Audible bell is literally cancer
 (setq visible-bell t)
-(setq make-backup-files nil)
-(setq backup-inhibited t)
-(setq auto-save-default nil)
+
+;; Set backup files in a sane dir
+(setq backup-directory-alist `(("." . "~/.saves")))
 
 ;; Tab character is bad and it should feel bad
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 (setq-default tab-stop-list (number-sequence 2 120 2))
 (setq-default sgml-basic-offset 2)
+(setq-default web-mode-markup-indent-offset 2)
 (setq-default py-indent-offset 4)
 (setq-default python-indent 4)
 
 ;; Don't make me type out the full word...even if it's important
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; "Clipboard" is terribad.
+;; Delete trailing whitespace when saving files
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; Copy to primary selection, not clipboard.
 (setq x-select-enable-clipboard nil)
 (setq x-select-enable-primary t)
 (setq mouse-drag-copy-region t)
