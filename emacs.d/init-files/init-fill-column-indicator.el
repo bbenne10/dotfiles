@@ -1,2 +1,3 @@
-(define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
-(global-fci-mode 1)
+(add-hook 'after-change-major-mode-hook
+        (lambda () (if (string= major-mode "web-mode")
+            (turn-off-fci-mode) (turn-on-fci-mode))))
