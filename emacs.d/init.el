@@ -10,6 +10,7 @@
 
 ; change how emacs looks
 (set-frame-font "Input-9")
+(load-theme 'material t)
 
 (scroll-bar-mode 0)
 (menu-bar-mode 0)
