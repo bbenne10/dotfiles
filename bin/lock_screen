@@ -1,0 +1,4 @@
+rm ~/.available
+mpc pause
+sxlock
+touch ~/.available
