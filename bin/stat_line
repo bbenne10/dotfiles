@@ -111,10 +111,10 @@ class Info():
 
         # MPD
         mpd_pid = cls.run_cmd(['pgrep', 'mpd'])
-        if mpd_pid:
+        mopidy_pid = cls.run_cmd(['pgrep', 'mopidy'])
+        if mpd_pid or mopidy_pid:
             try:
-                status = cls.run_cmd(["ncmpcpp", "--now-playing"])
-                chopped_status = ' '.join(status.split()[1:])
+                status = cls.run_cmd(['mpc'])
             except OSError:
                 to_ret = ""
                 status = ""
@@ -122,7 +122,13 @@ class Info():
             if not status or "Couldn't connect" in status:
                 to_ret = ""
             else:
-                to_ret = chopped_status
+                status = status.splitlines()[0]
+                status_list = status.splitlines()
+                if len(status_list) > 1:
+                    to_ret = status[0]
+                else:
+                    to_ret = ''
+
         return ("", to_ret)
 
     @staticmethod
