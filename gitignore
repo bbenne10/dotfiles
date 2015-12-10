@@ -3,3 +3,13 @@
 *.swo
 .ropeproject
 .python-version
+auto-save-list
+custom.el
+url/
+\#*
+*~
+.#*
+\#*\#
+*.log
+.DS_Store
+**/*.elc
