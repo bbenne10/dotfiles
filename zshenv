@@ -1,5 +1,9 @@
+# if you're here looking for $PATH, you're in the wrong spot. Check ~/.zprofile
+# (long story short: Arch devs won't properly support ~/.zshenv)
+
 export LANG=en_US.utf8
-export EDITOR=nvim
+export EDITOR='emacsclient -t'
+
 
 export HISTSIZE=2000
 export SAVEHIST=$HISTSIZE
