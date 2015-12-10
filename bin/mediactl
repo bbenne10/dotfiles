@@ -1,74 +1,84 @@
+# vim: set ft=sh:
 # Collect DBUS_SESSION_BUS_ADDRESS from running process
 function set_dbus_adress {
-    USER=$1
-    PROCESS=$2
-    PID=`pgrep -o -u $USER $PROCESS`
-    ENVIRON=/proc/$PID/environ
+  USER="$1";
+  PROCESS="$2";
+  PID=`pgrep -o -u $USER $PROCESS`;
+  ENVIRON=/proc/$PID/environ;
 
-    if [ -e $ENVIRON ]; then
-        export $(grep -z DBUS_SESSION_BUS_ADDRESS $ENVIRON)>/dev/null
-    else
-        echo "Unable to set DBUS_SESSION_BUS_ADDRESS."
-        exit 1
-    fi
+  if [ -e $ENVIRON ]; then
+    export $(grep -z DBUS_SESSION_BUS_ADDRESS $ENVIRON)>/dev/null;
+  else
+    printf "Unable to set DBUS_SESSION_BUS_ADDRESS.\n";
+    exit 1;
+  fi
 }
 
 function detect_player() {
-    if pidof spotify > /dev/null; then
-        spotify_is_running=1;
+  # if mpd/mopidy is running - use it unequivocally
+  if pidof mpd > /dev/null; then
+    printf "mpd\n";
+    return;
+  elif pgrep mopidy > /dev/null; then
+    printf "mpd\n";
+    return;
+  fi
+
+  if pidof spotify > /dev/null; then
+    spotify_is_running=1;
+  else
+    spotify_is_running=0;
+  fi;
+
+  if pidof mocp > /dev/null; then
+    mocp_is_running=1;
+  else
+    mocp_is_running=0;
+  fi;
+
+  if [ $spotify_is_running -eq 1 -a $mocp_is_running -eq 1 ]; then
+    # both mocp and spotify are running. Check if spotify is playing
+    # and if it is playing, use it. Else use mocp.
+    spotify_status=$(dbus-send --print-reply \
+                   --dest=org.mpris.MediaPlayer2.spotify \
+                   /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get \
+                   string:"org.mpris.MediaPlayer2.Player" \
+                   string:"PlaybackStatus" \
+            | grep variant \
+            | awk -F\" '{print $(NF-1)}')
+    mocp_status=$(mocp -Q %state 2>/dev/null)
+    if [ "$spotify_status" == "Playing" -a "$mocp_status" != "PLAY" ]; then
+      # spotify is playing; use it
+      echo "spotify";
+      return;
+    elif [ "$mocp_status" == "PLAY" -a "$spotify_status" != "Playing" ]; then
+      # mocp is playing; use it
+      echo "mocp";
+      return;
+    elif [ "$mocp_status" != "PLAY" -a "$spotify_status" != "Playing" ]; then
+      # neither is playing; use spotify
+      echo "spotify"
+      return;
+    elif [ "$mocp_status" == "PLAY" -a "$spotify_status" == "Playing" ]; then
+      # both are playing; BAIL
+      echo "Detected that both are playing; Don't know what to do; baining"
+      exit 1
     else
-        spotify_is_running=0;
-    fi;
+      # If neither is playing, pick spotify
+      echo "spotify"
+      return
 
-    if pidof mocp > /dev/null; then
-        mocp_is_running=1;
-    else
-        mocp_is_running=0;
-    fi;
-
-    if [ $spotify_is_running -eq 1 -a $mocp_is_running -eq 1 ]; then
-        # both mocp and spotify are running. Check if spotify is playing
-        # and if it is playing, use it. Else use mocp.
-        spotify_status=$(dbus-send --print-reply \
-                                   --dest=org.mpris.MediaPlayer2.spotify \
-                                   /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get \
-                                   string:"org.mpris.MediaPlayer2.Player" \
-                                   string:"PlaybackStatus" \
-                        | grep variant \
-                        | awk -F\" '{print $(NF-1)}')
-        mocp_status=$(mocp -Q %state 2>/dev/null)
-        if [ "$spotify_status" == "Playing" -a "$mocp_status" != "PLAY" ]; then
-            # spotify is playing; use it
-            echo "spotify";
-            return;
-        elif [ "$mocp_status" == "PLAY" -a "$spotify_status" != "Playing" ]; then
-            # mocp is playing; use it
-            echo "mocp";
-            return;
-        elif [ "$mocp_status" != "PLAY" -a "$spotify_status" != "Playing" ]; then
-            # neither is playing; use spotify
-            echo "spotify"
-            return;
-        elif [ "$mocp_status" == "PLAY" -a "$spotify_status" == "Playing" ]; then
-            # both are playing; BAIL
-            echo "Detected that both are playing; Don't know what to do; baining"
-            exit 1
-        else
-            # If neither is playing, pick spotify
-            echo "spotify"
-            return
-
-        fi
-    elif [ $spotify_is_running -eq 1 ]; then
-        echo "spotify";
-        return;
-    elif [ $mocp_is_running -eq 1 ]; then
-        echo "mocp";
-        return;
-    elif pidof mpv > /dev/null; then
-        echo "mpv"
-        return;
     fi
+  elif [ $spotify_is_running -eq 1 ]; then
+    echo "spotify";
+    return;
+  elif [ $mocp_is_running -eq 1 ]; then
+    echo "mocp";
+    return;
+  elif pidof mpv > /dev/null; then
+    echo "mpv"
+    return;
+  fi
 }
 
 function spotify_cmd {
@@ -85,6 +95,9 @@ function play() {
             ;;
         "mpv")
             echo "pause" > ~/.ztream_fifo
+            ;;
+        "mpd")
+            mpc play >/dev/null
             ;;
         *)
             echo $player
@@ -103,6 +116,9 @@ function stop() {
         "mpv")
             echo "stop" > ~/.ztream_fifo
             ;;
+        "mpd")
+            mpc stop >/dev/null
+            ;;
         *)
             echo $player;
             ;;
@@ -119,6 +135,9 @@ function toggle() {
             ;;
         "mpv")
             echo "pause" > ~/.ztream_fifo
+            ;;
+        "mpd")
+            mpc toggle >/dev/null
             ;;
         *)
             echo $player;
@@ -137,6 +156,9 @@ function next() {
         "mpv")
             echo "playlist_next" > ~/.ztream_fifo
             ;;
+        "mpd")
+            mpc next >/dev/null
+            ;;
         *)
             echo $player;
             ;;
@@ -154,6 +176,9 @@ function prev() {
         "mpv")
             echo "playlist_prev" > ~/.ztream_fifo
             ;;
+        "mpd")
+            mpc prev >/dev/null
+            ;;
         *)
             echo $player;
             ;;
@@ -170,6 +195,9 @@ function pause() {
             ;;
         "mpv")
             echo "pause" > ~/.ztream_fifo
+            ;;
+        "mpd")
+            mpc pause >/dev/null
             ;;
         *)
             echo $player;
