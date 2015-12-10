@@ -1,0 +1,49 @@
+#! /usr/bin/env python2
+import hashlib
+
+import click
+import requests
+
+API_URL = 'https://scm.ctisl.gtri.gatech.edu/git/rest/snippets/1.0/snippets'
+UI_URL = 'https://scm.ctisl.gtri.gatech.edu/git/snippets/'
+
+
+@click.command()
+@click.option('--user', prompt=True)
+@click.option('--password', prompt=True, hide_input=True)
+@click.argument('src', nargs=-1, type=click.File('r'))
+def main(user, password, src):
+    session = requests.Session()
+    session.auth = (user, password)
+
+    for f in src:
+        name = f.name
+        contents = ""
+        md5 = hashlib.md5()
+        while True:
+            chunk = f.read(1024)
+            if not chunk:
+                break
+            md5.update(chunk)
+            contents += chunk
+
+        if name == '<stdin>':
+            name = md5.hexdigest()
+
+        body = {
+            'name': name,
+            'files': [{
+                'name': name,
+                'content': contents
+            }]
+        }
+        resp = session.post(API_URL, json=body)
+        resp.raise_for_status()
+
+        guid = resp.json()['guid']
+
+        click.echo("{}{}".format(UI_URL, guid))
+
+
+if __name__ == '__main__':
+    main()
