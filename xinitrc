@@ -11,7 +11,6 @@ xmodmap ~/.xmodmap;
 ## MACHINE SPECIFIC STUFF =====================================================
 if [ "$(hostname)" = "CTISL-bbennett-arch-desktop" ]; then
     xrandr --output VGA1 --auto --rotate left --output HDMI1 --left-of VGA1 --auto --primary --output HDMI2 --right-of VGA1 --auto
-    test_and_run thunderbird &
 fi
 
 ## FONTS ======================================================================
@@ -24,12 +23,11 @@ if [ -d ~/.fonts ]; then
 fi;
 
 ## EVERY MACHINE ==============================================================
-test_and_run urxvtd -f -q -o
 test_and_run dunst &
+test_and_run emacs --daemon &
 test_and_run compton -cCGfb --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc -b &
 test_and_run unclutter -noevents &
 test_and_run firefox &
-test_and_run spotify &
 
 if [ -e ~/.fehbg -a $(which feh) ]; then
     eval $(<~/.fehbg)
