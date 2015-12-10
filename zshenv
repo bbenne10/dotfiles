@@ -7,12 +7,6 @@ export SAVEHIST=$HISTSIZE
 export WORKON_HOME=$HOME/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
 
-PATH=$PATH:~/.bin
-if [ "$(hostname)" = "CTISL-bbennett-arch-desktop" ]; then
-    PATH=$PATH:$HOME/.gem/ruby/2.1.0/bin
-fi
-export PATH
-
 if [ -f ${HOME}/.termcap ]; then
   export TERMCAP=$(< ${HOME}/.termcap)
 fi
