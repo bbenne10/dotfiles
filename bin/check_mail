@@ -1,54 +1,84 @@
-#! /bin/zsh
-mbsync -a 1>&2 2>!~/.mailsync.log
-notmuch new
+#!/bin/bash
 
-# Remove Logwatch emails
-notmuch tag +deleted -new -- tag:new and subject:'logwatch for'
+function alert_with_count() {
+  title=$1
+  notmuch tag +inbox -new 'tag:new and tag:unread'
 
-# Remove Titan Queues Stuck
-# notmuch tag +deleted -- 'tag:new and subject:Titan Queues \
-#   and from:titan.admin@gtri.gatech.edu and to:titan.admin@gtri.gatech.edu'
-notmuch tag +deleted -unread -new -- 'subject:Titan Queues Stuck: groups_needing_correlation
-   and from:titan.admin@gtri.gatech.edu and to:titan.admin@gtri.gatech.edu'
+  count=$(notmuch count tag:inbox and tag:unread)
+  if [[ count -gt 1 ]]; then
+    echo "$count new mails"
+    /usr/bin/notify-send "$1: $count new mails"
+    mpv ~/.local/share/bell.wav 1>/dev/null 2>/dev/null
+  fi
+}
 
-notmuch tag +deleted -unread -new -- 'subject:Titan Queues Stuck: done
-   and from:titan.admin@gtri.gatech.edu and to:titan.admin@gtri.gatech.edu'
+if grep -q "Channel gmail" ~/.mbsyncrc; then
+  mbsync gmail
+  notmuch new
 
-# Remove the USN stuff from inbox
-notmuch tag -inbox +USN -new -- 'to:ubuntu-security-announce@lists.ubuntu.com'
+  notmuch tag -inbox -new +suckless-dev to:dev@suckless.org OR to:dev+help@suckless.org
+  notmuch tag -inbox -new +suckless-hacker to:hacker@suckless.org
+  notmuch tag -inbox -new +crux to:crux.lists.crux.nu
+  notmuch tag -new +hosting from:admin@valcatohosting.com
+  notmuch tag +deleted -new -inbox from:enewsletter@stateboroherald.com \
+          OR from:group-digests@linkedin.com OR from:service@stumbleupon.com \
+          OR from:newsletter@instructables.com OR from:newsletter@reply.ticketmaster.com \
+          OR from:mail@change.org OR from:whatsup@fancy.com OR from:newsletter@noisetrade.com \
+          OR from:no-reply@mail.goodreads.com OR from:special@papajohns-specials.com \
+          OR from:contact@nerdfitness.com OR from:info@rootsaction.org \
+          OR from:news@click.alliedelect.com OR from:messages-noreply@linkedin.com \
+          OR from:groups-noreply@linkedin.com OR from:digest-noreply@quora.com \
+          OR from:newsletters-no-reply@myfonts.com OR from:15n9.m1.instructables.com \
+          OR from:onward_search@mail.vresp.com OR from:service@teefury.com \
+          OR from:noreply@youtube.com OR from:boom@oneplus.com \
+          OR from:offers.cmail.dickblick.com OR from:info@lp.org \
+          OR from:info@twitter.com OR from:emailhelp@friendfeed.com \
+          OR from:info@massdrop.com OR from:info@onedayonejob.com
+  alert_with_count "Gmail"
+fi
 
-# Remove the openssl-announce mailing list
-notmuch tag +OpenSSL -inbox -new -- 'to:openssl-announce@openssl.org'
+if grep -q "Channel work" ~/.mbsyncrc; then
+  mbsync -a 1>&2 2>!~/.mailsync.log
+  notmuch new
 
-# Remove OpenBSD's mail server status reports
-notmuch tag +cron -new -unread -inbox -- tag:new and from:'Charlie Root'
+  # Remove Logwatch emails
+  notmuch tag +deleted -new -- tag:new and subject:'logwatch for'
 
-# Remove Apiary's usage report
-notmuch tag +reports +cron -new -unread -inbox -- 'tag:new and subject:Usage report for'
-notmuch tag +cron -new -inbox -unread -- '(subject:Cron <mars@ or subject:Cron <root@) and from:Cron Daemon'
+  # Remove Titan Queues Stuck
+  notmuch tag +deleted -unread -new -- 'subject:Titan Queues Stuck: groups_needing_correlation
+    and from:titan.admin@gtri.gatech.edu and to:titan.admin@gtri.gatech.edu'
 
-# Tag mail from Gvu/MS-COC/Ga Tech in general so that it's available, but unseen
-notmuch tag +GVU -new -- 'to:gvu-students-hci@cc.gatech.edu or to:gvu-students-grad@cc.gatech.edu'
-notmuch tag +COC -new -- subject:'Ms-coc-announce'
-notmuch tag +deleted -new -inbox -- 'to:studentevents@lists.gatech.edu'
-notmuch tag +deleted -new -inbox -- 'to:dailydigest@lists.gatech.edu'
-notmuch tag +deleted -new -inbox -- 'from:updates@gtathletics.fan-one.com'
+  notmuch tag +deleted -unread -new -- 'subject:Titan Queues Stuck: done
+    and from:titan.admin@gtri.gatech.edu and to:titan.admin@gtri.gatech.edu'
 
-# Handle some tags from JIRA/Stash
-notmuch tag +jira -new -- 'from:ctisl.jira@gtri.gatech.edu'
-notmuch tag +stash -new -- 'from:ctisl.stash@gtri.gatech.edu'
+  # Remove the USN stuff from inbox
+  notmuch tag -inbox +USN -new -- 'to:ubuntu-security-announce@lists.ubuntu.com'
 
-# Tag mail that I sent as 'sent' and remove it from my inbox
-notmuch tag +sent -inbox -new 'from:Bryan.Bennett@gtri.gatech.edu or from:bbennett37@gatech.edu or from:bbenne10@gmail.com'
+  # Remove the openssl-announce mailing list
+  notmuch tag +OpenSSL -inbox -new -- 'to:openssl-announce@openssl.org'
 
-# Now some general tags that somewhat replicate folders
-# notmuch tag +Apiary "subject:Apiary"
+  # Remove OpenBSD's mail server status reports
+  notmuch tag +cron -new -unread -inbox -- tag:new and from:'Charlie Root'
 
-notmuch tag +inbox -new 'tag:new and tag:unread'
+  # Remove Apiary's usage report
+  notmuch tag +reports +cron -new -unread -inbox -- 'tag:new and subject:Usage report for'
+  notmuch tag +cron -new -inbox -unread -- '(subject:Cron <mars@ or subject:Cron <root@) and from:Cron Daemon'
 
-count=$(notmuch count tag:inbox and tag:unread)
-if [[ count -gt 1 ]]; then
-  echo "$count new mails"
-  /usr/bin/notify-send "Work: $count new mails"
-  mpv ~/.local/share/bell.wav 1>/dev/null 2>/dev/null
+  # Tag mail from Gvu/MS-COC/Ga Tech in general so that it's available, but unseen
+  notmuch tag +GVU -new -- 'to:gvu-students-hci@cc.gatech.edu or to:gvu-students-grad@cc.gatech.edu'
+  notmuch tag +COC -new -- subject:'Ms-coc-announce'
+  notmuch tag +deleted -new -inbox -- 'to:studentevents@lists.gatech.edu'
+  notmuch tag +deleted -new -inbox -- 'to:dailydigest@lists.gatech.edu'
+  notmuch tag +deleted -new -inbox -- 'from:updates@gtathletics.fan-one.com'
+
+  # Handle some tags from JIRA/Stash
+  notmuch tag +jira -new -- 'from:ctisl.jira@gtri.gatech.edu'
+  notmuch tag +stash -new -- 'from:ctisl.stash@gtri.gatech.edu'
+
+  # Tag mail that I sent as 'sent' and remove it from my inbox
+  notmuch tag +sent -inbox -new 'from:Bryan.Bennett@gtri.gatech.edu or from:bbennett37@gatech.edu or from:bbenne10@gmail.com'
+
+  # Now some general tags that somewhat replicate folders
+  # notmuch tag +Apiary "subject:Apiary"
+  alert_with_count "Work"
 fi
