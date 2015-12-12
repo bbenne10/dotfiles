@@ -24,7 +24,6 @@
 (el-get-bundle "fic-mode")
 (el-get-bundle "helm")
 (el-get-bundle "helm-projectile")
-<<<<<<< Updated upstream
 (el-get-bundle "gruvbox-theme"
   :type "git"
   :url "https://github.com/greduan/emacs-theme-gruvbox"
