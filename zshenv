@@ -4,6 +4,7 @@
 export LANG=en_US.utf8
 export EDITOR='emacsclient -t'
 
+export _Z_DATA="$HOME/.config/z"
 
 export HISTSIZE=2000
 export SAVEHIST=$HISTSIZE
