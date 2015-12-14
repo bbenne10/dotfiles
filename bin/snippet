@@ -9,8 +9,8 @@ UI_URL = 'https://scm.ctisl.gtri.gatech.edu/git/snippets/'
 
 
 @click.command()
-@click.option('--user', prompt=True)
-@click.option('--password', prompt=True, hide_input=True)
+@click.option('--user', '-u', prompt=True)
+@click.option('--password', '-p', prompt=True, hide_input=True)
 @click.argument('src', nargs=-1, type=click.File('r'))
 def main(user, password, src):
     session = requests.Session()
