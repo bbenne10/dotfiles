@@ -11,14 +11,14 @@ UI_URL = 'https://scm.ctisl.gtri.gatech.edu/git/snippets/'
 @click.command()
 @click.option('--user', '-u', prompt=True)
 @click.option('--password', '-p', prompt=True, hide_input=True)
-@click.argument('src', nargs=-1, type=click.File('r'))
+@click.argument('src', nargs=-1, type=click.File('r'), default='-')
 def main(user, password, src):
     session = requests.Session()
     session.auth = (user, password)
 
     for f in src:
         name = f.name
-        contents = ""
+        contents = ''
         md5 = hashlib.md5()
         while True:
             chunk = f.read(1024)
