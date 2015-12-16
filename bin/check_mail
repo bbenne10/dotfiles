@@ -38,7 +38,7 @@ if grep -q "Channel gmail" ~/.mbsyncrc; then
 fi
 
 if grep -q "Channel work" ~/.mbsyncrc; then
-  mbsync -a 1>&2 2>!~/.mailsync.log
+  mbsync work 1>&2 2>! ~/.mail/sync.log
   notmuch new
 
   # Remove Logwatch emails
