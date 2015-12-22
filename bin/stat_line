@@ -49,7 +49,6 @@ class Info():
     check_interval = 1800
     last_w_str = ("", "")
     spotify_iface = None
-    no_vid = False
 
     def battery(self):
         try:
@@ -122,16 +121,6 @@ class Info():
                         status += "{}° ".format(int(feature.get_value()))
         except Exception as e:
             print(e)
-
-        try:
-            if not self.no_vid:
-                vid_temp = self.run_cmd(["nvidia-settings",
-                                         "-tq",
-                                         "[gpu:0]/GpuCoreTemp"])
-                status += " {}°".format(vid_temp)
-        except:
-            pass
-            self.no_vid = True
 
         return status.rstrip()
 
