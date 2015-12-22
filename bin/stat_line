@@ -3,7 +3,6 @@
 
 
 from __future__ import division
-import dbus
 import os
 import psutil
 import re
@@ -78,36 +77,6 @@ class Info():
                 station = f.read().strip('\n')
             if station:
                 to_ret = '{} Radio'.format(station.title())
-
-        # SPOTIFY
-        spotify_pid = cls.run_cmd(['pgrep', 'spotify'])
-        if spotify_pid:
-            if not cls.spotify_iface:
-                try:
-                    bus = dbus.Bus(dbus.Bus.TYPE_SESSION)
-                    obj = bus.get_object('org.mpris.MediaPlayer2.spotify',
-                                         '/org/mpris/MediaPlayer2')
-                    cls.spotify_iface = dbus.Interface(
-                        obj, 'org.freedesktop.DBus.Properties')
-                except dbus.exceptions.DBusException:
-                    to_ret = ""
-
-            results = cls.spotify_iface.Get('org.mpris.MediaPlayer2.Player',
-                                            'Metadata')
-            artist = '&'.join(results.get('xesam:artist', ['Unknown'])).encode(
-                'utf-8', 'ignore')
-            title = results.get('xesam:title', 'Unknown').encode(
-                'utf-8', 'ignore')
-            to_ret = "{} - {}".format(artist, title)
-
-        # MOCP
-        mocp_pid = cls.run_cmd(['pgrep', 'mocp'])
-        if mocp_pid:
-            mocp_np = cls.run_cmd(['mocp', '-Q', '%artist - %song'])
-            if mocp_np != "-":
-                to_ret = mocp_np
-            else:
-                to_ret = ""
 
         # MPD
         mpd_pid = cls.run_cmd(['pgrep', 'mpd'])
