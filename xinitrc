@@ -30,7 +30,7 @@ test_and_run unclutter -noevents &
 test_and_run firefox &
 
 if [ -e ~/.fehbg -a $(which feh) ]; then
-    eval $(<~/.fehbg)
+    ~/.fehbg
 else
     test_and_run nitrogen --restore
 fi
