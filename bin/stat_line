@@ -3,17 +3,19 @@
 
 
 from __future__ import division
+from datetime import datetime
 import os
 import psutil
 import re
 from time import sleep
-import xcb
-
-from datetime import datetime
+import socket
 from subprocess import Popen, PIPE
-from urllib2 import urlopen
-from urllib import urlencode
-from xcb.xproto import Atom, PropMode
+import sys
+
+from mpd import MPDClient
+import requests
+import xcffib
+from xcffib.xproto import Atom, PropMode
 
 try:
     import sensors
@@ -23,51 +25,88 @@ except:
     pass
     SENSORS_LOADED = False
 
-XCB_CONN = None
+XCB_CONN = xcffib.connect('')
 
 COLORS = {
-    'black':        '#282828',
-    'dark_grey':    '#928374',
-    'dark_red':     '#cc241d',
-    'red':          '#fb4934',
-    'dark_green':   '#98971a',
-    'green':        '#b8bb26',
-    'dark_yellow':  '#d79921',
-    'yellow':       '#fabd2f',
-    'dark_blue':    '#458588',
-    'blue':         '#83a598',
-    'dark_magenta': '#b16286',
-    'magenta':      '#d3869b',
-    'dark_cyan':    '#689d6a',
-    'cyan':         '#8ec07c',
-    'grey':         '#a89984',
-    'white':        '#ebdbb2'
+    'black':          '#263238',
+    'red':            '#dd2c00',
+    'green':          '#8bc34a',
+    'yellow':         '#ff9800',
+    'blue':           '#2196f3',
+    'magenta':        '#e91e63',
+    'cyan':           '#26a69a',
+    'white':          '#5f5f5f',
+    'bright_black':   '#8a8a8a',
+    'bright_green':   '#ff8a65',
+    'bright_yellow':  '#DCE775',
+    'bright_blue':    '#ffcc80',
+    'bright_magenta': '#81d4fa',
+    'bright_cyan':    '#ffab91',
+    'bright_grey':    '#84ffff',
+    'bright_white':   '#ffffff',
 }
+BAR_PIECES = [
+    ('media', 'blue'),
+    ('weather', 'green'),
+    # NOT WORKING: ('temperature', 'cyan'),
+    ('battery', 'red'),
+    ('system_stats', 'magenta')
+]
 
 
 class Info():
-    check_interval = 1800
-    last_w_str = ('', '')
-    spotify_iface = None
+    battery_capacity_path = '/sys/class/power_supply/BAT0/energy_full'
+    battery_cur_path = '/sys/class/power_supply/BAT0/energy_now'
+    battery_state_path = '/sys/class/power_supply/BAT0/status'
+
+    weather_check_interval = 18000
+    weather_check_url = 'http://rss.accuweather.com/rss/liveweather_rss.asp'
+    weather_loc_code = '30032'
+    weather_check_pattern = re.compile(
+        '<title>Currently:\s(?P<type>.*):\s(?P<temp>\d+)[C,F]</title>')
+    weather_icons = {
+        # 'Rain': '',
+        'Rain': '&#xfe09;',
+        'hunderstorm': '&#xf2e8;',
+        'Cloud': '&#xf0c2;',
+        'Fog': '&#xf0c2;',
+        'Sun': '&#xf2e4;'
+    }
+
+    def _open_and_read_first_line(self, path):
+        with open(path, 'rb') as f:
+            contents = f.readline()
+        return contents
+
+    @staticmethod
+    def _run_cmd(cmd):
+        return Popen(cmd, stdout=PIPE, stderr=PIPE).communicate()[0].strip()
 
     def battery(self):
         try:
-            s = self.run_cmd(['acpi', '-b']).split()
-        except OSError:
-            return []
-        state = s[2]
-        perc = s[3].rstrip(',')
-        return (state, perc)
+            full = int(self._open_and_read_first_line(self.battery_capacity_path))
+            cur = int(self._open_and_read_first_line(self.battery_cur_path))
+            state = self._open_and_read_first_line(self.battery_state_path)
+        except IOError:
+            return None
 
-    @staticmethod
-    def run_cmd(cmd):
-        return Popen(cmd, stdout=PIPE, stderr=PIPE).communicate()[0].strip()
+        perc = int((cur / full) * 100)
+        icon = '&#xf213;'
+        if perc < 25:
+            icon = '&#xf212;'
+        elif perc < 50:
+            icon = '&#xf215;'
+        elif perc < 75:
+            icon  = '&#xf214;'
+        ret_str = '{}% ({})'.format(str(perc), state[0].upper())
+        return (icon, ret_str)
 
-    @classmethod
-    def media(cls):
+
+    def media(self):
         to_ret = ''
+
         # MPV / ZTREAM
-        mpv_pid = cls.run_cmd(['pgrep', 'mpv'])
+        mpv_pid = self._run_cmd(['pgrep', 'mpv'])
         ls_path = os.path.expanduser('~/.last_station')
         station = ''
 
@@ -78,39 +117,37 @@ class Info():
                 to_ret = '{} Radio'.format(station.title())
 
         # MPD
-        mpd_pid = cls.run_cmd(['pgrep', 'mpd'])
-        mopidy_pid = cls.run_cmd(['pgrep', 'mopidy'])
-        if mpd_pid or mopidy_pid:
-            try:
-                status = cls.run_cmd(['mpc'])
-            except OSError:
-                to_ret = ''
-                status = ''
+        try:
+            client = MPDClient()
+            client.timeout = 1
+            client.connect('localhost', 6600)
+        except socket.error:
+            to_ret = None
+            client = None
 
-            if not status or 'Couldn\'t connect' in status:
-                to_ret = ''
-            else:
-                status = status.splitlines()[0]
-                status_list = status.splitlines()
-                if len(status_list) > 1:
-                    to_ret = status[0]
-                else:
-                    to_ret = ''
+        if client:
+            cur_song_info = client.currentsong()
+            artist = cur_song_info.get(
+                'albumartist', cur_song_info.get('artist', ''))
+            title = cur_song_info.get('title', '')
+            if artist and title:
+                to_ret = '{} - {}'.format(artist, title)
 
-        return ('', to_ret)
+        if not to_ret:
+            return None
 
-    @staticmethod
-    def ram_perc():
+        return ('&#xf025;', to_ret)
+
+    def system_stats(self):
         usage = psutil.virtual_memory()
-        used_ram = usage.used - usage.cached
-        return ('', '{ram}%'.format(
-            ram=int((used_ram / usage.total) * 100)))
+        ram_used_perc = int(((usage.used - usage.cached) / usage.total) * 100)
+        cpu_perc = int(psutil.cpu_percent(None))
+        ret_str = '{}% {}%'.format(cpu_perc, ram_used_perc)
 
-    @staticmethod
-    def time():
-        return str(datetime.now().strftime('%m/%d/%y @ %I:%M %p'))
+        return ('&#xf237;', ret_str)
 
-    def temperature(self, nvidia_temp=True):
+
+    def temperature(self):
         if not SENSORS_LOADED:
             return ''
         status = ''
@@ -124,122 +161,83 @@ class Info():
 
         return status.rstrip()
 
-    @staticmethod
-    def cpu_perc():
-        cpu_perc_flt = psutil.cpu_percent(None)
-
-        return ('', '{cpu}%'.format(cpu=str(int(cpu_perc_flt))))
 
     def _check_weather(self):
-        url = 'http://rss.accuweather.com/rss/liveweather_rss.asp?{}'.format(
-            urlencode({'metric': 0, 'locCode': '30032'}))
-        pattern = '\s.*Currently:\s(?P<w_type>.*):\s(?P<w_temp>\d+)(?P<w_deg>[C,F])' # noqa
-        result = ('', '')
+        params = {'metric': 0, 'locCode': self.weather_loc_code}
+        resp = requests.get(self.weather_check_url, params=params)
+        resp.raise_for_status()
 
-        try:
-            f = urlopen(url, None, 10)
-        except:
-            return getattr(self, 'last_w_str', ('', ''))
+        match = re.search(self.weather_check_pattern, resp.text)
+        ret_str = 'Unavailable'
+        icon = None
 
-        for line in f:
-            if 'Currently:' in line:
-                result = re.match(pattern, line)
-                if result:
-                    g_dict = result.groupdict()
-                    icon = ''
-                    if 'w_type' in g_dict:
-                        if 'Rain' in g_dict['w_type']:
-                            icon = ''
-                        elif 'Cloud' in g_dict['w_type'] \
-                                or 'Fog' in g_dict['w_type']:
-                            icon = ''
+        if match:
+            g_dict = match.groupdict()
+            for substr, possible_icon in self.weather_icons.items():
 
-                    self.last_w_str = (icon,
-                                       '{w_type} - {w_temp}°{w_deg}'.format(
-                                           w_type=g_dict['w_type'],
-                                           w_temp=g_dict['w_temp'],
-                                           w_deg=g_dict['w_deg']))
-                else:
-                    self.last_w_str = (' ', '')
-        return getattr(self, 'last_w_str', ('', ''))
+                if substr in g_dict['type']:
+                    icon = possible_icon
+                    break
+
+                if not icon:
+                    icon = '&#xf2e4;'
+
+            ret_str = '{type} - {temp}°'.format(**g_dict)
+
+        if not icon:
+            return None
+
+        return (icon, ret_str)
+
 
     def weather(self):
         now = datetime.now()
         try:
-            last_check = getattr(self, 'last_check_time')
-            diff = now - last_check
+            diff = now - self.last_check_time
+            check = False
             if diff.seconds >= self.check_interval:
                 check = True
-            else:
-                check = False
         except AttributeError:
-            # First time through
-            last_check = now
+            self.last_check_time = now
             check = True
 
         if check:
             ret = self._check_weather()
-            self.last_check_time = now
+            self.weather_status = ret
         else:
-            ret = self.last_w_str
+            ret = self.weather_status
 
         return ret
+
 INFO = Info()
 
 
 def update_text(text):
-    c = get_conn()
-    s = c.get_setup()
+    s = XCB_CONN.get_setup()
     r = s.roots[0].root
     text = text.encode('utf-8', 'ignore')
-
-    try:
-        c.core.ChangeProperty(PropMode.Replace, r, Atom.WM_NAME, Atom.STRING,
-                              8, len(text), str(text))
-        c.flush()
-    except:
-        raise
+    XCB_CONN.core.ChangeProperty(PropMode.Replace, r, Atom.WM_NAME, Atom.STRING,
+                            8, len(text), str(text))
+    XCB_CONN.flush()
 
 
-def get_conn():
-    global XCB_CONN
-    if not XCB_CONN:
-        XCB_CONN = xcb.connect('')
-    return XCB_CONN
+def get_colored_statustext():
+    output = ''
+    for group in BAR_PIECES:
+        piece, color_name = group
+        try:
+            func = getattr(Info, piece)
+        except AttributeError:
+            print >> sys.stderr, 'Couldn\'t find callable "{}". Dying...'.format(piece)
+            exit(2)
 
+        color = COLORS.get(color_name, None)
+        if not color:
+            print >> sys.stderr, 'Couldn\'t find color "{}". Unstyling'.format(color_name)
 
-def get_colored_statustext(notification=''):
-    w = INFO.weather()
-    if w[0]:
-        output = '<span color="{}">{}</span> '.format(COLORS['green'],
-                                                        w[1])
-    else:
-        output = ''
-
-    m = INFO.media()
-    if m and m[1]:
-        output += '<span color="{}">{}</span> '.format(COLORS['blue'],
-                                                        m[1])
-
-    battery = INFO.battery()
-    if battery:
-        output += '<span color="{}">{}</span> '.format(COLORS['red'],
-                                                        battery[1])
-
-    tmp = INFO.temperature()
-    if tmp:
-        output += '<span color="{}">{}</span> '.format(COLORS['cyan'],
-                                                        tmp)
-
-    c = INFO.cpu_perc()
-    if c and c[1]:
-        output += '<span color="{}">{}</span> '.format(COLORS['red'],
-                                                        c[1])
-
-    r = INFO.ram_perc()
-    if r and r[1]:
-        output += '<span color="{}">{}</span> '.format(COLORS['magenta'],
-                                                        r[1])
+        piece_res = func(INFO)
+        if piece_res:
+            output += '<span color="{}">{} </span>{} '.format(color, *piece_res)
 
     output = unicode(output, 'utf-8')
     return output
@@ -249,5 +247,4 @@ if __name__ == '__main__':
     while True:
         text = get_colored_statustext()
         update_text(text)
-
         sleep(3)
