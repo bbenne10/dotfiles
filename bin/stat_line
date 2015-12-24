@@ -66,7 +66,8 @@ class Info():
         '<title>Currently:\s(?P<type>.*):\s(?P<temp>\d+)[C,F]</title>')
     weather_icons = {
         # 'Rain': '',
-        'Rain': '&#xfe09;',
+        'Rain': '&#xf2cf;',
+        'Showers': '&#xfe09;',
         'hunderstorm': '&#xf2e8;',
         'Cloud': '&#xf0c2;',
         'Fog': '&#xf0c2;',
