@@ -165,10 +165,13 @@ class Info():
 
     def _check_weather(self):
         params = {'metric': 0, 'locCode': self.weather_loc_code}
-        resp = requests.get(self.weather_check_url, params=params)
-        resp.raise_for_status()
+        try:
+            resp = requests.get(self.weather_check_url, params=params)
+            resp.raise_for_status()
+            match = re.search(self.weather_check_pattern, resp.text)
+        except requests.exceptions.ConnectionError:
+            match = None
 
-        match = re.search(self.weather_check_pattern, resp.text)
         ret_str = 'Unavailable'
         icon = None
 
