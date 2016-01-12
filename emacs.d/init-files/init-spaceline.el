@@ -1,5 +1,3 @@
-(require 'spaceline-config)
-
 (spaceline-install
  `(
    '(evil-state
