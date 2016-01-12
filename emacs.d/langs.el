@@ -5,7 +5,8 @@
 
 (add-hook 'python-mode-hook
   (function (lambda ()
-          (setq evil-shift-width python-indent))))
+              (setq evil-shift-width python-indent)
+              (modify-syntax-entry ?_ "w"))))
 
 (add-hook 'js-mode-hook
   (function (lambda ()
