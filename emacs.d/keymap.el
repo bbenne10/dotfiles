@@ -9,5 +9,5 @@
 (define-key evil-normal-state-map (kbd "<SPC>ln") 'flycheck-next-error)
 (define-key evil-normal-state-map (kbd "<SPC>lp") 'flycheck-previous-error)
 
-(define-key evil-normal-state-map (kbd "<SPC>w") 'helm-buffers-list)
-(define-key evil-normal-state-map (kbd "<SPC>e") 'helm-projectile-find-file)
+(define-key evil-normal-state-map (kbd "<SPC>w") 'projectile-switch-to-buffer)
+(define-key evil-normal-state-map (kbd "<SPC>e") 'projectile-find-file)

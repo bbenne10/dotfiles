@@ -19,11 +19,8 @@
   :features (evil-operator-comment)
 )
 (el-get-bundle "evil-surround")
-(el-get-bundle "helm")
-;;(el-get-bundle "helm-projectile")
 (el-get-bundle "fic-mode")
 (el-get-bundle "helm")
-(el-get-bundle "helm-projectile")
 (el-get-bundle "gruvbox-theme"
   :type "git"
   :url "https://github.com/greduan/emacs-theme-gruvbox"
@@ -37,6 +34,7 @@
 (el-get-bundle "org-mode")
 (el-get-bundle "evil-org-mode")
 (el-get-bundle "projectile")
+(el-get-bundle "grizzl")
 (el-get-bundle "puppet-mode")
 (el-get-bundle "smooth-scrolling")
 (el-get-bundle "org-mode")
