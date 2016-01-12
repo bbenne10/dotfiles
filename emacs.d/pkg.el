@@ -42,5 +42,7 @@
 (el-get-bundle "spaceline"
   :type "git"
   :url "https://github.com/TheBB/spaceline.git"
+  :features "spaceline-config"
+  :depends s
 )
 (el-get-bundle "diminish")
