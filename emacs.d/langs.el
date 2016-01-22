@@ -6,7 +6,10 @@
 (add-hook 'python-mode-hook
   (function (lambda ()
               (setq evil-shift-width python-indent)
-              (modify-syntax-entry ?_ "w"))))
+              (modify-syntax-entry ?_ "w")
+              (pyenv-use-corresponding)
+              (add-to-list 'company-backends 'company-jedi)
+              )))
 
 (add-hook 'js-mode-hook
   (function (lambda ()
