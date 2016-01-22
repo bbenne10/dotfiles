@@ -1,9 +1,0 @@
-" vim: ft=vim
-loadplugins '\.(js|penta)$'
-group user
-set guioptions=Cs
-set showtabline=never
-
-nmap -builtin <Space>w :b 
-nmap -builtin <Space>bd :bd<cr>
-colorscheme gruvbox-dark
