@@ -8,6 +8,8 @@
               (setq evil-shift-width python-indent)
               (modify-syntax-entry ?_ "w")
               (pyenv-use-corresponding)
+              (anaconda-mode)
+              (setup-python-keybinds)
               (add-to-list 'company-backends 'company-jedi)
               )))
 

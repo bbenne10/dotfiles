@@ -52,3 +52,5 @@
   :type "git"
   :url "https://github.com/cyberved/pyenv.el.git"
 )
+
+(el-get-bundle "anaconda-mode")
