@@ -72,8 +72,8 @@ if grep -q "Channel work" ~/.mbsyncrc; then
   notmuch tag +deleted -new -inbox -- 'from:updates@gtathletics.fan-one.com'
 
   # Handle some tags from JIRA/Stash
-  notmuch tag +jira -new -- 'from:ctisl.jira@gtri.gatech.edu'
-  notmuch tag +stash -new -- 'from:ctisl.stash@gtri.gatech.edu'
+  notmuch tag +jira +inbox -new -- tag: new AND 'from:ctisl.jira@gtri.gatech.edu'
+  notmuch tag +stash +inbox -new -- tag: new AND 'from:ctisl.stash@gtri.gatech.edu'
 
   # Tag mail that I sent as 'sent' and remove it from my inbox
   notmuch tag +sent -inbox -new 'from:Bryan.Bennett@gtri.gatech.edu or from:bbennett37@gatech.edu or from:bbenne10@gmail.com'
