@@ -53,30 +53,30 @@ def find_and_launch_editor(file_name):
     system("{} {}".format(editor, file_name))
 
 
+if __name__ == '__main__':
+    parser = email_parser.Parser()
+    lines = []
+    for line in fileinput.input():
+        lines.append(line)
 
-parser = email_parser.Parser()
-lines = []
-for line in fileinput.input():
-    lines.append(line)
+    msg = parser.parsestr(''.join(lines))
 
-msg = parser.parsestr(''.join(lines))
+    payload_content = None
+    for payload in msg.get_payload():
+        try:
+            if payload.get_content_type() == "text/calendar":
+                payload_content = payload.get_payload()
+        except AttributeError:
+            print "No calendar event found in message!"
+            time.sleep(1)
+            exit()
 
-payload_content = None
-for payload in msg.get_payload():
-    try:
-        if payload.get_content_type() == "text/calendar":
-            payload_content = payload.get_payload()
-    except AttributeError:
-        print "No calendar event found in message!"
-        time.sleep(1)
-        exit()
+    if payload_content:
+        payload_content = base64.b64decode(payload_content)
 
-if payload_content:
-    payload_content = base64.b64decode(payload_content)
+        new_line = translate_ical_evt(payload_content)
+        file_name = path.expanduser(REMIND_FILE)
+        with open(file_name, 'a') as f:
+            f.write(new_line)
 
-    new_line = translate_ical_evt(payload_content)
-    file_name = path.expanduser(REMIND_FILE)
-    with open(file_name, 'a') as f:
-        f.write(new_line)
-
-    find_and_launch_editor(file_name)
+        find_and_launch_editor(file_name)
