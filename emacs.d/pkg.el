@@ -10,7 +10,10 @@
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 (setq el-get-user-package-directory "~/.emacs.d/init-files")
 
-
+(el-get-bundle "ample-theme"
+  :type "git"
+  :url "https://github.com/jordonbiondo/ample-theme"
+)
 (el-get-bundle "diminish")
 (el-get-bundle "evil")
 (el-get-bundle "evil-org-mode")
