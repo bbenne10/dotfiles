@@ -15,6 +15,7 @@
   :url "https://github.com/jordonbiondo/ample-theme"
 )
 (el-get-bundle "diminish")
+(el-get-bundle "dired+")
 (el-get-bundle "evil")
 (el-get-bundle "evil-org-mode")
 (el-get-bundle "evil-plugins"
