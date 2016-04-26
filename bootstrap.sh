@@ -10,7 +10,7 @@ fi
 
 if [ ! -r "$HOME/.freshrc" ]; then
   printf "==> Linking freshrc\n"
-  ln -s freshrc "$HOME/.freshrc"
+  ln -s $PWD/freshrc "$HOME/.freshrc"
 fi
 
 "$HOME"/.fresh/source/freshshell/fresh/bin/fresh
