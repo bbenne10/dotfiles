@@ -18,6 +18,7 @@ fi
 
 export WORKON_HOME=~/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 # Colored man support
 export LESS_TERMCAP_mb=$'\E[01;31m'
