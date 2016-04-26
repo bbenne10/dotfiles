@@ -13,8 +13,8 @@ if [ "$(uname)" = "Darwin" ]; then
   fresh zaliases.osx --file=~/.zaliases
 fi
 
-fresh xmodmap
-fresh xinitrc
+fresh xmodmap --file
+fresh xinitrc --file
 
 fresh tarjoilija/zgen zgen.zsh --file=vendor/zgen.zsh
 
