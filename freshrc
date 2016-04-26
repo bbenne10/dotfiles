@@ -16,6 +16,8 @@ fi
 fresh xmodmap
 fresh xinitrc
 
+fresh tarjoilija/zgen zgen.zsh --file=vendor/zgen.zsh
+
 fresh zprofile --file
 fresh zshenv --file
 fresh zshrc --file
