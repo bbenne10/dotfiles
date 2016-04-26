@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+# Push a file to a specified host. This will push /x/y/z from /x/
+# to $HOST/x/y/z by stripping /x/ from the head of the path and 
+# then using rsync to push to $HOST directly. $HOST should include
+# the directory prefix to push to
+
+# $1 -> dir
+# $2 -> file
+# $3 -> host
+
+NEW_FILE=${2#$1}
+
+rsync $2 $3$NEW_FILE
