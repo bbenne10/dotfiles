@@ -1,0 +1,22 @@
+fresh freshshell/fresh bin/fresh --bin
+
+fresh gitconfig --file
+fresh gitignore --file
+
+fresh muttrc --file
+
+fresh tmux.conf --file
+fresh tmux.session.work --file
+
+fresh zaliases --file
+if [ "$(uname)" = "Darwin" ]; then
+  fresh zaliases.osx --file=~/.zaliases
+fi
+
+fresh xmodmap
+fresh xinitrc
+
+fresh zprofile --file
+fresh zshenv --file
+fresh zshrc --file
+
