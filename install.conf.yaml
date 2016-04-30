@@ -1,0 +1,24 @@
+- defaults:
+      link: 
+        relink: true
+  
+- clean: ['~']
+
+- link: 
+    ~/.gitconfig: gitconfig
+    ~/.gitignore: gitignore
+    ~/.tmux.conf: tmux.conf
+    ~/.tmux.session.work: tmux.session.work
+    ~/.emacs.d: emacs.d
+    ~/.muttrc: muttrc
+    ~/.zshrc: zshrc
+    ~/.zshenv: zshenv
+    ~/.zprofile: zprofile
+    ~/.zaliases: zaliases
+    ~/.xinitrc: xinitrc
+    ~/.xmodmap: xmodmap
+    ~/.pythonrc: pythonrc
+    ~/.bin: bin/
+  
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
