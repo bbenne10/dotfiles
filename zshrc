@@ -1,5 +1,4 @@
 . ~/.zaliases
-. ~/.fresh/build/shell.sh
 . ~/.fresh/build/vendor/zgen.zsh
 
 autoload colors zsh/terminfo
