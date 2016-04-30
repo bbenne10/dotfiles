@@ -1,5 +1,4 @@
 . ~/.zaliases
-. ~/.fresh/build/vendor/zgen.zsh
 
 autoload colors zsh/terminfo
 autoload -U compinit promptinit
@@ -21,6 +20,14 @@ zstyle ':completion:*:(all-|)files' ignored-patterns "(*.pyc|*~)"
 zstyle ':completion:*:ls:*:(all-|)files' ignored-patterns
 zstyle ':completion:*:rm:*:(all-|)files' ignored-patterns
 
+#-LOAD AND INITIALIZE ZGEN ----------------------------------------------------
+if [ ! -f ~/.bin/zgen/zgen.zsh ]; then
+  pushd ~/.bin
+  git clone http://github.com/tarjoilija/zgen
+  popd
+fi
+
+source ~/.bin/zgen/zgen.zsh
 
 if [ ! -d ~/.pyenv ]; then
   git clone http://github.com/yyuu/pyenv ~/.pyenv
