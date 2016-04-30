@@ -2,7 +2,7 @@
 
 My dotfiles and some scaffolding for bootstrapping new boxes.
 
-Based on [Fresh](http://github.com.freshshell/fresh)
+Based on [Dotbot](http://github.com/anishathalye/dotbot)
 
 ## To install
 
