@@ -12,8 +12,13 @@ alias mkdir='mkdir -p'
 alias zipfldr='zip -9 -r'
 alias grep='grep --color=ALWAYS'
 alias t=todo.sh
-alias vim=nvim
 alias vssh='vagrant ssh'
+
+function _nvim_or_vim_or_vi () {
+  nvim $@ || vim $@ || vi $@
+}
+
+alias vim=_nvim_or_vim_or_vi
 
 function sprunge() {
   cat $1 | curl -F 'sprunge=<-' http://sprunge.us
