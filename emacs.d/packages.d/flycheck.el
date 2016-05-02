@@ -1,3 +1,4 @@
+(require 'flycheck)
 (flycheck-define-checker python-pylama
   "A Python syntax and style checker using the pylama utility. See URL
   `http://pypi.python.org/pypi/pylama'."
@@ -9,7 +10,6 @@
 
 (add-to-list 'flycheck-checkers 'python-pylama)
 
-(add-hook 'after-init-hook #'global-flycheck-mode)
 (add-to-list 'display-buffer-alist
              `(,(rx bos "*Flycheck errors*" eos)
                (display-buffer-reuse-window
@@ -17,3 +17,5 @@
                (reusable-frames . visible)
                (side . bottom)
                (window-height . 0.2)))
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
