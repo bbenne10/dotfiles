@@ -41,5 +41,4 @@ if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
 fi
 
 ~/.bin/stat_line &
-remind -z -k'~/.bin/remind_notify %s' ~/.remind/work.rem &
 exec ~/.bin/dwm
