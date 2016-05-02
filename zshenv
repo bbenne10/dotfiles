@@ -1,7 +1,9 @@
 # if you're here looking for $PATH, you're in the wrong spot. Check ~/.zprofile
 # (long story short: Arch devs won't properly support ~/.zshenv)
 
-export LANG=en_US.utf8
+export PKG_PATH=https://stable.mtier.org/updates/$(uname -r)/$(arch -s):http://mirror.esc7.net/pub/OpenBSD/5.9/packages/amd64/
+
+export LANG=en_US.UTF-8
 export EDITOR='emacsclient -t'
 
 export _Z_DATA="$HOME/.config/z"
