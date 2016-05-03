@@ -9,4 +9,5 @@
 (load "~/.emacs.d/base.el")
 (load "~/.emacs.d/packages.el")
 (load "~/.emacs.d/ui.el")
-(load "~/.emacs.d/langs.el")
+(load "~/.emacs.d/languages.el")
+(load "~/.emacs.d/keymap.el")
