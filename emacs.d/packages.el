@@ -6,7 +6,7 @@
 (defvar my-packages
   '(ample-theme anaconda-mode diminish dired+ evil evil-matchit evil-surround 
     fic-mode flycheck flx-ido projectile puppet-mode smooth-scrolling
-    spaceline company company-anaconda pyenv-mode)
+    spaceline company company-anaconda pyenv-mode rainbow-mode)
   "A list of packages to install"
   )
 
@@ -27,9 +27,6 @@
 )
 
 ;; Load configurations
-;(mapc (lambda (name) (with-demoted-errors (load (concat "~/.emacs.d/packages.d/" (symbol-name name) ".el") nil t)))
-; my-packages
-;)
-
-(load "~/.emacs.d/packages.d/evil.el")
-(load "~/.emacs.d/packages.d/flycheck.el")
+(mapc (lambda (name) (with-demoted-errors (load (concat "~/.emacs.d/packages.d/" (symbol-name name) ".el") nil t)))
+ my-packages
+)
