@@ -13,3 +13,4 @@ url/
 *.log
 .DS_Store
 **/*.elc
+.projectile
