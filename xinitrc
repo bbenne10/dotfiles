@@ -40,5 +40,15 @@ if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
   dbus-launch --sh-syntax --exit-with-session
 fi
 
+if [ -f /etc/X11/xinit/xinitrc.d/50-systemd-user.sh ]; then
+ . /etc/X11/xinit/xinitrc.d/50-systemd-user.sh
+fi
+
+if which gnome-keyring-daemon >/dev/null; then
+  dbus-update-activation-environment --systemd DISPLAY
+  eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+  export SSH_AUTH_SOCK
+fi
+
 ~/.bin/stat_line &
 exec ~/.bin/dwm
