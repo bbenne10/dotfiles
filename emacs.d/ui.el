@@ -1,7 +1,8 @@
-(set-frame-font "Iosevka-11")
-(setq default-frame-alist '((font . "Iosevka-11")))
+(set-frame-font "Iosevka-10")
+(setq default-frame-alist '((font . "Iosevka-10")))
 
-(load-theme 'ample-flat)
+(load-theme 'sanityinc-tomorrow-day)
+(set-face-background 'hl-line "#efefef")
 
 (scroll-bar-mode 0)
 (menu-bar-mode 0)

@@ -3,3 +3,6 @@
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode ""))
 (eval-after-load "projectile" '(diminish 'projectile-mode ""))
 (eval-after-load "company" '(diminish 'company-mode ""))
+(eval-after-load "grizzl" '(diminish 'company-mode ""))
+(eval-after-load "anaconda" '(diminish 'anaconda-mode ""))
+(eval-after-load "outline" '(diminish 'outline-mode ""))
