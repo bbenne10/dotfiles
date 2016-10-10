@@ -1,11 +1,11 @@
 (defun delete-flycheck-errors-list ()
   (interactive)
-  (cond (get-buffer-window "*Flycheck errors*" "visible")
-        (delete-window (get-buffer-window "*Flycheck-errors*" "visible")))
+  (if (get-buffer-window "*Flycheck errors*" "visible")
+        (delete-window (get-buffer-window "*Flycheck errors*" "visible")))
 )
 
 (defun python-insert-trace ()
-  ;; insert a line that imports pdb and sets a trace just below the current line
+  ;; insert a line that impots pdb and sets a trace just below the current line
   (interactive)
   (move-end-of-line 1)
   (insert "\n")
