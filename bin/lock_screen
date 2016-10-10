@@ -1,4 +1,4 @@
 rm ~/.available
 mpc pause
-sxlock
+xscreensaver-command -lock
 touch ~/.available
