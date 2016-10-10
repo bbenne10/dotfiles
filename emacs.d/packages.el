@@ -4,9 +4,31 @@
   '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (defvar my-packages
-  '(ample-theme anaconda-mode diminish dired+ evil evil-matchit evil-surround
-    fic-mode flycheck flx-ido projectile puppet-mode smooth-scrolling
-    spaceline company company-anaconda pyenv-mode rainbow-mode notmuch web-mode)
+  '(ample-theme
+    anaconda-mode
+    base16-theme
+    counsel
+    counsel-projectile
+    diminish
+    dired+
+    evil
+    evil-matchit
+    evil-numbers
+    evil-surround
+    evil-tabs
+    evil-visual-mark-mode
+    fic-mode
+    flycheck
+    projectile
+    puppet-mode
+    smooth-scrolling
+    spaceline
+    company
+    company-anaconda
+    pyenv-mode
+    pyenv-mode-auto
+    rainbow-mode
+    web-mode)
   "A list of packages to install"
   )
 
@@ -29,6 +51,7 @@
 ;; Load configurations
 (mapc (lambda (name)
        (message "Loading ~/.emacs.d/packages.d/%s.el" (symbol-name name))
-       (with-demoted-errors (load (concat "~/.emacs.d/packages.d/" (symbol-name name) ".el") nil t)))
+       (with-demoted-errors (load-file (concat "~/.emacs.d/packages.d/" (symbol-name name) ".el")))
+       )
  my-packages
 )
