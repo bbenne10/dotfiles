@@ -11,7 +11,7 @@
     ("/home/bryan/.bin" "/usr/local/sbin" "/usr/local/bin" "/usr/bin" "/opt/android-sdk/tools" "/usr/lib/jvm/default/bin" "/usr/bin/site_perl" "/usr/bin/vendor_perl" "/usr/bin/core_perl" "/home/bryan/.gem/ruby/2.3.0/bin" "/usr/lib/emacs/25.1.50/x86_64-unknown-linux-gnu" "/home/bryan/.pyenv/plugins/pyenv-virtualenv/shims" "/home/bryan/.pyenv/shims" "/home/bryan/.pyenv/bin")))
  '(package-selected-packages
    (quote
-    (lua-mode evil-visual-mark-mode origami company-mode material-theme base16 base16-theme color-theme-sanityinc-tomorrow ## markdown-preview-eww markdown-preview-mode markdown-mode evil-mu4e web-mode go-mode avy evil-vimish-fold vimish-fold persp-projectile perspective grizzl helm-projectile yafolding nm pyenv-mode company-anaconda company spaceline smooth-scrolling puppet-mode projectile flx-ido flycheck fic-mode evil-surround evil-matchit evil dired+ diminish anaconda-mode ample-theme)))
+    (wanderlust lua-mode evil-visual-mark-mode origami company-mode material-theme base16 base16-theme color-theme-sanityinc-tomorrow ## markdown-preview-eww markdown-preview-mode markdown-mode evil-mu4e web-mode go-mode avy evil-vimish-fold vimish-fold persp-projectile perspective grizzl helm-projectile yafolding nm pyenv-mode company-anaconda company spaceline smooth-scrolling puppet-mode projectile flx-ido flycheck fic-mode evil-surround evil-matchit evil dired+ diminish anaconda-mode ample-theme)))
  '(term-file-aliases
    (quote
     (("st-256color" . "xterm-256color")

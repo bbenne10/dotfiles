@@ -49,6 +49,8 @@ set query_command = "/home/bryan/.mutt/ldap_addr_query '%s'"
 
 source ~/.mutt/colors/kolor_colors.muttrc
 
+# set record="+sent"
+
 set nm_record
 set nm_record_tags = "-inbox sent me"
 

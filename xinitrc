@@ -10,8 +10,9 @@ xmodmap ~/.xmodmap;
 
 ## MACHINE SPECIFIC STUFF =====================================================
 if [ "$(hostname)" = "CTISL-bbennett-arch-desktop" ]; then
-  xrandr --output VGA1 --auto --rotate left --output HDMI1 --left-of VGA1 --auto --primary --output HDMI2 --right-of VGA1 --auto
+  xrandr --output VGA1 --auto --output HDMI1 --left-of VGA1 --auto --primary --output HDMI2 --right-of VGA1 --auto
   test_and_run remind -z -k'~/.bin/remind_notify %s' ~/.remind/work.rem
+  test_and_run evolution &
 fi
 
 ## FONTS ======================================================================
@@ -27,7 +28,10 @@ fi;
 test_and_run dunst &
 test_and_run emacs --daemon &
 test_and_run unclutter -noevents &
+test_and_run xscreensaver -nosplash &
 test_and_run firefox &
+test_and_run compton &
+test_and_run redshift &
 
 if [ -e ~/.fehbg -a $(which feh) ]; then
   ~/.fehbg
@@ -52,3 +56,7 @@ fi
 
 ~/.bin/stat_line &
 exec ~/.bin/dwm
+# test_and_run albert &
+# test_and_run lalcal --width 160 --font "DroidSans" --calfontsize 12 --color "#262626" --format "%m/%d/%y @ %l:%M %p" &
+# exec openbox
+# exec awesome
