@@ -11,6 +11,7 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(setq x-select-enable-clipboard nil)
+;; Enable yanking and pasting to and from both clipboards
+(setq x-select-enable-clipboard t)
 (setq x-select-enable-primary t)
 (setq mouse-drag-copy-region t)

@@ -28,6 +28,7 @@
     pyenv-mode
     pyenv-mode-auto
     rainbow-mode
+    wanderlust
     web-mode)
   "A list of packages to install"
   )

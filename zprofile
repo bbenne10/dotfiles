@@ -1,5 +1,9 @@
 if which mopidy >/dev/null; then
-  mopidy --config ~/.config/mopidy>!/tmp/mopidy_bryan.log&
+  mopidy --config ~/.config/mopidy>!/tmp/mopidy_bryan.log &
+fi
+
+if which davmail >/dev/null; then
+  davmail ~/.config/davmail/properties &
 fi
 
 PATH=~/.bin:$PATH

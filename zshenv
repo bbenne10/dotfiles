@@ -1,7 +1,7 @@
 # if you're here looking for $PATH, you're in the wrong spot. Check ~/.zprofile
 # (long story short: Arch devs won't properly support ~/.zshenv)
 
-export PKG_PATH=https://stable.mtier.org/updates/$(uname -r)/$(arch -s):http://mirror.esc7.net/pub/OpenBSD/5.9/packages/amd64/
+export PKG_PATH=https://stable.mtier.org/updates/$(uname -r)/amd64/:http://mirror.esc7.net/pub/OpenBSD/5.9/packages/amd64/
 
 export LANG=en_US.UTF-8
 export EDITOR='emacsclient -t'
@@ -30,3 +30,6 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[38;5;246m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[04;38;5;146m'
+
+export PUSHOVER_USER_KEY='uC8SZXDa3BzBf29fqBdLvjgvZrXGpH'
+export PUSHOVER_REMIND_KEY='aN1zELwYfHsSaDXx5u8B1tCDSnyFQD'
