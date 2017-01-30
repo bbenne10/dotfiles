@@ -1,0 +1,44 @@
+# Moving around
+bind attach,browser,index       gg  first-entry
+bind attach,browser,index       G   last-entry
+bind pager                      gg  top
+bind pager                      G   bottom
+
+# Scrolling
+bind attach,browser,pager,index \CF next-page
+bind attach,browser,pager,index \CB previous-page
+bind attach,browser,pager,index \Cu half-up
+bind attach,browser,pager,index \Cd half-down
+
+bind pager,index                dd  delete-message
+
+# Threads
+bind browser,pager,index        N   search-opposite
+bind pager,index                dT  delete-thread
+bind pager,index                dt  delete-subthread
+bind pager,index                gt  next-thread
+bind pager,index                gT  previous-thread
+bind index                      za  collapse-thread
+bind index zA collapse-all # Missing :folddisable/foldenable
+
+# Remove the "unread" tag when viewing a message
+macro index "<enter>" "<modify-labels>-unread<enter><display-message>" "Display a message"
+macro index "<return>" "<modify-labels>-unread<enter><display-message>" "Display a message"
+
+# Archive/Delete message
+macro index,pager dd "<modify-labels-then-hide>+deleted -inbox -unread<enter><sync-mailbox>" "Delete message"
+macro index,pager a "<modify-labels-then-hide>-inbox -unread<enter><sync-mailbox>" "Archive message"
+
+# Toggle some useful tags
+macro index,pager tt "<modify-labels-then-hide>!todo<enter><sync-mailbox>" "Tag a message 'todo'"
+
+bind index,pager // vfolder-from-query
+bind index e modify-labels
+
+bind editor <Tab> complete-query
+
+bind index \Cn sidebar-next
+bind index \Cp sidebar-prev
+bind index <space> sidebar-open
+
+# macro index,pager ,r ":unset wait_key;\n|add_reminder\n:set wait_key; unset pipe_decode\n" "record a reminder"

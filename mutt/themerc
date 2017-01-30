@@ -1,0 +1,69 @@
+set pager_format = " %C - %[%H:%M] %.20v, %s%* %?H? [%H] ?"
+set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+set index_format="%?GU?%GU& ? %?Gs?%Gs& ? %?GR?%GR& ? %?GD?%GD& ? (%[%d %b]) %-20.20n %s %> %g"
+set arrow_cursor
+
+tag-transforms "inbox"   " "   \
+               "unread"  "❋"   \
+               "replied" "↻"  \
+               "sent"    "➥"  \
+               "todo"    "T"   \
+               "deleted" "✘" \
+               "signed"  "✔" \
+               "invites" "CAL"
+
+tag-formats "inbox"   "GI" \
+            "unread"  "GU" \
+            "replied" "GR" \
+            "sent"    "GS" \
+            "todo"    "Gt" \
+            "deleted" "GD" \
+            "invites" "Gi" \
+            "signed"  "Gs"
+
+set nm_hidden_tags = "unread,inbox,replied,signed"
+
+color index              color250 default               ".*"
+color body               color248        default        ".*"
+color indicator          black           color4
+color status             color4          default
+color attachment         color240        default
+color hdrdefault         color240        default
+color signature          color235        default
+
+color header             color250        default        "^(From:)"
+color header             color250        default        "^(Subject:)"
+color error              color88         default
+
+color quoted             color240        default
+color body               color240        default        "^On .* wrote:$"
+color body               color240        default        "^[[:space:]]{4}.+"
+# TODO: More of this but with quoted{1..5} and more spaces
+
+color body               green           default        "Verification successful"
+
+color attach_headers     color2          default        "Autoview"
+# color   attach_headers     color250        default        "^\\[--"
+# color   attach_headers     color250        default        "--]$"
+color attach_headers     green           default        "Type: [a-z]+/[a-z0-9\-]+"
+color attach_headers     green           default        "Size: [0-9\.]+[KM]"
+color attach_headers     color2          default        "Good signature from.*"
+color attach_headers     brightred       default        "Bad signature from.*"
+color attach_headers     brightred       default        "BAD signature from.*"
+color attach_headers     brightred       default        "Note: This key has expired!"
+color attach_headers     brightmagenta   default        "Problem signature from.*"
+color attach_headers     brightmagenta   default        "WARNING: This key is not certified with a trusted signature!"
+color attach_headers     brightmagenta   default        "         There is no indication that the signature belongs to the owner."
+color attach_headers     brightmagenta   default        "can't handle these multiple signatures"
+color attach_headers     brightmagenta   default        "signature verification suppressed"
+color attach_headers     brightmagenta   default        "invalid node with packet of type"
+
+# email and url regexes: these suck
+color body               color5          default        "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
+color body               color5          default        "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]),)*@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]):)?[0-9a-z_.+%$-]+@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\])"
+
+# and now color specific tags
+color index              color10         default        "~Y '\W?todo\W?'"
+color index_tag          red             black          "deleted"
+color index              color11         default        "~N"
+color index_tag         color10          default        "signed"
