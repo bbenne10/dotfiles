@@ -6,10 +6,6 @@
 (package-initialize)
 
 (require 'cl)
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
-
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
