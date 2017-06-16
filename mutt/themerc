@@ -1,7 +1,7 @@
 set pager_format = " %C - %[%H:%M] %.20v, %s%* %?H? [%H] ?"
 set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
 set index_format="%?GU?%GU& ? %?Gs?%Gs& ? %?GR?%GR& ? %?GD?%GD& ? (%[%d %b]) %-20.20n %s %> %g"
-set arrow_cursor
+# set arrow_cursor
 
 tag-transforms "inbox"   " "   \
                "unread"  "❋"   \
@@ -21,7 +21,8 @@ tag-formats "inbox"   "GI" \
             "invites" "Gi" \
             "signed"  "Gs"
 
-set nm_hidden_tags = "unread,inbox,replied,signed"
+# set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted,deleted"
+set nm_hidden_tags = "unread,inbox,replied,signed,deleted"
 
 color index              color250 default               ".*"
 color body               color248        default        ".*"
@@ -63,7 +64,8 @@ color body               color5          default        "([a-z][a-z0-9+-]*://(((
 color body               color5          default        "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]),)*@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]):)?[0-9a-z_.+%$-]+@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\])"
 
 # and now color specific tags
-color index              color10         default        "~Y '\W?todo\W?'"
-color index_tag          red             black          "deleted"
+color index              color10         default        "~Y '\W?todo\W?'" # color todo messages
+color index              blue            default        "~T"  # color 'tagged' messages (internal mutt tag, not notmuch)
+color index_tag          red             default        "deleted"
 color index              color11         default        "~N"
 color index_tag         color10          default        "signed"

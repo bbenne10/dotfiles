@@ -1,7 +1,7 @@
 source /usr/share/doc/mutt/samples/smime.rc
-source personalrc
 source themerc
 source keysrc
+source personalrc
 
 set quit
 unset mark_old
@@ -19,7 +19,6 @@ set signature = "~/.signature"
 set header_cache = "~/.mutt/h_cache"
 # set message_cachedir = "~/.mutt/b_cache"
 
-set mime_forward
 set mime_forward_rest
 set abort_noattach=ask-yes
 
@@ -58,10 +57,7 @@ set sidebar_folder_indent
 set sidebar_short_path
 set sidebar_indent_string = '└─'
 
-set spoolfile="=Inbox"
-set postponed="=Drafts"
-set record="=Sent Items"
-set sendmail="/usr/bin/msmtp -a work"
-set timeout=60
+set timeout=5
+# timeout-hook 'exec sync-mailbox'
 set mail_check_stats = yes
 set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
