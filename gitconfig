@@ -4,7 +4,7 @@
 [core]
 	excludesfile = /home/bryan/.gitignore
 [push]
-  default = current
+	default = current
 [diff]
   tool = vimdiff
 [diftool]
@@ -27,3 +27,5 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	required = true
+[pull]
+	default = current
