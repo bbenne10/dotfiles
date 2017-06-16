@@ -21,18 +21,22 @@ bind pager,index                gT  previous-thread
 bind index                      za  collapse-thread
 bind index zA collapse-all # Missing :folddisable/foldenable
 
-# Remove the "unread" tag when viewing a message
-macro index "<enter>" "<modify-labels>-unread<enter><display-message>" "Display a message"
-macro index "<return>" "<modify-labels>-unread<enter><display-message>" "Display a message"
+bind pager,index                rr  group-reply
+bind pager,index                ro  reply
+
+macro index,pager gl "<change-vfolder>?/"
+macro index,pager gi "<change-vfolder>Inbox<enter>"
 
 # Archive/Delete message
-macro index,pager dd "<modify-labels-then-hide>+deleted -inbox -unread<enter><sync-mailbox>" "Delete message"
-macro index,pager a "<modify-labels-then-hide>-inbox -unread<enter><sync-mailbox>" "Archive message"
+macro index,pager dd "<modify-labels-then-hide>!deleted -inbox -unread<enter>" "Delete message"
+macro index,pager a "<modify-labels-then-hide>-inbox -unread<enter>" "Archive message"
 
 # Toggle some useful tags
-macro index,pager tt "<modify-labels-then-hide>!todo<enter><sync-mailbox>" "Tag a message 'todo'"
+macro index,pager tt "<modify-labels-then-hide>!todo<enter>" "Tag a message 'todo'"
+macro index,pager ts "<modify-labels-then-hide>!school<enter>" "Tag a message 'school'"
 
 bind index,pager // vfolder-from-query
+bind index,pager \\ search
 bind index e modify-labels
 
 bind editor <Tab> complete-query
@@ -41,4 +45,4 @@ bind index \Cn sidebar-next
 bind index \Cp sidebar-prev
 bind index <space> sidebar-open
 
-# macro index,pager ,r ":unset wait_key;\n|add_reminder\n:set wait_key; unset pipe_decode\n" "record a reminder"
+macro index,pager ca ":unset wait_key;\n|add_reminder\n:set wait_key; unset pipe_decode\n" "record a reminder"
