@@ -11,6 +11,9 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+(setq prettify-symbols-unprettify-at-point t)
+(prettify-symbols-mode)
+
 ;; Enable yanking and pasting to and from both clipboards
 (setq x-select-enable-clipboard t)
 (setq x-select-enable-primary t)
