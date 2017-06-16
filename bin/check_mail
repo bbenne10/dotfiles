@@ -3,6 +3,7 @@
 function alert_with_count() {
   title=$1
   notmuch tag +inbox -new 'tag:new and tag:unread'
+  notmuch tag -new 'tag:new'
 
   count=$(notmuch count tag:inbox and tag:unread)
   if [[ count -gt 1 ]]; then
@@ -41,44 +42,63 @@ if grep -q "Channel work" ~/.mbsyncrc; then
   mbsync work 1>&2 2>~/.mail/sync.log
   notmuch new
 
-  # Remove Logwatch emails
+  #Remove Logwatch emails
   notmuch tag +deleted -new -- tag:new and subject:'logwatch for'
 
-  # Remove Titan Queues Stuck
+  #Remove Titan Queues Stuck
   notmuch tag +deleted -unread -new -- 'subject:Titan Queues Stuck: groups_needing_correlation
     and from:titan.admin@gtri.gatech.edu and to:titan.admin@gtri.gatech.edu'
 
   notmuch tag +deleted -unread -new -- 'subject:Titan Queues Stuck: done
     and from:titan.admin@gtri.gatech.edu and to:titan.admin@gtri.gatech.edu'
 
-  # Remove the USN stuff from inbox
-  notmuch tag -inbox +USN -new -- 'to:ubuntu-security-announce@lists.ubuntu.com'
+  #Remove the USN stuff from inbox
+  notmuch tag -inbox +usn -new -- 'to:ubuntu-security-announce@lists.ubuntu.com'
 
-  # Remove the openssl-announce mailing list
-  notmuch tag +OpenSSL -inbox -new -- 'to:openssl-announce@openssl.org'
+  #Remove the openssl-announce mailing list
+  notmuch tag +openssl -inbox -new -- 'to:openssl-announce@openssl.org'
 
-  # Remove OpenBSD's mail server status reports
-  notmuch tag +cron -new -unread -inbox -- tag:new and from:'Charlie Root'
+  #Remove OpenBSDs mail server status reports
+  notmuch tag +crons -new -unread -inbox -- tag:new and from:'Charlie Root'
 
-  # Remove Apiary's usage report
-  notmuch tag +reports +cron -new -unread -inbox -- 'tag:new and subject:Usage report for'
-  notmuch tag +cron -new -inbox -unread -- '(subject:Cron <mars@ or subject:Cron <root@) and from:Cron Daemon'
+  #Remove Apiarys usage report
+  notmuch tag +reports +crons -new -unread -inbox -- 'tag:new and subject:Usage report for'
+  notmuch tag +crons -new -inbox -unread -- '(subject:Cron <mars@ or subject:Cron <root@) and from:Cron Daemon'
 
-  # Tag mail from Gvu/MS-COC/Ga Tech in general so that it's available, but unseen
-  notmuch tag +GVU -new -- 'to:gvu-students-hci@cc.gatech.edu or to:gvu-students-grad@cc.gatech.edu'
-  notmuch tag +COC -new -- subject:'Ms-coc-announce'
+  #Tag mail from Gvu/MS-COC/Ga Tech in general so that it is available, but unseen
+  notmuch tag +gvu -new -- 'to:gvu-students-hci@cc.gatech.edu or to:gvu-students-grad@cc.gatech.edu'
+  notmuch tag +coc -new -- subject:'Ms-coc-announce'
+  notmuch tag +coc -new -- 'tag:new AND to:ms-coc-official@cc.gatech.edu'
   notmuch tag +deleted -new -inbox -- 'to:studentevents@lists.gatech.edu'
   notmuch tag +deleted -new -inbox -- 'to:dailydigest@lists.gatech.edu'
   notmuch tag +deleted -new -inbox -- 'from:updates@gtathletics.fan-one.com'
 
-  # Handle some tags from JIRA/Stash
-  notmuch tag +jira +inbox -new -- tag: new AND 'from:ctisl.jira@gtri.gatech.edu'
-  notmuch tag +stash +inbox -new -- tag: new AND 'from:ctisl.stash@gtri.gatech.edu'
+  #Handle some tags from JIRA/Stash
+  notmuch tag +jira +inbox -new -- "tag:new AND from:ctisl.jira@gtri.gatech.edu"
+  notmuch tag +jira +apiary -inbox -unread -new -- "tag:new AND subject:[JIRA] (MAL-"
+  notmuch tag +jira +apiary +dss -inbox -unread -new -- "tag:new AND subject:[JIRA] (DSSA-"
 
-  # Tag mail that I sent as 'sent' and remove it from my inbox
+  notmuch tag +stash +inbox -new -- "tag:new AND from:ctisl.stash@gtri.gatech.edu"
+  notmuch tag +stash -inbox -new -- "tag:new AND subject:/AP\/.+\s-/"
+
+  #Some intial THEIA tagging from their mailing list
+  notmuch tag +theia -new -- 'tag:new AND to:theia-dev@googlegroups.com'
+
+  #Initial handling of some school emails
+  notmuch tag +school -new -- 'tag:new AND to:*@t-square.gatech.edu'
+  notmuch tag +school -new -- 'tag:new AND from:no-reply@piazza.com'
+
+  #Tag mail that I sent as 'sent' and remove it from my inbox
   notmuch tag +sent -inbox -new 'from:Bryan.Bennett@gtri.gatech.edu or from:bbennett37@gatech.edu or from:bbenne10@gmail.com'
 
-  # Now some general tags that somewhat replicate folders
-  # notmuch tag +Apiary "subject:Apiary"
-  alert_with_count "Work"
+  #Now handle tagging based on upstreams folders
+  pushd ~/.mail/work/ > /dev/null
+  find . -maxdepth 1 -type d -printf '%f\n' | while read folder; do
+    if [[ $folder != '.'* ]]; then
+      tag=$(echo $folder | tr '[:upper:]' '[:lower:]' | tr ' ' '_')
+      notmuch tag -new +"$tag" "folder:$folder and tag:new"
+    fi
+  done
+  popd > /dev/null
+  alert_with_count 'Work'
 fi
