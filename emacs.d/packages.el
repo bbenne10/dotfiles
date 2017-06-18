@@ -26,12 +26,29 @@
 )
 (use-package ample-theme)
 (use-package anaconda-mode
-  :defer t
   :commands anaconda-mode
   :diminish anaconda-mode
   :config
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  )
+    (defun python-insert-trace ()
+      ;; insert a line that impots pdb and sets a trace just below the current line
+      (interactive)
+      (move-end-of-line 1)
+      (insert "\n")
+      (indent-according-to-mode)
+      (insert "import pdb; pdb.set_trace()")
+    )
+    (add-hook
+   'python-mode-hook
+   (function
+    (lambda ()
+      (setq evil-shift-width python-indent-offset)
+      (define-key evil-normal-state-map (kbd "C-c g") 'anaconda-mode-find-definitions)
+      (define-key evil-normal-state-map (kbd "C-c a") 'anaconda-mode-find-assignments)
+      (define-key evil-normal-state-map (kbd "C-c r") 'anaconda-mode-find-references)
+      (define-key evil-normal-state-map (kbd "C-c ?") 'anaconda-mode-show-doc)
+      (define-key evil-normal-state-map (kbd "C-c t") 'python-insert-trace)
+      'anaconda-mode)))
+)
 (use-package base16-theme
   :config
   (load-theme 'base16-gruvbox-dark-medium)
@@ -71,8 +88,11 @@
 (use-package evil-visual-mark-mode
   :config
   (evil-visual-mark-mode 1)
-  )
-(use-package fic-mode)
+)
+(use-package fic-mode
+  :config
+    (add-hook 'prog-mode-hook (function (lambda () (fic-mode 1))))
+)
 (use-package flycheck
   :diminish flycheck-mode
   :init
@@ -97,14 +117,17 @@
 )
 (use-package hideshow
   :diminish hs-minor-mode
+  :config
+    (add-hook 'prog-mode-hook (function (lambda() (hs-minor-mode))))
+
 )
 (use-package magit
   :diminish magit-auto-revert-mode
 )
 (use-package neotree
   :init
-  (setq neo-theme 'icons)
-
+    (setq neo-theme 'icons)
+  :commands (neotree-toggle neotree-hide neotree-show)
   :config
     (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
     (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
@@ -131,7 +154,11 @@
 )
 (use-package pyenv-mode)
 (use-package pyenv-mode-auto)
-(use-package rainbow-delimiters)
+(use-package rainbow-delimiters
+  :config
+    (add-hook 'c-mode-common-hook (function (lambda () (
+      rainbow-delimiters-mode-enable))))
+)
 (use-package rainbow-mode)
 (use-package undo-tree
   :diminish undo-tree-mode)
