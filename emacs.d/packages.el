@@ -20,7 +20,9 @@
 (use-package all-the-icons)
 (use-package spaceline-all-the-icons
   :after spaceline-config
-  :config (spaceline-all-the-icons-theme)
+  :config
+    (setq spaceline-all-the-icons-separator-type 'cup)
+    (spaceline-all-the-icons-theme)
 )
 (use-package ample-theme)
 (use-package anaconda-mode
