@@ -16,7 +16,7 @@
   ;; We're first so we define the maps we override later
   :config
   (evil-mode 1)
-  )
+)
 (use-package all-the-icons)
 (use-package spaceline-all-the-icons
   :after spaceline-config
@@ -39,35 +39,35 @@
 (use-package company
   :diminish company-mode
   :config
-  (setq company-tooltip-limit 20
-        company-tooltip-align-annotations t)
-  (global-company-mode 1)
-  )
+    (setq company-tooltip-limit 20
+          company-tooltip-align-annotations t)
+    (global-company-mode 1)
+)
 (use-package company-anaconda
   :init (add-to-list 'company-backends 'company-anaconda)
-  )
+)
 (use-package counsel
   :config
-  (define-key evil-normal-state-map (kbd "/") 'swiper)
-  (define-key evil-normal-state-map (kbd "<SPC>f") 'counsel-ag-project-at-point)
-  (define-key evil-normal-state-map (kbd "M-x") 'counsel-M-x)
-  (define-key evil-normal-state-map (kbd "<SPC>B") 'ivy-switch-buffer)
-  (define-key evil-normal-state-map (kbd "<SPC>p") 'counsel-find-file)
-  )
+    (define-key evil-normal-state-map (kbd "/") 'swiper)
+    (define-key evil-normal-state-map (kbd "<SPC>f") 'counsel-ag-project-at-point)
+    (define-key evil-normal-state-map (kbd "M-x") 'counsel-M-x)
+    (define-key evil-normal-state-map (kbd "<SPC>B") 'ivy-switch-buffer)
+    (define-key evil-normal-state-map (kbd "<SPC>p") 'counsel-find-file)
+)
 (use-package editorconfig)
 (use-package evil-matchit
   :config
   (global-evil-matchit-mode 1)
-  )
+)
 (use-package evil-numbers
   :config
   (define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
   (define-key evil-normal-state-map (kbd "C-x") 'evil-numbers/dec-at-pt)
-  )
+)
 (use-package evil-surround
   :config
   (global-evil-surround-mode 1)
-  )
+)
 (use-package evil-visual-mark-mode
   :config
   (evil-visual-mark-mode 1)
@@ -84,17 +84,17 @@
                  (side . bottom)
                  (window-height . 0.2)))
   :config
-  (define-key evil-normal-state-map (kbd "<SPC>lo") 'flycheck-list-errors)
-  (define-key evil-normal-state-map (kbd "<SPC>lc") 'delete-flycheck-errors-list)
-  (define-key evil-normal-state-map (kbd "<SPC>ln") 'flycheck-next-error)
-  (define-key evil-normal-state-map (kbd "<SPC>lp") 'flycheck-previous-error)
-  (global-flycheck-mode)
-  )
+    (define-key evil-normal-state-map (kbd "<SPC>lo") 'flycheck-list-errors)
+    (define-key evil-normal-state-map (kbd "<SPC>lc") 'delete-flycheck-errors-list)
+    (define-key evil-normal-state-map (kbd "<SPC>ln") 'flycheck-next-error)
+    (define-key evil-normal-state-map (kbd "<SPC>lp") 'flycheck-previous-error)
+    (global-flycheck-mode)
+)
 (use-package flycheck-pos-tip
   :ensure t
   :config
   (flycheck-pos-tip-mode)
-  )
+)
 (use-package hideshow
   :diminish hs-minor-mode
 )
@@ -106,18 +106,18 @@
   (setq neo-theme 'icons)
 
   :config
-  (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-  (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-  (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-  (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-  (define-key evil-normal-state-map (kbd "<SPC>t") 'neotree-toggle)
+    (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+    (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+    (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+    (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+    (define-key evil-normal-state-map (kbd "<SPC>t") 'neotree-toggle)
 )
 (use-package projectile)
 (use-package counsel-projectile
   :config
-  (counsel-projectile-on)
-  (define-key evil-normal-state-map (kbd "<SPC>b") 'counsel-projectile-switch-to-buffer)
-  (define-key evil-normal-state-map (kbd "<SPC>e") 'counsel-projectile-find-file)
+    ;; (counsel-projectile-on)
+    (define-key evil-normal-state-map (kbd "<SPC>b") 'counsel-projectile-switch-to-buffer)
+    (define-key evil-normal-state-map (kbd "<SPC>e") 'counsel-projectile-find-file)
 )
 (use-package puppet-mode)
 (use-package spaceline-config
