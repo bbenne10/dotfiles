@@ -6,7 +6,8 @@ test_and_run() {
   fi
 }
 
-xmodmap ~/.xmodmap;
+setxkbmap -option caps:escape
+
 
 ## MACHINE SPECIFIC STUFF =====================================================
 if [ "$(hostname)" = "CTISL-bbennett-arch-desktop" ]; then
