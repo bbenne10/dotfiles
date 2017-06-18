@@ -17,10 +17,19 @@ if grep -q "Channel gmail" ~/.mbsyncrc; then
   mbsync gmail
   notmuch new
 
-  notmuch tag -inbox -new +suckless-dev to:dev@suckless.org OR to:dev+help@suckless.org
-  notmuch tag -inbox -new +suckless-hacker to:hacker@suckless.org
+  notmuch tag -inbox -new +suckless +dev to:dev@suckless.org OR to:dev+help@suckless.org
+  notmuch tag -inbox -new +suckless +hackers to:hacker@suckless.org
+
+  notmuch tag -inbox -new +openbsd +ports to:ports@openbsd.org
+  notmuch tag -inbox -new +openbsd +ports to:ports@lists.openbsd.org
+
+  notmuch tag -inbox -new +openbsd +misc to:misc@lists.openbsd.org
+  notmuch tag -inbox -new +openbsd +misc to:misc@openbsd.org
+
   notmuch tag -inbox -new +crux to:crux.lists.crux.nu
+
   notmuch tag -new +hosting from:admin@valcatohosting.com
+
   notmuch tag +deleted -new -inbox from:enewsletter@stateboroherald.com \
           OR from:group-digests@linkedin.com OR from:service@stumbleupon.com \
           OR from:newsletter@instructables.com OR from:newsletter@reply.ticketmaster.com \
