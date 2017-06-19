@@ -1,4 +1,5 @@
-(setq default-frame-alist '((font . "Fira Code:size=12")))
+(setq default-frame-alist '((font . "Hasklig-10")))
+
 (defun my-correct-symbol-bounds (pretty-alist)
   (mapcar (lambda (el)
             (setcdr el (string ?\t (cdr el)))
