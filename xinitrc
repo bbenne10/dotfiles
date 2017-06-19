@@ -13,7 +13,6 @@ setxkbmap -option caps:escape
 if [ "$(hostname)" = "CTISL-bbennett-arch-desktop" ]; then
   xrandr --output VGA1 --auto --output HDMI1 --left-of VGA1 --auto --primary --output HDMI2 --right-of VGA1 --auto
   test_and_run remind -z -k'~/.bin/remind_notify %s' ~/.remind/work.rem
-  test_and_run evolution &
 fi
 
 ## FONTS ======================================================================
@@ -47,12 +46,6 @@ fi
 
 if [ -f /etc/X11/xinit/xinitrc.d/50-systemd-user.sh ]; then
  . /etc/X11/xinit/xinitrc.d/50-systemd-user.sh
-fi
-
-if which gnome-keyring-daemon >/dev/null; then
-  dbus-update-activation-environment --systemd DISPLAY
-  eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
-  export SSH_AUTH_SOCK
 fi
 
 ~/.bin/stat_line &

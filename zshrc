@@ -40,16 +40,12 @@ if ! zgen saved; then
   echo "Creating a zgen save..."
   zgen oh-my-zsh
   zgen load zsh-users/zsh-syntax-highlighting
-  zgen load rimraf/k
   zgen load Tarrasch/zsh-autoenv
-
   zgen oh-my-zsh plugins/command-not-found
-  zgen oh-my-zsh plugins/golang
   zgen oh-my-zsh plugins/httpie
   zgen oh-my-zsh plugins/pyenv
   zgen oh-my-zsh plugins/supervisor
   zgen oh-my-zsh plugins/vagrant
-  zgen oh-my-zsh plugins/z
 
   zgen load bbenne10/antigen-themes themes/bbennett2
   zgen save
