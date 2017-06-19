@@ -22,6 +22,7 @@
   :after spaceline-config
   :config
     (setq spaceline-all-the-icons-separator-type 'cup)
+    (spaceline-all-the-icons--setup-neotree)
     (spaceline-all-the-icons-theme)
 )
 (use-package ample-theme)
@@ -118,8 +119,8 @@
 (use-package hideshow
   :diminish hs-minor-mode
   :config
+    (setq hs-allow-nesting t)
     (add-hook 'prog-mode-hook (function (lambda() (hs-minor-mode))))
-
 )
 (use-package magit
   :diminish magit-auto-revert-mode
@@ -146,11 +147,13 @@
 (use-package spaceline-config
   :ensure spaceline
   :config
-  (setq evil-normal-state-tag "N")
-  (setq evil-insert-state-tag "I")
-  (setq evil-visual-state-tag "V")
+  (setq evil-insert-state-message nil
+        evil-visual-state-message nil
+        evil-visual-state-tag "V"
+        evil-insert-state-tag "I"
+        evil-normal-state-tag "N"
+  )
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-  (setq powerline-default-separator 'curve)
 )
 (use-package pyenv-mode)
 (use-package pyenv-mode-auto)
