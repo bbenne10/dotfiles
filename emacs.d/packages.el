@@ -163,7 +163,12 @@
     (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
     (define-key evil-normal-state-map (kbd "<SPC>t") 'neotree-toggle)
 )
-(use-package projectile)
+(use-package projectile
+  :diminish projectile-mode
+  :init
+    (setq projectile-completion-system 'ivy)
+    (setq projectile-enable-caching t)
+)
 (use-package counsel-projectile
   :config
     ;; (counsel-projectile-on)
