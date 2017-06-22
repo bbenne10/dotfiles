@@ -13,4 +13,3 @@
 (load "~/.emacs.d/packages.el")
 (load "~/.emacs.d/ui.el")
 (load "~/.emacs.d/languages.el")
-(load "~/.emacs.d/keymap.el")
