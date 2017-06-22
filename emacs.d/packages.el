@@ -90,7 +90,7 @@
   :config
     (add-hook 'emacs-lisp-mode-hook (lambda () (setq-local counsel-dash-docsets '("Emacs Lisp"))))
     (add-hook 'js-mode-hook (lambda () (setq-local counsel-dash-docsets '("Javascript" "MomentJS "))))
-    (add-hook 'python-mode-hook (lambda () (setq-local counsel-dash-docsets '("Python" "Flask" "Jinja"))))
+    (add-hook 'python-mode-hook (lambda () (setq-local counsel-dash-docsets '("Python3" "Flask" "Jinja"))))
     (add-hook 'scala-mode-hook (lambda () (setq-local counsel-dash-docsets '("Scala"))))
     (add-hook 'c++-mode-hook (lambda () (setq-local counsel-dash-docsets '("C++"))))
     (add-hook 'c-mode-hook (lambda () (setq-local counsel-dash-docsets '("C"))))
