@@ -64,10 +64,15 @@
   :init (add-to-list 'company-backends 'company-anaconda)
 )
 (use-package counsel
+  :init
+    (defun counsel-ag-project-at-point ()
+      (interactive)
+      (counsel-ag (thing-at-point 'symbol) (projectile-project-root))
+    )
   :config
     (define-key evil-normal-state-map (kbd "/") 'swiper)
-    (define-key evil-normal-state-map (kbd "<SPC>f") 'counsel-ag-project-at-point)
     (define-key evil-normal-state-map (kbd "M-x") 'counsel-M-x)
+    (define-key evil-normal-state-map (kbd "<SPC>f") 'counsel-ag-project-at-point)
     (define-key evil-normal-state-map (kbd "<SPC>B") 'ivy-switch-buffer)
     (define-key evil-normal-state-map (kbd "<SPC>p") 'counsel-find-file)
 )
