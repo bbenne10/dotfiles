@@ -76,6 +76,28 @@
     (define-key evil-normal-state-map (kbd "<SPC>B") 'ivy-switch-buffer)
     (define-key evil-normal-state-map (kbd "<SPC>p") 'counsel-find-file)
 )
+(use-package counsel-dash
+  :init
+    (setq counsel-dash-docsets-path "~/.emacs/dash-docsets"
+          counsel-dash-min-length 3
+          counsel-dash-browser-func 'eww
+    )
+
+    (defun counsel-dash-at-point ()
+      (interactive)
+      (counsel-dash (thing-at-point 'symbol))
+    )
+  :config
+    (add-hook 'emacs-lisp-mode-hook (lambda () (setq-local counsel-dash-docsets '("Emacs Lisp"))))
+    (add-hook 'js-mode-hook (lambda () (setq-local counsel-dash-docsets '("Javascript" "MomentJS "))))
+    (add-hook 'python-mode-hook (lambda () (setq-local counsel-dash-docsets '("Python" "Flask" "Jinja"))))
+    (add-hook 'scala-mode-hook (lambda () (setq-local counsel-dash-docsets '("Scala"))))
+    (add-hook 'c++-mode-hook (lambda () (setq-local counsel-dash-docsets '("C++"))))
+    (add-hook 'c-mode-hook (lambda () (setq-local counsel-dash-docsets '("C"))))
+    (add-hook 'sh-mode-hook (lambda () (setq-local counsel-dash-docsets '("Bash"))))
+    (define-key evil-normal-state-map (kbd "<SPC>d") 'counsel-dash-at-point)
+    (define-key evil-normal-state-map (kbd "<SPC>D") 'counsel-dash)
+)
 (use-package editorconfig)
 (use-package evil-matchit
   :config
