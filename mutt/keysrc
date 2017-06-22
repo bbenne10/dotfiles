@@ -1,3 +1,9 @@
+bind attach,browser,index,pager g   noop
+bind attach,browser,index,pager c   noop
+bind attach,browser,index,pager t   noop
+bind attach,browser,index       r   noop
+bind attach,browser,index       d   noop
+
 # Moving around
 bind attach,browser,index       gg  first-entry
 bind attach,browser,index       G   last-entry
@@ -35,8 +41,8 @@ macro index,pager a "<modify-labels-then-hide>-inbox -unread<enter>" "Archive me
 macro index,pager tt "<modify-labels-then-hide>!todo<enter>" "Tag a message 'todo'"
 macro index,pager ts "<modify-labels-then-hide>!school<enter>" "Tag a message 'school'"
 
-bind index,pager // vfolder-from-query
-bind index,pager \\ search
+bind index,pager / vfolder-from-query
+bind index,pager \Cs search
 bind index e modify-labels
 
 bind editor <Tab> complete-query
