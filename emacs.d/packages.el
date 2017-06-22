@@ -40,18 +40,15 @@
       (indent-according-to-mode)
       (insert "import pdb; pdb.set_trace()")
     )
-    (add-hook
-   'python-mode-hook
-   (function
-    (lambda ()
-      (setq evil-shift-width python-indent-offset)
-      (define-key evil-normal-state-map (kbd "C-c g") 'anaconda-mode-find-definitions)
-      (define-key evil-normal-state-map (kbd "C-c a") 'anaconda-mode-find-assignments)
-      (define-key evil-normal-state-map (kbd "C-c r") 'anaconda-mode-find-references)
-      (define-key evil-normal-state-map (kbd "C-c ?") 'anaconda-mode-show-doc)
-      (define-key evil-normal-state-map (kbd "C-c t") 'python-insert-trace)
-      'anaconda-mode)))
-)
+    (add-hook 'python-mode-hook (function (lambda ()
+        (setq evil-shift-width python-indent-offset)
+        (define-key evil-normal-state-map (kbd "C-c g") 'anaconda-mode-find-definitions)
+        (define-key evil-normal-state-map (kbd "C-c a") 'anaconda-mode-find-assignments)
+        (define-key evil-normal-state-map (kbd "C-c r") 'anaconda-mode-find-references)
+        (define-key evil-normal-state-map (kbd "C-c ?") 'anaconda-mode-show-doc)
+        (define-key evil-normal-state-map (kbd "C-c t") 'python-insert-trace)
+        'anaconda-mode)))
+    )
 (use-package base16-theme
   :config
   (load-theme 'base16-gruvbox-dark-medium)

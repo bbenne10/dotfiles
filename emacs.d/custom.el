@@ -12,7 +12,7 @@
  '(package-hidden-regexps (quote ("\\`swiperi")))
  '(package-selected-packages
    (quote
-    (neotree spaceline-all-the-icons all-the-icons window-numbering-mode rainbow-mode use-package magit flycheck-pos-tip counsel counsel-projectile evil-numbers evil-tabs ivy mmm-jinja2 mmm-mode pyenv-mode-auto swiper ensime scala-mode less-css-mode rainbow-delimiters-mode rainbow-delimiters clang-format editorconfig salt-mode yaml-mode lua-mode evil-visual-mark-mode company-mode material-theme base16 base16-theme color-theme-sanityinc-tomorrow ## markdown-preview-eww markdown-preview-mode markdown-mode web-mode avy evil-vimish-fold vimish-fold persp-projectile perspective grizzl helm-projectile pyenv-mode company-anaconda company spaceline smooth-scrolling puppet-mode projectile flx-ido flycheck fic-mode evil-surround evil-matchit evil dired+ diminish anaconda-mode ample-theme)))
+    (counsel-dash origami neotree spaceline-all-the-icons all-the-icons window-numbering-mode rainbow-mode use-package magit flycheck-pos-tip counsel counsel-projectile evil-numbers evil-tabs ivy mmm-jinja2 mmm-mode pyenv-mode-auto swiper ensime scala-mode less-css-mode rainbow-delimiters-mode rainbow-delimiters clang-format editorconfig salt-mode yaml-mode lua-mode evil-visual-mark-mode company-mode material-theme base16 base16-theme color-theme-sanityinc-tomorrow ## markdown-preview-eww markdown-preview-mode markdown-mode web-mode avy evil-vimish-fold vimish-fold persp-projectile perspective grizzl helm-projectile pyenv-mode company-anaconda company spaceline smooth-scrolling puppet-mode projectile flx-ido flycheck fic-mode evil-surround evil-matchit evil dired+ diminish anaconda-mode ample-theme)))
  '(term-file-aliases
    (quote
     (("st-256color" . "xterm-256color")
