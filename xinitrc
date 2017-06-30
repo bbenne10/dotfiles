@@ -28,10 +28,14 @@ fi;
 test_and_run dunst &
 test_and_run emacs --daemon &
 test_and_run unclutter -noevents &
-test_and_run xscreensaver -nosplash &
 test_and_run firefox &
 test_and_run compton &
 test_and_run redshift &
+
+if [ -e ~/.bin/xss && $(which slock) ]; then
+    xset s 300
+  ~/.bin/xss ~/.bin/lock_screen &
+fi
 
 if [ -e ~/.fehbg -a $(which feh) ]; then
   ~/.fehbg
