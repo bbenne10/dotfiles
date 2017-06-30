@@ -1,6 +1,4 @@
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file 'noerror)
-
+(setq ad-redefinition-action 'accept)
 (setq-default truncate-lines t)
 
 (setq-default indent-tabs-mode nil)
