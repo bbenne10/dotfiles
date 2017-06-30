@@ -185,10 +185,11 @@
   :init
     (setq projectile-completion-system 'ivy)
     (setq projectile-enable-caching t)
+  :config
+    (projectile-global-mode)
 )
 (use-package counsel-projectile
   :config
-    ;; (counsel-projectile-on)
     (define-key evil-normal-state-map (kbd "<SPC>b") 'counsel-projectile-switch-to-buffer)
     (define-key evil-normal-state-map (kbd "<SPC>e") 'counsel-projectile-find-file)
 )
