@@ -99,7 +99,11 @@
     (define-key evil-normal-state-map (kbd "<SPC>D") 'counsel-dash)
 )
 (use-package editorconfig)
-(use-package ensime)
+(use-package ensime
+  :init
+    (setq ensime-startup-notification nil)
+    (setq ensime-startup-snapshot-notification nil)
+)
 (use-package evil-matchit
   :config
   (global-evil-matchit-mode 1)
