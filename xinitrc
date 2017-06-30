@@ -54,7 +54,3 @@ fi
 
 ~/.bin/stat_line &
 exec ~/.bin/dwm
-# test_and_run albert &
-# test_and_run lalcal --width 160 --font "DroidSans" --calfontsize 12 --color "#262626" --format "%m/%d/%y @ %l:%M %p" &
-# exec openbox
-# exec awesome
