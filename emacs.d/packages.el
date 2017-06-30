@@ -80,7 +80,7 @@
   :init
     (setq counsel-dash-docsets-path "~/.emacs/dash-docsets"
           counsel-dash-min-length 3
-          counsel-dash-browser-func 'eww
+          counsel-dash-browser-func 'browse-url
     )
 
     (defun counsel-dash-at-point ()
