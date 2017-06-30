@@ -1,4 +1,6 @@
 rm ~/.available
-mpc pause
-which slock && slock || xscreensaver -lock
+mpc | fgrep -q '[playing]' && playing=1
+(sleep 4; [ $playing ] && mpc --no-status pause) &
+slock
 touch ~/.available
+[ $playing ] && mpc --no-status play
