@@ -74,7 +74,7 @@
     (define-key evil-normal-state-map (kbd "M-x") 'counsel-M-x)
     (define-key evil-normal-state-map (kbd "<SPC>f") 'counsel-ag-project-at-point)
     (define-key evil-normal-state-map (kbd "<SPC>B") 'ivy-switch-buffer)
-    (define-key evil-normal-state-map (kbd "<SPC>p") 'counsel-find-file)
+    (define-key evil-normal-state-map (kbd "<SPC>E") 'counsel-find-file)
 )
 (use-package counsel-dash
   :init
@@ -192,6 +192,7 @@
   :config
     (define-key evil-normal-state-map (kbd "<SPC>b") 'counsel-projectile-switch-to-buffer)
     (define-key evil-normal-state-map (kbd "<SPC>e") 'counsel-projectile-find-file)
+    (define-key evil-normal-state-map (kbd "<SPC>p") 'counsel-projectile-switch-project)
 )
 (use-package puppet-mode)
 (use-package spaceline-config
