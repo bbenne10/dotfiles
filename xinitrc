@@ -52,5 +52,5 @@ if [ -f /etc/X11/xinit/xinitrc.d/50-systemd-user.sh ]; then
  . /etc/X11/xinit/xinitrc.d/50-systemd-user.sh
 fi
 
-~/.bin/stat_line &
+~/.bin/dwmstatus &
 exec ~/.bin/dwm
