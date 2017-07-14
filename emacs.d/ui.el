@@ -30,6 +30,7 @@
 
 (show-paren-mode 1)
 (global-hl-line-mode 1)
+(add-hook 'prog-mode-hook (setq-local display-line-numbers t))
 
 
 (set-face-attribute 'line-number nil
