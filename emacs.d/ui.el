@@ -28,10 +28,21 @@
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 
-(global-linum-mode 1)
 (show-paren-mode 1)
 (global-hl-line-mode 1)
 
+
+(set-face-attribute 'line-number nil
+                    :font "Hasklig-10"
+                    :foreground (plist-get base16-gruvbox-dark-medium-colors :base03)
+                    :background (plist-get base16-gruvbox-dark-medium-colors :base01))
+
+(set-face-attribute 'line-number-current-line nil
+                    :font "Hasklig-10:weight=Bold"
+                    :foreground (plist-get base16-gruvbox-dark-medium-colors :base04))
+
+(set-face-attribute 'fringe nil
+                    :background (plist-get base16-gruvbox-dark-medium-colors :base01))
 (setq-default fill-column 80)
 
 (setq initial-scratch-message "")
