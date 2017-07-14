@@ -78,7 +78,7 @@
 )
 (use-package counsel-dash
   :init
-    (setq counsel-dash-docsets-path "~/.emacs/dash-docsets"
+    (setq counsel-dash-docsets-path "~/.emacs.d/dash-docsets"
           counsel-dash-min-length 3
           counsel-dash-browser-func 'browse-url
     )
