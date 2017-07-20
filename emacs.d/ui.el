@@ -22,7 +22,9 @@
         (append my-hasklig-ligatures prettify-symbols-alist))
   (prettify-symbols-mode))
 
-(add-hook 'prog-mode-hook 'my-set-hasklig-ligatures)
+(add-hook 'prog-mode-hook (function (lambda ()
+            (my-set-hasklig-ligatures)
+            (setq-local display-line-numbers t))))
 
 (scroll-bar-mode 0)
 (menu-bar-mode 0)
@@ -30,19 +32,21 @@
 
 (show-paren-mode 1)
 (global-hl-line-mode 1)
-(add-hook 'prog-mode-hook (function (lambda () (setq-local display-line-numbers t))))
-
-(set-face-attribute 'line-number nil
-                    :font "Hasklig-10"
-                    :foreground (plist-get base16-gruvbox-dark-medium-colors :base03)
-                    :background (plist-get base16-gruvbox-dark-medium-colors :base01))
 
 (set-face-attribute 'line-number-current-line nil
                     :font "Hasklig-10:weight=Bold"
-                    :foreground (plist-get base16-gruvbox-dark-medium-colors :base04))
+                    :foreground (plist-get base16-gruvbox-dark-medium-colors :base04)
+                    :background (plist-get base16-gruvbox-dark-medium-colors :base01)
+                    :inverse-video nil)
 
 (set-face-attribute 'fringe nil
                     :background (plist-get base16-gruvbox-dark-medium-colors :base01))
+
+;; faces for solaire mode until base16 includes them
+;; (custom-set-faces
+;;  (solaire-default-face :inherit 'default :background "red")
+;; )
+
 (setq-default fill-column 80)
 
 (setq initial-scratch-message "")
