@@ -12,6 +12,8 @@ export SAVEHIST=$HISTSIZE
 export WORKON_HOME=$HOME/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
 
+export FZF_DEFAULT_OPTS='--height 40% --reverse'
+
 if [ -f ${HOME}/.termcap ]; then
   export TERMCAP=$(< ${HOME}/.termcap)
 fi
