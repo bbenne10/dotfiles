@@ -11,7 +11,7 @@ setxkbmap -option caps:escape
 
 ## MACHINE SPECIFIC STUFF =====================================================
 if [ "$(hostname)" = "CTISL-bbennett-arch-desktop" ]; then
-  xrandr --output VGA1 --auto --output HDMI1 --left-of VGA1 --auto --primary --output HDMI2 --right-of VGA1 --auto
+  xrandr --output HDMI1 --auto --output HDMI2 --right-of HDMI1 --auto --rotate left --primary --output VGA1 --right-of HDMI2 --auto
   test_and_run remind -z -k'~/.bin/remind_notify %s' ~/.remind/work.rem
 fi
 
