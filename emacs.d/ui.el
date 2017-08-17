@@ -35,24 +35,28 @@
 
 (set-face-attribute 'line-number-current-line nil
                     :font "Hasklig-10:weight=Bold"
-                    :foreground (plist-get base16-gruvbox-dark-medium-colors :base04)
-                    :background (plist-get base16-gruvbox-dark-medium-colors :base01)
                     :inverse-video nil)
 
-(set-face-attribute 'fringe nil
-                    :background (plist-get base16-gruvbox-dark-medium-colors :base01))
+(setq initial-scratch-message ""
+      inhibit-startup-message t
+      scroll-conservatively 101
+      scroll-margin 5
+      visible-bell t
+      ad-redefinition-action 'accept)
+(setq-default fill-column 80
+              truncate-lines t
+              indent-tabs-mode nil
+              tab-width 2
+              tab-stop-list (number-sequence 3 120 2))
 
-;; faces for solaire mode until base16 includes them
-;; (custom-set-faces
-;;  (solaire-default-face :inherit 'default :background "red")
-;; )
+(defalias 'yes-or-no-p 'y-or-n-p)
 
-(setq-default fill-column 80)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(setq initial-scratch-message "")
-(setq inhibit-startup-message t)
+(setq prettify-symbols-unprettify-at-point t)
+(prettify-symbols-mode)
 
-(setq scroll-conservatively 101)
-(setq scroll-margin 5)
-
-(setq visible-bell t)
+;; Enable yanking and pasting to and from both clipboards
+(setq select-enable-clipboard t
+      select-enable-primary t
+      mouse-drag-copy-region t)
