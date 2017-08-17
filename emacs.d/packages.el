@@ -1,70 +1,67 @@
+(setq package-user-dir "~/.emacs.d/elpa"
+      package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+                         ("melpa-stable" . "http://stable.melpa.org/packages/")
+                         ("gnu" . "http://elpa.gnu.org/packages/")))
+(defvar use-package-always-ensure t)
+
 (package-initialize)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-
-;; (setq default-leader-key "<SPC>")
-;; This is available on my preonic, so uncomment there
-(setq default-leader-key "<XF86TouchpadOff>")
-
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package)
-)
+  (package-install 'delight))
+(require 'use-package)
+(require 'bind-key)
+(require 'delight)
 
-(setq use-package-always-ensure t)
-(eval-when-compile
-  (require 'use-package)
-  (require 'diminish)
-)
+
+(defvar default-leader-key "<XF86TouchpadOff>")
 
 (use-package evil
   ;; We're first so we define the maps we override later
   :config
     (evil-mode 1)
 )
-(use-package general)
+(use-package general
+  :config
+    (global-unset-key (kbd "C-h h"))
+)
 (use-package all-the-icons)
-(use-package spaceline-all-the-icons
-  :after spaceline-config
+(use-package zerodark-theme
   :config
-    (setq spaceline-all-the-icons-separator-type 'cup)
-    (spaceline-all-the-icons--setup-neotree)
-    (spaceline-all-the-icons-theme)
-)
+    (load-theme 'zerodark)
+    (zerodark-setup-modeline-format)
+  )
 (use-package anaconda-mode
-  :after (general)
-  :commands anaconda-mode
-  :diminish anaconda-mode
-  :init
-    (defun python-insert-trace ()
-      ;; insert a line that impots pdb and sets a trace just below the current line
-      (interactive)
-      (move-end-of-line 1)
-      (insert "\n")
-      (indent-according-to-mode)
-      (insert "import pdb; pdb.set_trace()")
-    )
-  :config
-    (add-hook 'python-mode-hook (function (lambda ()
-        (setq evil-shift-width python-indent-offset)
-        (anaconda-mode 1))))
+ :after (general)
+ :commands anaconda-mode
+ :delight anaconda-mode
+ ;; :mode ("\\.py\\'")
+ :init
+   (defun python-insert-trace ()
+     ;; insert a line that impots pdb and sets a trace just below the current line
+     (interactive)
+     (move-end-of-line 1)
+     (insert "\n")
+     (indent-according-to-mode)
+     (insert "import pdb; pdb.set_trace()")
+   )
+   (add-hook 'python-mode-hook
+             (function
+              (lambda () (setq evil-shift-width python-indent-offset)
+                (anaconda-mode 1))))
 
-    (general-define-key :keymaps 'anaconda-mode-map
-                        :states '(normal)
-                        :prefix "C-c"
-                        "g" 'anaconda-mode-find-definitions
-                        "a" 'anaconda-mode-find-assignments
-                        "r" 'anaconda-mode-find-references
-                        "?" 'anaconda-mode-show-doc
-                        "t" 'python-insert-trace)
-    )
-(use-package base16-theme
-  :config
-    (load-theme 'base16-gruvbox-dark-medium)
+   (general-define-key :keymaps 'anaconda-mode-map
+                       :states '(normal)
+                       :prefix "C-c"
+                       "g" 'anaconda-mode-find-definitions
+                       "a" 'anaconda-mode-find-assignments
+                       "r" 'anaconda-mode-find-references
+                       "?" 'anaconda-mode-show-doc
+                       "t" 'python-insert-trace)
 )
+;; (use-package base16-theme)
 (use-package company
-  :diminish company-mode
+  :delight company-mode
   :config
     (setq company-tooltip-limit 20
           company-tooltip-align-annotations t)
@@ -77,10 +74,9 @@
 (use-package counsel
   :after (general)
   :init
-    (defun counsel-ag-project-at-point ()
-      (interactive)
-      (counsel-ag (thing-at-point 'symbol) (projectile-project-root))
-    )
+  (defun counsel-ag-project-at-point ()
+    (interactive)
+    (counsel-ag (thing-at-point 'symbol) (projectile-project-root)))
   :config
     (general-define-key :states '(normal)
                         "/" 'swiper
@@ -90,19 +86,18 @@
                         "f" 'counsel-ag-project-at-point
                         "B" 'ivy-switch-buffer
                         "E" 'counsel-find-file)
-)
+  )
 (use-package counsel-dash
   :after (general)
   :init
     (setq counsel-dash-docsets-path "~/.emacs.d/dash-docsets"
           counsel-dash-min-length 3
           counsel-dash-browser-func 'browse-url
-    )
+          )
 
     (defun counsel-dash-at-point ()
       (interactive)
-      (counsel-dash (thing-at-point 'symbol))
-    )
+      (counsel-dash (thing-at-point 'symbol)))
   :commands (counsel-dash-activate-docset counsel-dash counsel-dash-at-point counsel-dash)
   :config
     (add-hook 'emacs-lisp-mode-hook (lambda () (setq-local counsel-dash-docsets '("Emacs Lisp"))))
@@ -117,40 +112,39 @@
                         :prefix default-leader-key
                         "d" 'counsel-dash-at-point
                         "D" 'counsel-dash)
-)
+  )
 (use-package editorconfig)
 (use-package ensime
-  :init
-    (setq ensime-startup-notification nil)
-    (setq ensime-startup-snapshot-notification nil)
-    (add-hook 'scala-mode-hook #'ensime-mode)
   :commands (ensime ensime-mode)
+  :init
+    (setq ensime-startup-notification nil
+          ensime-startup-snapshot-notification nil)
+
+    (add-hook 'scala-mode-hook #'ensime-mode)
+  :config
+    (set-face-attribute 'ensime-implicit-highlight nil
+                        :underline nil
+                        :slant 'italic)
+
 )
 (use-package evil-matchit
-  :config
-    (global-evil-matchit-mode 1)
+  :config (global-evil-matchit-mode 1)
 )
 (use-package evil-numbers
   :config
     (general-define-key :states '(normal)
                         "C-a" 'evil-numbers/inc-at-pt
-                        "C-x" 'evil-numbers/dec-at-pt)
-)
+                        "C-x" 'evil-numbers/dec-at-pt))
 (use-package evil-surround
-  :config
-    (global-evil-surround-mode 1)
-)
+  :config (global-evil-surround-mode 1))
 (use-package evil-visual-mark-mode
-  :config
-    (evil-visual-mark-mode 1)
-)
+  :config (evil-visual-mark-mode 1))
 (use-package fic-mode
-  :config
-    (add-hook 'prog-mode-hook (function (lambda () (fic-mode 1))))
-)
+  :config (add-hook 'prog-mode-hook (function (lambda () (fic-mode 1)))))
 (use-package flycheck
   :after (general)
-  :diminish flycheck-mode
+  :delight flycheck-mode
+  :commands (flycheck-mode)
   :init
     (add-to-list 'display-buffer-alist
                  `(,(rx bos "*Flycheck errors*" eos)
@@ -216,65 +210,44 @@
                         "lc" 'delete-flycheck-errors-list
                         "ln" 'flycheck-next-error
                         "lp" 'flycheck-previous-error)
-    (global-flycheck-mode)
-)
+    (add-hook 'prog-mode-hook  (function (lambda () (flycheck-mode))))
+  )
 (use-package flycheck-pos-tip
-  :after flycheck
-  :config
-    (flycheck-pos-tip-mode)
-)
+   :after flycheck
+   :config (flycheck-pos-tip-mode))
 (use-package hideshow
-  :diminish hs-minor-mode
+  :delight hs-minor-mode
   :config
     (setq hs-allow-nesting t)
     (add-hook 'prog-mode-hook (function (lambda() (hs-minor-mode))))
-)
+  )
 (use-package magit
-  :diminish magit-auto-revert-mode
-)
-(use-package neotree
-  :after (general)
-  :init
-    (setq neo-theme 'icons)
-    (defun neotree-project-dir ()
-      "Open NeoTree using the git root."
-      (interactive)
-      (let ((project-dir (projectile-project-root))
-            (file-name (buffer-file-name)))
-        (neotree-toggle)
-        (if project-dir
-            (if (neo-global--window-exists-p)
-                (progn
-                  (neotree-dir project-dir)
-                  (neotree-find file-name)))
-          (message "Could not find git project root."))))
-    (general-define-key :prefix default-leader-key
-                        :states '(normal)
-                        "T" 'neotree-toggle
-                        "t" 'neotree-project-dir)
-  :commands (neotree-project-dir neotree-toggle neotree-hide neotree-show)
+  :delight magit-auto-revert-mode
   :config
-    (general-define-key :keymaps '(neotree-mode-map)
-                      "TAB" 'neotree-quick-look
-                      "q" 'neotree-hide
-                      "RET" 'neotree-enter)
-    (general-define-key :keymaps '(neotree-mode-map)
-                      :prefix default-leader-key
-                      "t" 'neotree-enter)
+    (setq magit-popup-show-common-commands nil)
+)
+(use-package evil-magit
+  :after magit
+  :init
+    (setq evil-magit-want-horizontal-movement nil))
+(use-package markdown-mode
+  :commands (markdown-mode)
+  :config
+    (setq markdown-css-paths
+                 '("https://markdowncss.github.io/modest/css/modest.css"))
 )
 (use-package projectile
-  :diminish projectile-mode
+  :delight projectile-mode
   :init
     (setq projectile-completion-system 'ivy)
   :config
-    (projectile-global-mode)
-)
+    (projectile-global-mode))
 (use-package counsel-projectile
   :after (projectile general)
   :config
     (general-define-key :states '(normal)
                         :prefix default-leader-key
-                        "b" 'counsel-projectile-switch-to-buffer
+                        ;; "b" 'counsel-projectile-switch-to-buffer
                         "e" 'counsel-projectile-find-file
                         "p" 'counsel-projectile-switch-project
                         "<SPC>" 'counsel-projectile)
@@ -287,19 +260,22 @@
           evil-visual-state-tag "V"
           evil-insert-state-tag "I"
           evil-normal-state-tag "N"
-    )
-    (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+          spaceline-highlight-face-func 'spaceline-highlight-face-evil-state
+          )
 )
-(use-package pyenv-mode)
+(use-package pyenv-mode
+  ;; :mode ("\\.py\\'")
+)
 (use-package pyenv-mode-auto)
 (use-package rainbow-delimiters
   :config
-    (add-hook 'c-mode-common-hook (function (lambda () (
-      rainbow-delimiters-mode-enable))))
-    (add-hook 'elip-mode-common-hook (function (lambda () (
-      rainbow-delimiters-mode-enable))))
-)
+  (add-hook 'c-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable))))
+  (add-hook 'elip-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable))))
+  )
 (use-package rainbow-mode)
 (use-package undo-tree
-  :diminish undo-tree-mode)
-(use-package yaml-mode)
+  :delight undo-tree-mode)
+(use-package yaml-mode
+  :mode ("\\.yaml'" "\\.yml'"))
+(use-package yasnippet
+  :delight yas-minor-mode)
