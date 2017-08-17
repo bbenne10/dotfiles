@@ -1,11 +1,12 @@
-source /usr/share/doc/mutt/samples/smime.rc
-source themerc
-source keysrc
-source personalrc
+source /home/bryan/code/personal/neomutt/contrib/smime.rc
+source ~/.mutt/themerc
+source ~/.mutt/keysrc
+source ~/.mutt/personalrc
 
 set quit
 unset mark_old
 unset move
+unset copy
 set delete
 set send_charset = "utf-8"
 set assumed_charset = "iso-8859-1"
