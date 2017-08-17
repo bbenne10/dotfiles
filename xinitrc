@@ -32,7 +32,7 @@ test_and_run firefox &
 test_and_run compton &
 test_and_run redshift &
 
-if [ -e ~/.bin/xss && $(which slock) ]; then
+if [ -e ~/.bin/xss ]; then
     xset s 300
   ~/.bin/xss ~/.bin/lock_screen &
 fi
