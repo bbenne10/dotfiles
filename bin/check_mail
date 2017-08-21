@@ -93,6 +93,9 @@ if grep -q "Channel work" ~/.mbsyncrc; then
   #Some intial THEIA tagging from their mailing list
   notmuch tag +theia -new -- 'tag:new AND to:theia-dev@googlegroups.com'
 
+  # Handle some VERY annoying college tuition related emails
+  notmuch tag -inbox -new -unread +deleted -- "tag:new AND from:*@collegebudget.com"
+
   #Initial handling of some school emails
   notmuch tag +school -new -- 'tag:new AND to:*@t-square.gatech.edu'
   notmuch tag +school -new -- 'tag:new AND from:no-reply@piazza.com'
