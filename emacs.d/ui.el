@@ -1,4 +1,4 @@
-(setq default-frame-alist '((font . "Hasklig-10")))
+(setq default-frame-alist '((font . "Hasklig-9")))
 
 (defun my-correct-symbol-bounds (pretty-alist)
   (mapcar (lambda (el)
@@ -34,7 +34,7 @@
 (global-hl-line-mode 1)
 
 (set-face-attribute 'line-number-current-line nil
-                    :font "Hasklig-10:weight=Bold"
+                    :font "Hasklig-9:weight=Bold"
                     :inverse-video nil)
 
 (setq initial-scratch-message ""
