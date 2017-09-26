@@ -1,20 +1,8 @@
+#!/usr/bin/env sh
 # vim: set ft=sh:
 # Collect DBUS_SESSION_BUS_ADDRESS from running process
-function set_dbus_adress {
-  USER="$1";
-  PROCESS="$2";
-  PID=`pgrep -o -u $USER $PROCESS`;
-  ENVIRON=/proc/$PID/environ;
 
-  if [ -e $ENVIRON ]; then
-    export $(grep -z DBUS_SESSION_BUS_ADDRESS $ENVIRON)>/dev/null;
-  else
-    printf "Unable to set DBUS_SESSION_BUS_ADDRESS.\n";
-    exit 1;
-  fi
-}
-
-function detect_player() {
+detect_player() {
   # if mpd/mopidy is running - use it unequivocally
   if pidof mpd > /dev/null; then
     printf "mpd\n";
@@ -81,11 +69,7 @@ function detect_player() {
   fi
 }
 
-function spotify_cmd {
-    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.$1
-}
-
-function play() {
+play() {
     case $player in
         "spotify")
             spotify_cmd Play;
@@ -105,7 +89,7 @@ function play() {
     esac
 }
 
-function stop() {
+stop() {
     case $player in
         "spotify")
             spotify_cmd Stop;
@@ -125,7 +109,7 @@ function stop() {
     esac
 }
 
-function toggle() {
+toggle() {
     case $player in
         "spotify")
             spotify_cmd PlayPause;
@@ -145,7 +129,7 @@ function toggle() {
     esac
 }
 
-function next() {
+next() {
     case $player in
         "spotify")
             spotify_cmd Next;
@@ -165,7 +149,7 @@ function next() {
     esac
 }
 
-function prev() {
+prev() {
     case $player in
         "spotify")
             spotify_cmd Previous;
@@ -185,7 +169,7 @@ function prev() {
     esac
 }
 
-function pause() {
+pause() {
     case $player in
         "spotify")
             spotify_cmd Pause;
@@ -205,7 +189,7 @@ function pause() {
     esac
 }
 
-function usage() {
+usage() {
     echo -e "USAGE: $0 [command]"
     echo -e "\t play, pause, toggle, stop, prev, next"
     exit 1
@@ -217,13 +201,7 @@ fi;
 
 command=$1;
 player=$(detect_player)
-if [[ "$player" == "spotify" ]]; then
-     # Check if DBUS_SESSION is set
-     if [ -z $DBUS_SESSION_BUS_ADDRESS ]; then
-         echo "DBUS_SESSION_BUS_ADDRESS not set. Guessing."
-         set_dbus_adress $(whoami) spotify
-     fi
-fi
+echo $player
 case $command in
     play)
         toggle;
