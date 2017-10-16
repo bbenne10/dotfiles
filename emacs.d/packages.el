@@ -292,6 +292,7 @@
 (use-package rainbow-delimiters
   :config
   (add-hook 'c-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable))))
+  (add-hook 'scala-mode-hook (function (lambda () (rainbow-delimiters-mode-enable))))
   (add-hook 'elip-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable))))
   )
 (use-package rainbow-mode)
