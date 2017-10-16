@@ -23,6 +23,7 @@
   ;; We're first so we define the maps we override later
   :config
     (evil-mode 1)
+    (evil-set-initial-state 'term-mode 'emacs)
 )
 (use-package general
   :config
@@ -238,6 +239,20 @@
   :config
     (setq markdown-css-paths
                  '("https://markdowncss.github.io/modest/css/modest.css"))
+)
+(use-package multi-term
+  :config
+    (setq multi-term-program "/bin/zsh")
+    (add-hook 'term-mode-hook (function
+                               (lambda ()
+                                 (goto-address-mode)
+                                 (define-key term-raw-map (kbd "C-w h") 'evil-window-left)
+                                 (define-key term-raw-map (kbd "C-w j") 'evil-window-down)
+                                 (define-key term-raw-map (kbd "C-w k") 'evil-window-up)
+                                 (define-key term-raw-map (kbd "C-w l") 'evil-window-right))))
+    (add-hook 'term-exec-hook
+              (function (lambda () (set-buffer-process-coding-system
+                                'utf-8-unix 'utf-8-unix))))
 )
 (use-package projectile
   :delight projectile-mode
