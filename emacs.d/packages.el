@@ -13,7 +13,6 @@
 (require 'bind-key)
 (require 'delight)
 
-
 (defvar default-leader-key "<XF86TouchpadOff>")
 (if (string= (system-name) "Bryan-Laptop")
   (setq default-leader-key "<SPC>")
@@ -32,38 +31,40 @@
 (use-package all-the-icons)
 (use-package zerodark-theme
   :config
-    (load-theme 'zerodark)
+    ;; (load-theme 'zerodark)
     (zerodark-setup-modeline-format)
   )
-(use-package anaconda-mode
- :after (general)
- :commands anaconda-mode
- :delight anaconda-mode
- ;; :mode ("\\.py\\'")
- :init
-   (defun python-insert-trace ()
-     ;; insert a line that impots pdb and sets a trace just below the current line
-     (interactive)
-     (move-end-of-line 1)
-     (insert "\n")
-     (indent-according-to-mode)
-     (insert "import pdb; pdb.set_trace()")
-   )
-   (add-hook 'python-mode-hook
-             (function
-              (lambda () (setq evil-shift-width python-indent-offset)
-                (anaconda-mode 1))))
-
-   (general-define-key :keymaps 'anaconda-mode-map
-                       :states '(normal)
-                       :prefix "C-c"
-                       "g" 'anaconda-mode-find-definitions
-                       "a" 'anaconda-mode-find-assignments
-                       "r" 'anaconda-mode-find-references
-                       "?" 'anaconda-mode-show-doc
-                       "t" 'python-insert-trace)
+(use-package nord-theme
+  :config
+    (load-theme 'nord t)
 )
-;; (use-package base16-theme)
+(use-package anaconda-mode
+   :after (general pyenv-mode-auto)
+   :commands anaconda-mode
+   :delight anaconda-mode
+   :init
+     (defun python-insert-trace ()
+       ;; insert a line that impots pdb and sets a trace just below the current line
+       (interactive)
+       (move-end-of-line 1)
+       (insert "\n")
+       (indent-according-to-mode)
+       (insert "import pdb; pdb.set_trace()"))
+
+     (add-hook 'python-mode-hook
+               (function
+                (lambda () (setq evil-shift-width python-indent-offset)
+                  (anaconda-mode 1))))
+
+     (general-define-key :keymaps 'anaconda-mode-map
+                         :states '(normal)
+                         :prefix "C-c"
+                         "g" 'anaconda-mode-find-definitions
+                         "a" 'anaconda-mode-find-assignments
+                         "r" 'anaconda-mode-find-references
+                         "?" 'anaconda-mode-show-doc
+                         "t" 'python-insert-trace)
+)
 (use-package company
   :delight company-mode
   :config
