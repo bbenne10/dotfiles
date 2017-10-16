@@ -225,6 +225,7 @@
     (setq hs-allow-nesting t)
     (add-hook 'prog-mode-hook (function (lambda() (hs-minor-mode))))
   )
+(use-package lua-mode)
 (use-package magit
   :delight magit-auto-revert-mode
   :config
