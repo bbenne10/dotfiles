@@ -1,14 +1,10 @@
-# if you're here looking for $PATH, you're in the wrong spot. Check ~/.zprofile
-# (long story short: Arch devs won't properly support ~/.zshenv)
-
 export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 export EDITOR='emacsclient -t'
 
 export HISTSIZE=2000
 export SAVEHIST=$HISTSIZE
-
-export WORKON_HOME=$HOME/.virtualenvs
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
 
 export FZF_DEFAULT_OPTS='--height 40% --reverse'
 
@@ -16,8 +12,10 @@ if [ -f ${HOME}/.termcap ]; then
   export TERMCAP=$(< ${HOME}/.termcap)
 fi
 
-export WORKON_HOME=~/.virtualenvs
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
+if [ -f ${HOME}/.dircolors ]; then
+  eval $(dircolors ~/.dircolors)
+fi
+
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 # Colored man support

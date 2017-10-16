@@ -48,6 +48,10 @@ if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
   dbus-launch --sh-syntax --exit-with-session
 fi
 
+if [ -e "$HOME/.Xresources" ]; then
+  xrdb -load ~/.Xresources
+fi
+
 if [ -f /etc/X11/xinit/xinitrc.d/50-systemd-user.sh ]; then
  . /etc/X11/xinit/xinitrc.d/50-systemd-user.sh
 fi
