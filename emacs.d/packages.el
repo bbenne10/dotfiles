@@ -294,8 +294,30 @@
   (add-hook 'c-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable))))
   (add-hook 'scala-mode-hook (function (lambda () (rainbow-delimiters-mode-enable))))
   (add-hook 'elip-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable))))
-  )
+)
 (use-package rainbow-mode)
+(use-package solaire-mode
+  :init
+    (setq solaire-mode-remap-modeline nil)
+    (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
+    (defface solaire-default-face
+      '((t :inherit default :background "#1f2021"))
+      "Face for solaire"
+    )
+    (defface solaire-minibuffer-face
+      '((t :background "#22252c" :foreground "#abb2bf"))
+      "Face for solaire - minibuffer"
+    )
+    (defface solaire-line-number-face
+      '((t :inherit 'line-number :background "#22252c"))
+      "Face for solaire - line number"
+    )
+    (defface solaire-hl-line-face
+      '((t :inherit 'hl-line :background "#22252c"))
+      "Face for solaire - highlghted line number"
+    )
+    (solaire-mode-swap-bg)
+)
 (use-package undo-tree
   :delight undo-tree-mode)
 (use-package yaml-mode
