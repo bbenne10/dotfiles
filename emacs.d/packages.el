@@ -283,9 +283,12 @@
           )
 )
 (use-package pyenv-mode
-  ;; :mode ("\\.py\\'")
+  :init
+   (add-hook 'python-mode-hook (function (lambda () (pyenv-mode))))
 )
-(use-package pyenv-mode-auto)
+(use-package pyenv-mode-auto
+  :after (pyenv-mode)
+)
 (use-package rainbow-delimiters
   :config
   (add-hook 'c-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable))))
