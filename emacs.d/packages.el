@@ -15,6 +15,9 @@
 
 
 (defvar default-leader-key "<XF86TouchpadOff>")
+(if (string= (system-name) "Bryan-Laptop")
+  (setq default-leader-key "<SPC>")
+)
 
 (use-package evil
   ;; We're first so we define the maps we override later
