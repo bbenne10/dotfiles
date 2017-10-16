@@ -42,21 +42,19 @@
       scroll-conservatively 101
       scroll-margin 5
       visible-bell t
-      ad-redefinition-action 'accept)
+      ad-redefinition-action 'accept
+      vc-follow-symlinks t
+      select-enable-clipboard t
+      select-enable-primary t
+      mouse-drag-copy-region t
+      prettify-symbols-unprettify-at-point t)
+
 (setq-default fill-column 80
               truncate-lines t
               indent-tabs-mode nil
               tab-width 2
               tab-stop-list (number-sequence 3 120 2))
-
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-(setq prettify-symbols-unprettify-at-point t)
 (prettify-symbols-mode)
-
-;; Enable yanking and pasting to and from both clipboards
-(setq select-enable-clipboard t
-      select-enable-primary t
-      mouse-drag-copy-region t)
