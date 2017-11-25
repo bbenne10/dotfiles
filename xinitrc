@@ -31,6 +31,7 @@ test_and_run unclutter -noevents &
 test_and_run firefox &
 test_and_run compton &
 test_and_run redshift &
+test_and_run start-pulseaudio-x11 &
 
 if [ -e ~/.bin/xss ]; then
     xset s 300
