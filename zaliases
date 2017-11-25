@@ -31,3 +31,12 @@ function ix() {
 function deploy_web() {
   scp -r build web.testnet:~ && ssh web.testnet -t sudo cp -r build/* /var/www/auth/static/
 }
+
+blank () {
+    DUR="$(xset q | grep Standby | cut -d' ' -f4)"
+    xset s off
+    case $DUR in
+    7200) xset dpms 300 300 300;echo "Screen blank set to 5 mins.";;
+    *) xset dpms 7200 7200 7200;echo "Screen blank set to 2 hours.";;
+    esac
+}
