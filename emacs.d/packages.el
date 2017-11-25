@@ -34,47 +34,12 @@
     ;; (load-theme 'zerodark)
     (zerodark-setup-modeline-format)
   )
-(use-package nord-theme
-  :config
-    (load-theme 'nord t)
-)
-(use-package anaconda-mode
-   :after (general pyenv-mode-auto)
-   :commands anaconda-mode
-   :delight anaconda-mode
-   :init
-     (defun python-insert-trace ()
-       ;; insert a line that impots pdb and sets a trace just below the current line
-       (interactive)
-       (move-end-of-line 1)
-       (insert "\n")
-       (indent-according-to-mode)
-       (insert "import pdb; pdb.set_trace()"))
-
-     (add-hook 'python-mode-hook
-               (function
-                (lambda () (setq evil-shift-width python-indent-offset)
-                  (anaconda-mode 1))))
-
-     (general-define-key :keymaps 'anaconda-mode-map
-                         :states '(normal)
-                         :prefix "C-c"
-                         "g" 'anaconda-mode-find-definitions
-                         "a" 'anaconda-mode-find-assignments
-                         "r" 'anaconda-mode-find-references
-                         "?" 'anaconda-mode-show-doc
-                         "t" 'python-insert-trace)
-)
 (use-package company
   :delight company-mode
   :config
     (setq company-tooltip-limit 20
           company-tooltip-align-annotations t)
     (global-company-mode 1)
-)
-(use-package company-anaconda
-  :commands (anaconda-mode)
-  :init (add-to-list 'company-backends 'company-anaconda)
 )
 (use-package counsel
   :after (general)
@@ -225,6 +190,30 @@
     (setq hs-allow-nesting t)
     (add-hook 'prog-mode-hook (function (lambda() (hs-minor-mode))))
   )
+(use-package lsp-mode
+  :config
+    (general-define-key :states '(normal)
+                        :prefix default-leader-key
+                        "ld" 'xref-find-definition
+                        "lr" 'xref-find-references
+                        "lf" 'lsp-format-buffer
+                        "<SPC>" 'counsel-projectile)
+    (require 'lsp-flycheck)
+)
+(use-package lsp-javascript-typescript
+  :config
+    (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
+    (add-hook 'rjsx-mode-hook #'lsp-javascript-typescript-enable)
+)
+(use-package lsp-python
+  :after lsp-mode
+  :config
+    (add-hook 'python-mode-hook #'lsp-python-enable)
+)
+(use-package company-lsp
+  :config
+  (push 'company-lsp company-backends)
+)
 (use-package lua-mode)
 (use-package magit
   :delight magit-auto-revert-mode
@@ -266,7 +255,6 @@
   :config
     (general-define-key :states '(normal)
                         :prefix default-leader-key
-                        ;; "b" 'counsel-projectile-switch-to-buffer
                         "e" 'counsel-projectile-find-file
                         "p" 'counsel-projectile-switch-project
                         "<SPC>" 'counsel-projectile)
@@ -296,6 +284,9 @@
   (add-hook 'elip-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable))))
 )
 (use-package rainbow-mode)
+(use-package rjsx-mode
+  :mode "\\.js[x]*\\'"
+)
 (use-package solaire-mode
   :init
     (setq solaire-mode-remap-modeline nil)
