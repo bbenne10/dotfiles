@@ -1,0 +1,173 @@
+#+TITLE: ZSH Configuration
+
+** Ensure zaliases gets sourced
+#+begin_src sh :tangle ~/.zshrc
+. ~/.zaliases
+#+end_src
+
+** Install and load zgen
+I prefer [[https://github.com/tarjoilija/zgen][zgen]] to antigen for managing my zsh configuration and I prefer to not have to think about whether it's installed
+
+#+begin_src sh :tangle ~/.zshrc
+if [ ! -f ~/.bin/zgen/zgen.zsh ]; then
+  pushd ~/.bin
+  git clone http://github.com/tarjoilija/zgen
+  popd
+fi
+source ~/.bin/zgen/zgen.zsh
+
+if ! zgen saved; then
+  echo "Creating a zgen save..."
+  zgen oh-my-zsh
+  zgen load unixorn/autoupdate-zgen
+  zgen load djui/alias-tips
+  zgen load zdharma/fast-syntax-highlighting
+  zgen load Tarrasch/zsh-autoenv
+  zgen load chrissicool/zsh-256color
+  zgen load zsh-users/zsh-completions src
+  zgen load zsh-users/zsh-autosuggestions
+  zgen load uvaes/fzf-marks
+
+  zgen oh-my-zsh plugins/command-not-found
+  zgen oh-my-zsh plugins/httpie
+  zgen oh-my-zsh plugins/pyenv
+  zgen oh-my-zsh plugins/supervisor
+  zgen oh-my-zsh plugins/vagrant
+
+  zgen load bbenne10/antigen-themes themes/bbennett2
+  zgen save
+fi
+#+end_src
+
+** Install and load pyenv and pyenv-virtualenv
+I use [[https://github.com/pyenv/pyenv][pyenv]] and [[https://github.com/pyenv/pyenv-virtualenv][pyenv-virtualenv]] to manage my Python versions.
+
+#+begin_src sh :tangle ~/.zshrc
+if [ ! -d ~/.pyenv ]; then
+  git clone http://github.com/yyuu/pyenv ~/.pyenv
+  pushd ~/.pyenv/plugins
+  git clone http://github.com/yyuu/pyenv-virtualenv ~/.pyenv/plugins/virtualenv
+  popd
+fi
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
+#+end_src
+
+** Disable history expansion confirmation
+#+begin_src sh :tangle ~/.zshrc
+setopt no_histverify
+#+end_src
+
+** Bind a key to accept zsh-autosuggestion's suggestions (Ctrl + Space)
+#+begin_src sh :tangle ~/.zshrc
+bindkey '^ ' autosuggest-acept
+#+end_src
+
+** Set up some very basic aliases
+#+begin_src sh :tangle ~/.zaliases
+alias rmr='rm -r'
+alias zipfldr='zip -9 -r'
+#+end_src
+
+** Set up reliable vim aliases
+I prefer to have the ~vim~ command around for quick cli editing, but it's never quite properly available arcoss distros. So build a functiona and alias it
+
+#+begin_src sh :tangle ~/.zaliases
+function _nvim_or_vim_or_vi () {
+  nvim $@ || vim $@ || vi $@
+}
+alias vim=_nvim_or_vim_or_vi
+#+end_src
+
+
+** Toggle screen blanking with a simple command
+#+begin_src sh :tangle ~/.zaliases
+blank () {
+    DUR="$(xset q | grep Standby | cut -d' ' -f4)"
+    xset s off
+    case $DUR in
+    7200) xset dpms 300 300 300;echo "Screen blank set to 5 mins.";;
+    *) xset dpms 7200 7200 7200;echo "Screen blank set to 2 hours.";;
+    esac
+}
+#+end_src
+
+** Set LANG and related variables to reasonable values
+Reasonable enough, as I live in the US.
+
+#+begin_src sh :tangle ~/.zshenv
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+#+end_src
+
+** Add binary storage dir to PATH
+I really don't care to see ~~\/bin~, so I hide it in ~\~/.bin~
+
+#+begin_src sh :tangle ~/.zshenv
+export PATH=~/.bin:$PATH
+#+end_src
+
+** Sane history size
+#+begin_src sh :tangle ~/.zshenv
+export HISTSIZE=2000
+export SAVEHIST=$HISTSIZE
+#+end_src
+
+
+#+begin_src sh :tangle ~/.zshenv
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+#+end_src
+
+** Colored man page support
+#+begin_src sh :tangle ~/.zshenv
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;38;5;74m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[38;5;246m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[04;38;5;146m'
+#+end_src
+
+** Set $TERMCAP if its source file is available
+#+begin_src sh :tangle ~/.zshenv
+if [ -f ${HOME}/.termcap ]; then
+  export TERMCAP=$(< ${HOME}/.termcap)
+fi
+#+end_src
+
+** Eval dircolors for ls color support, but only if the file is there
+#+begin_src sh :tangle ~/.zshenv
+if [ -f ${HOME}/.dircolors ]; then
+  eval $(dircolors ~/.dircolors)
+fi
+#+end_src
+
+** Turn off pyenv's built-in prompt support, as I have my own prompt.
+#+begin_src sh :tangle ~/.zshenv
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+#+end_src
+
+** Set FZF's default options
+#+begin_src sh :tangle ~/.zshenv
+export FZF_DEFAULT_OPTS='--height 40% --reverse'
+#+end_src
+
+** Run keychain on shell spawn
+#+begin_src sh :tangle ~/.zprofile
+eval $(keychain --eval id_ed25519)
+#+end_src
+
+** Hotwire TTY1 to spawn X when I log in
+#+begin_src sh :tangle ~/.zprofile
+if [[ "$TTY" == "/dev/tty1" ]]; then
+  startx;
+  logout;
+fi
+#+end_src
