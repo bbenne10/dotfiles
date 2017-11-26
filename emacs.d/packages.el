@@ -208,7 +208,19 @@
 (use-package lsp-python
   :after lsp-mode
   :config
+    (defun python-insert-trace ()
+       ;; insert a line that impots pdb and sets a trace just below the current line
+       (interactive)
+       (move-end-of-line 1)
+       (insert "\n")
+       (indent-according-to-mode)
+       (insert "import pdb; pdb.set_trace()"))
+
     (add-hook 'python-mode-hook #'lsp-python-enable)
+    (general-define-key :keymaps 'python-mode-map
+                        :states '(normal)
+                        :prefix default-leader-key
+                        "lt" 'python-insert-trace)
 )
 (use-package company-lsp
   :config
