@@ -36,6 +36,7 @@ if ! zgen saved; then
   zgen save
 fi
 
+setopt no_histverify
 bindkey '^ ' autosuggest-accept
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
