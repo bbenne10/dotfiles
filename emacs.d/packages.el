@@ -247,13 +247,83 @@
     (add-hook 'term-mode-hook (function
                                (lambda ()
                                  (goto-address-mode)
+                                 (define-key term-raw-map (kbd "C-w") nil)
                                  (define-key term-raw-map (kbd "C-w h") 'evil-window-left)
                                  (define-key term-raw-map (kbd "C-w j") 'evil-window-down)
                                  (define-key term-raw-map (kbd "C-w k") 'evil-window-up)
-                                 (define-key term-raw-map (kbd "C-w l") 'evil-window-right))))
+                                 (define-key term-raw-map (kbd "C-w l") 'evil-window-right)
+                                 (define-key term-raw-map (kbd "C-w s") 'evil-window-split)
+                                 )))
     (add-hook 'term-exec-hook
               (function (lambda () (set-buffer-process-coding-system
                                 'utf-8-unix 'utf-8-unix))))
+)
+(use-package notmuch
+  :load-path "/usr/local/share/emacs/site-lisp/notmuch/"
+  :init
+  (setq notmuch-saved-searches '(("Inbox" . "tag:inbox AND NOT tag:archived")
+                                 ("Unread" . "tag:unread")
+                                 ("EA" . "tag:ea")
+                                 ("School" . "tag:school")
+                                 ("Lists" . "tag:lists")
+                                 ("Apiary" . "tag:apiary"))
+        mail-specify-envelope-from t
+        mail-envelope-from 'header
+        message-send-mail-function 'message-send-mail-with-sendmail
+        sendmail-program "/home/bbennett37/.bin/notmuch_sendmail"
+        notmuch-message-headers '("Subject" "To" "Cc" "Date")
+        mm-sign-option 'guided
+        )
+
+    (defun bb-notmuch-toggle-tag (tag)
+      "Toggle the presence of a tag on a message"
+      (interactive)
+      (if (member (tag (notmuch-search-get-tags))
+                  (notmuch-search-tag (list (concat "-" tag)))
+              (notmuch-search-tag (list (concat "+" tag))))))
+
+    (defun bb-notmuch-remove-inbox
+      (interactive)
+      (if (member ("inbox" (notmuch-search-get-tags))
+                  (notmuch-search-tag (list "-inbox")))))
+
+    ;; and now wrappers to call the above
+    (defun bb-notmuch-toggle-apiary ()
+        (bb-notmuch-toggle-tag "apiary"))
+
+    (defun bb-notmuch-toggle-archived ()
+      (bb-notmuch-toggle-tag "archived")
+      (bb-notmuch-remove-inbox))
+
+    (defun bb-notmuch-toggle-todo ()
+        (bb-notmuch-toggle-tag "todo"))
+
+    (defun bb-notmuch-toggle-school ()
+        (bb-notmuch-toggle-tag "school"))
+
+    (defun show-nm-inbox ()
+      (interactive)
+      (notmuch-search "tag:inbox and not tag:archived")
+    )
+
+  :config
+    (general-define-key :keymaps '(notmuch-show-mode-map
+                                   notmuch-search-mode-map)
+                        "d" 'bb-notmuch-toggle-archived
+                        "a" 'bb-notmuch-toggle-archived
+                        "j" 'next-line
+                        "k" 'previous-line
+                        ":" 'evil-ex
+                        "r" 'notmuch-show-reply
+                        "R" 'notmuch-show-reply-sender
+                        "t" nil
+    )
+    (general-define-key :keymaps '(notmuch-show-mode-map
+                                   notmuch-search-mode-map)
+                        :prefix "t"
+                        "s" 'bb-notmuch-toggle-school
+                        "a" 'bb-notmuch-toggle-apiary
+                        "e" 'bb-notmuch-toggle-ea)
 )
 (use-package projectile
   :delight projectile-mode
