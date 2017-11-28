@@ -18,7 +18,11 @@ source ~/.bin/zgen/zgen.zsh
 
 if ! zgen saved; then
   echo "Creating a zgen save..."
-  zgen oh-my-zsh
+  zgen prezto
+  zgen prezto git
+  zgen prezto command-not-found
+  zgen prezto history-substring-search
+
   zgen load unixorn/autoupdate-zgen
   zgen load djui/alias-tips
   zgen load zdharma/fast-syntax-highlighting
@@ -26,17 +30,23 @@ if ! zgen saved; then
   zgen load chrissicool/zsh-256color
   zgen load zsh-users/zsh-completions src
   zgen load zsh-users/zsh-autosuggestions
+  zgen load junegunn/fzf shell
   zgen load uvaes/fzf-marks
 
-  zgen oh-my-zsh plugins/command-not-found
-  zgen oh-my-zsh plugins/httpie
-  zgen oh-my-zsh plugins/pyenv
-  zgen oh-my-zsh plugins/supervisor
-  zgen oh-my-zsh plugins/vagrant
-
-  zgen load bbenne10/antigen-themes themes/bbennett2
+  # zgen load bbenne10/antigen-themes themes/bbennett2
   zgen save
 fi
+
+# I've no idea why this isn't being picked up from the sourced fzf shell binding above...
+zle -N fzf-history-widget
+bindkey '^R' fzf-history-widget
+
+zle -N fzf-file-widget
+bindkey '^T' fzf-file-widget
+
+# Same as above. No idea why these aren't being pulled from the shell script sourced in save
+zle -N jump
+bindkey '^G' jump
 #+end_src
 
 ** Install and load pyenv and pyenv-virtualenv
