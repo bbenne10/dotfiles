@@ -354,6 +354,7 @@
 )
 (use-package pyenv-mode
   :init
+   (setq exec-path (cons (format "%s/.pyenv/shims" (getenv "HOME")) exec-path))
    (add-hook 'python-mode-hook (function (lambda () (pyenv-mode))))
 )
 (use-package pyenv-mode-auto
