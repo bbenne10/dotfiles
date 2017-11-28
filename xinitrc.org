@@ -1,0 +1,88 @@
+#+ TITLE: Xinitrc
+
+** First, a utility function for running a binary if it exists
+#+begin_src sh :tangle ~/.xinitrc
+test_and_run() {
+  if which "$1" >/dev/null; then
+    $@
+  fi
+}
+#+end_src
+
+** Now add a few new directories to the font cache
+#+begin_src sh :tangle ~/.xinitrc
+if [ -d /usr/share/fonts/local ]; then
+  xset fp+ /usr/share/fonts/local;
+fi;
+
+if [ -d ~/.fonts ]; then
+  xset fp+ ~/.fonts;
+fi;
+#+end_src
+
+** Run emacs as a daemon on startup
+#+begin_src sh :tangle ~/.xinitrc
+test_and_run emacs --daemon &
+#+end_src
+
+** Hide the pointer if it doesn't move
+#+begin_src sh :tangle ~/.xinitrc
+test_and_run unclutter -noevents &
+#+end_src
+
+** Startup pulseaudio for this session
+#+begin_src sh :tangle ~/.xinitrc
+test_and_run start-pulseaudio-x11 &
+#+end_src
+
+** Startup screen dimmer 
+#+begin_src sh :tangle ~/.xinitrc
+test_and_run redshift &
+#+end_src
+
+** Startup compositor
+#+begin_src sh :tangle ~/.xinitrc
+test_and_run compton &
+#+end_src
+
+** Start browser
+#+begin_src sh :tangle ~/.xinitrc
+test_and_run firefox &
+#+end_src
+
+** Start screen locker via XSS
+#+begin_src sh :tangle ~/.xinitrc
+if [ -e ~/.bin/xss ]; then
+    xset s 300
+  ~/.bin/xss ~/.bin/lock_screen &
+fi
+#+end_src
+
+** Set the wallpaper - either via feh or nitrogen
+#+begin_src sh :tangle ~/.xinitrc
+if [ -e ~/.fehbg -a $(which feh) ]; then
+  ~/.fehbg
+else
+  test_and_run nitrogen --restore
+fi
+#+end_src
+
+** Startup dbus session for this xorg session
+#+begin_src sh :tangle ~/.xinitrc
+if which dbus-launch >/dev/null && test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+  dbus-launch --sh-syntax --exit-with-session
+fi
+#+end_src
+
+** Enable SystemD user sessions on machines that have it.
+#+begin_src sh :tangle ~/.xinitrc
+if [ -f /etc/X11/xinit/xinitrc.d/50-systemd-user.sh ]; then
+ . /etc/X11/xinit/xinitrc.d/50-systemd-user.sh
+fi
+#+end_src
+
+** And lastly, start dwm and the status bar
+#+begin_src sh :tangle ~/.xinitrc
+~/.bin/dwmstatus &
+exec ~/.bin/dwm
+#+end_src

@@ -1,3 +1,140 @@
+#+ TITLE: Emacs configuration
+
+** Increase garbage collection threshold during init
+Theoretically increases boot up speed.
+
+#+begin_src elisp :tangle ~/.emacs.d/init.el
+(setq gc-cons-threshold 64000000)
+(add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000)))
+#+end_src
+
+** Store all backups and autosaves in the temp dir
+#+begin_src elisp :tangle ~/.emacs.d/init.el
+(setq backup-directory-alist `((".*" . ,temporary-file-directory))
+      auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+#+end_src
+
+** Move our custom file to a location consistent with our other files (and source it)
+#+begin_src elisp :tangle ~/.emacs.d/init.el
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file 'noerror)
+#+end_src
+
+** Load the other files in our set up
+ #+begin_src elisp :tangle ~/.emacs.d/init.el
+(load "~/.emacs.d/packages.el")
+(load "~/.emacs.d/ui.el")
+(load "~/.emacs.d/languages.el")
+#+end_src
+
+** Set up Hasklig and its ligatures
+Obviously requires Hasklig installed
+
+#+begin_src elisp :tangle ~/.emacs.d/ui.el
+(setq default-frame-alist '((font . "Hasklig-9")))
+
+(defun my-correct-symbol-bounds (pretty-alist)
+  (mapcar (lambda (el)
+            (setcdr el (string ?\t (cdr el)))
+            el)
+          pretty-alist))
+(defun my-ligature-list (ligatures codepoint-start)
+  (let ((codepoints (-iterate '1+ codepoint-start (length ligatures))))
+    (-zip-pair ligatures codepoints)))
+(setq my-hasklig-ligatures
+      (let* ((ligs '("&&" "***" "*>" "\\\\" "||" "|>" "::"
+                     "==" "===" "==>" "=>" "=<<" "!!" ">>"
+                     ">>=" ">>>" ">>-" ">-" "->" "-<" "-<<"
+                     "<*" "<*>" "<|" "<|>" "<$>" "<>" "<-"
+                     "<<" "<<<" "<+>" ".." "..." "++" "+++"
+                     "/=" ":::" ">=>" "->>" "<=>" "<=<" "<->")))
+        (my-correct-symbol-bounds (my-ligature-list ligs #Xe100))))
+
+(defun my-set-hasklig-ligatures ()
+  (setq prettify-symbols-alist
+        (append my-hasklig-ligatures prettify-symbols-alist))
+  (prettify-symbols-mode))
+
+(add-hook 'prog-mode-hook (function (lambda () (my-set-hasklig-ligatures))))
+#+end_src
+
+** Bold curent line number
+#+begin_src elisp :tangle ~/.emacs.d/ui.el
+(set-face-attribute 'line-number-current-line nil
+                    :font "Hasklig-9:weight=Bold"
+                    :inverse-video nil)
+#+end_src
+
+** Enable some nice programming features in in prog-mode
+This requires emacs 26 or newer!
+#+begin_src elisp :tangle ~/.emacs.d/ui.el
+(add-hook 'prog-mode-hook (lambda () (
+  (setq-local display-line-numbers t)
+  (prettify-symbols-mode 1)
+  (show-paren-mode 1)
+  (global-hl-line-mode 1))))
+#+end_src
+
+** Strip trailing whitespace in prog-mode
+This installs the hook as a buffer-local.
+
+#+begin_src elisp :tangle ~/.emacs.d/ui.el
+(add-hook 'prog-mode-hook (lambda () 
+ (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
+#+end_src
+
+** Disable scrollbar, menu bar, and tool bar
+#+begin_src elisp :tangle ~/.emacs.d/ui.el
+(scroll-bar-mode 0)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+#+end_src
+
+** Set some variables (explained inline)
+#+begin_src elisp :tangle ~/.emacs.d/ui.el
+(setq initial-scratch-message ""                     ; disable the scratch message
+      inhibit-startup-message t                      ; disable the startup screen
+      scroll-conservatively 101                      ; move window one line at a time when point approaches edge
+      scroll-margin 5                                ; start scrolling 5 lines from edge
+      visible-bell t                                 ; Audible bell is cancer, but visible bell works okay
+      ad-redefinition-action 'accept                 ; Tell emacs we're okay with functions being given advice
+      vc-follow-symlinks t                           ; Follow symlinks to vcs controlled files
+      select-enable-clipboard t                      ; copy actions copy to clipboard
+      select-enable-primary t                        ; copy actions also copy to primary
+      mouse-drag-copy-region t                       ; highlighting a section causes it to get copied (linux default behavior)
+      prettify-symbols-unprettify-at-point t         ; unprettify symbols when the point hits them so we can edit them
+)
+(setq-default fill-column 80                         ; in fill-mode, what column do we wrap at?
+              truncate-lines t                       ; disable line wrapping
+              indent-tabs-mode nil                   ; use spaces over tabs everywhere
+              tab-width 2                            ; but when encountering a tab, how large is it?
+              tab-stop-list (number-sequence 3 120 2); and what are the tabstop points when shifting?
+)
+#+end_src
+
+** Don't make me type 'yes' or 'no', even if it's important
+#+begin_src elisp :tangle ~/.emacs.d/ui.el
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
+** Change the Javascript linter that flycheck picks and set JS indentation to 2
+#+begin_src elisp :tangle ~/.emacs.d/languages.el
+(add-hook 'js-mode-hook
+          (function (lambda ()
+                      (flycheck-select-checker 'javascript-standard)
+                      (setq js-indent-level 2)
+                      (setq evil-shift-width 2))))
+#+end_src
+
+** Use the c/c++ GCC checker in C/C++ code
+#+begin_src elisp :tangle ~/.emacs.d/languages.el
+(add-hook 'c++-mode-hook
+          (function (lambda ()
+                      (flycheck-select-checker 'c/c++-gcc))))
+#+end_src
+
+** Initialize existing packages
+#+begin_src elisp :tangle ~/.emacs.d/packages.el
 (setq package-user-dir "~/.emacs.d/elpa"
       package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
                          ("melpa-stable" . "http://stable.melpa.org/packages/")
@@ -5,6 +142,10 @@
 (defvar use-package-always-ensure t)
 
 (package-initialize)
+#+end_src
+
+** Auto-require some basic packages outside of use-package
+#+begin_src elisp :tangle ~/.emacs.d/packages.el
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package)
@@ -12,12 +153,19 @@
 (require 'use-package)
 (require 'bind-key)
 (require 'delight)
+#+end_src
 
+** Instantiate a default leader key
+This key is just left of space on my Preonic. Since I don't use that keyboard everywhere, I use my laptop's hostname to determine if I should set prefix differently
+#+begin_src elisp :tangle ~/.emacs.d/packages.el
 (defvar default-leader-key "<XF86TouchpadOff>")
 (if (string= (system-name) "Bryan-Laptop")
   (setq default-leader-key "<SPC>")
 )
+#+end_src
 
+** use-package madness (this needs to be better explained...)
+#+begin_src elisp :tangle ~/.emacs.d/packages.el
 (use-package evil
   ;; We're first so we define the maps we override later
   :config
@@ -34,47 +182,12 @@
     ;; (load-theme 'zerodark)
     (zerodark-setup-modeline-format)
   )
-(use-package nord-theme
-  :config
-    (load-theme 'nord t)
-)
-(use-package anaconda-mode
-   :after (general pyenv-mode-auto)
-   :commands anaconda-mode
-   :delight anaconda-mode
-   :init
-     (defun python-insert-trace ()
-       ;; insert a line that impots pdb and sets a trace just below the current line
-       (interactive)
-       (move-end-of-line 1)
-       (insert "\n")
-       (indent-according-to-mode)
-       (insert "import pdb; pdb.set_trace()"))
-
-     (add-hook 'python-mode-hook
-               (function
-                (lambda () (setq evil-shift-width python-indent-offset)
-                  (anaconda-mode 1))))
-
-     (general-define-key :keymaps 'anaconda-mode-map
-                         :states '(normal)
-                         :prefix "C-c"
-                         "g" 'anaconda-mode-find-definitions
-                         "a" 'anaconda-mode-find-assignments
-                         "r" 'anaconda-mode-find-references
-                         "?" 'anaconda-mode-show-doc
-                         "t" 'python-insert-trace)
-)
 (use-package company
   :delight company-mode
   :config
     (setq company-tooltip-limit 20
           company-tooltip-align-annotations t)
     (global-company-mode 1)
-)
-(use-package company-anaconda
-  :commands (anaconda-mode)
-  :init (add-to-list 'company-backends 'company-anaconda)
 )
 (use-package counsel
   :after (general)
@@ -225,6 +338,42 @@
     (setq hs-allow-nesting t)
     (add-hook 'prog-mode-hook (function (lambda() (hs-minor-mode))))
   )
+(use-package lsp-mode
+  :config
+    (general-define-key :states '(normal)
+                        :prefix default-leader-key
+                        "ld" 'xref-find-definition
+                        "lr" 'xref-find-references
+                        "lf" 'lsp-format-buffer
+                        "<SPC>" 'counsel-projectile)
+    (require 'lsp-flycheck)
+)
+(use-package lsp-javascript-typescript
+  :config
+    (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
+    (add-hook 'rjsx-mode-hook #'lsp-javascript-typescript-enable)
+)
+(use-package lsp-python
+  :after lsp-mode
+  :config
+    (defun python-insert-trace ()
+       ;; insert a line that impots pdb and sets a trace just below the current line
+       (interactive)
+       (move-end-of-line 1)
+       (insert "\n")
+       (indent-according-to-mode)
+       (insert "import pdb; pdb.set_trace()"))
+
+    (add-hook 'python-mode-hook #'lsp-python-enable)
+    (general-define-key :keymaps 'python-mode-map
+                        :states '(normal)
+                        :prefix default-leader-key
+                        "lt" 'python-insert-trace)
+)
+(use-package company-lsp
+  :config
+  (push 'company-lsp company-backends)
+)
 (use-package lua-mode)
 (use-package magit
   :delight magit-auto-revert-mode
@@ -336,7 +485,6 @@
   :config
     (general-define-key :states '(normal)
                         :prefix default-leader-key
-                        ;; "b" 'counsel-projectile-switch-to-buffer
                         "e" 'counsel-projectile-find-file
                         "p" 'counsel-projectile-switch-project
                         "<SPC>" 'counsel-projectile)
@@ -351,6 +499,13 @@
           evil-normal-state-tag "N"
           spaceline-highlight-face-func 'spaceline-highlight-face-evil-state
           )
+)
+(use-package org
+  :config
+    (setq org-babel-load-languages
+          '((python . t)
+            (shell . t)
+            ))
 )
 (use-package pyenv-mode
   :init
@@ -367,6 +522,9 @@
   (add-hook 'elip-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable))))
 )
 (use-package rainbow-mode)
+(use-package rjsx-mode
+  :mode "\\.js[x]*\\'"
+)
 (use-package solaire-mode
   :init
     (setq solaire-mode-remap-modeline nil)
@@ -395,3 +553,4 @@
   :mode ("\\.yaml'" "\\.yml'"))
 (use-package yasnippet
   :delight yas-minor-mode)
+#+end_src

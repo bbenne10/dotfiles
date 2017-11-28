@@ -1,0 +1,50 @@
+#+TITLE: Git config
+
+** Global Git Ignore
+#+begin_src conf :tangle ~/.gitignore
+*.pyc
+.python-version
+.ropeproject
+auto-save-list
+custom.el
+url/
+\#*
+*~
+.#*
+\#*\#
+*.log
+.DS_Store
+**/*.elc
+.projectile
+#+end_src
+
+** Global Git config
+#+begin_src conf :tangle ~/.gitconfig
+[user]
+  name = Bryan Bennett
+  email = Bryan.Bennett@gtri.gatech.edu
+[core]
+	excludesfile = /home/bryan/.gitignore
+[push]
+	default = current
+[diff]
+  tool = vimdiff
+[diftool]
+  prompt = false
+[difftool]
+  prompt = false
+[color]
+  ui = true
+
+[include]
+  path = /home/bryan/.gitconfig.local
+
+[alias]
+  graph = log --graph --oneline --decorate
+  up = pull --ff-only
+  ci = commit
+  st = status
+  br = branch
+[pull]
+	default = current
+#+end_src
