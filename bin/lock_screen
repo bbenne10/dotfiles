@@ -2,7 +2,7 @@ if which dm-tool >/dev/null; then
   dm-tool lock
 else
   rm ~/.available
-  mpc | grep -q '[playing]' && playing=1
+  mpc | grep -q '\[playing\]' && playing=1
   (sleep 4; [ $playing ] && mpc --no-status pause) &
   slock
   touch ~/.available
