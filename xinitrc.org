@@ -1,4 +1,4 @@
-#+ TITLE: Xinitrc
+#+TITLE: Xinitrc
 
 ** First, a utility function for running a binary if it exists
 #+begin_src sh :tangle ~/.xinitrc

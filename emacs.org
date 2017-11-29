@@ -1,4 +1,4 @@
-#+ TITLE: Emacs configuration
+#+TITLE: Emacs configuration
 
 ** Increase garbage collection threshold during init
 Theoretically increases boot up speed.
