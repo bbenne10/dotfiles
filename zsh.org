@@ -78,7 +78,7 @@ setopt no_histverify
 
 ** Bind a key to accept zsh-autosuggestion's suggestions (Ctrl + Space)
 #+begin_src sh :tangle ~/.zshrc
-bindkey '^ ' autosuggest-acept
+bindkey '^ ' autosuggest-accept
 #+end_src
 
 ** Set up some very basic aliases
