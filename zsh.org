@@ -18,10 +18,14 @@ source ~/.bin/zgen/zgen.zsh
 
 if ! zgen saved; then
   echo "Creating a zgen save..."
+  zgen prezto editor key-bindings 'emacs'
+  zgen prezto editor dot-expansion 'yes'
+  zgen prezto utility:ls color 'yes'
+  zgen prezto prompt theme 'bbennett'
+
   zgen prezto
   zgen prezto git
   zgen prezto command-not-found
-  zgen prezto history-substring-search
 
   zgen load unixorn/autoupdate-zgen
   zgen load djui/alias-tips
@@ -33,7 +37,8 @@ if ! zgen saved; then
   zgen load junegunn/fzf shell
   zgen load uvaes/fzf-marks
 
-  # zgen load bbenne10/antigen-themes themes/bbennett2
+  zgen load bbenne10/antigen-themes themes
+  # zgen prezto prompt
   zgen save
 fi
 
@@ -44,7 +49,6 @@ bindkey '^R' fzf-history-widget
 zle -N fzf-file-widget
 bindkey '^T' fzf-file-widget
 
-# Same as above. No idea why these aren't being pulled from the shell script sourced in save
 zle -N jump
 bindkey '^G' jump
 #+end_src
@@ -53,6 +57,7 @@ bindkey '^G' jump
 I use [[https://github.com/pyenv/pyenv][pyenv]] and [[https://github.com/pyenv/pyenv-virtualenv][pyenv-virtualenv]] to manage my Python versions.
 
 #+begin_src sh :tangle ~/.zshrc
+
 if [ ! -d ~/.pyenv ]; then
   git clone http://github.com/yyuu/pyenv ~/.pyenv
   pushd ~/.pyenv/plugins
