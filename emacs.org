@@ -61,18 +61,19 @@ Obviously requires Hasklig installed
 ** Bold curent line number
 #+begin_src elisp :tangle ~/.emacs.d/ui.el
 (set-face-attribute 'line-number-current-line nil
-                    :font "Hasklig-9:weight=Bold"
+                    :font "Hasklig-11:weight=Bold"
                     :inverse-video nil)
 #+end_src
 
 ** Enable some nice programming features in in prog-mode
 This requires emacs 26 or newer!
 #+begin_src elisp :tangle ~/.emacs.d/ui.el
-(add-hook 'prog-mode-hook (lambda () (
-  (setq-local display-line-numbers t)
+(add-hook 'prog-mode-hook (function(lambda ()
   (prettify-symbols-mode 1)
   (show-paren-mode 1)
-  (global-hl-line-mode 1))))
+  (global-hl-line-mode 1)
+  (display-line-numbers-mode)
+)))
 #+end_src
 
 ** Strip trailing whitespace in prog-mode
