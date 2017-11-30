@@ -501,6 +501,10 @@ This key is just left of space on my Preonic. Since I don't use that keyboard ev
           spaceline-highlight-face-func 'spaceline-highlight-face-evil-state
           )
 )
+(use-package origami
+  :config
+    (global-origami-mode)
+)
 (use-package org
   :config
     (setq org-babel-load-languages
