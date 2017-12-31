@@ -58,6 +58,26 @@ if [ -e ~/.bin/xss ]; then
 fi
 #+end_src
 
+** Swap caps and escape (and use xinputd to make sure it stays that way)
+This requires [[https://github.com/bbenne10/xinputd][xinputd]], which is installed in install.sh.
+
+#+begin_src sh :tangle ~/.xsession
+setxkbmap -option caps:escape
+
+if [ -e ~/.bin/xinputd ]; then
+  xinputd setxkbmap -option caps:escape
+fi
+#+end_src
+
+** Watch for monitor plug events and react properly
+This requires [[https://github.com/bbenne10/srandrd][srandrd]], which is installed in install.sh.
+
+#+begin_src sh :tangle ~/.xsession
+if [ -e ~/.bin/srandrd ]; then
+  srandrd ~/code/srandrd/example_consumers/toggle_monitors.sh
+fi
+#+end_src
+
 ** Set the wallpaper - either via feh or nitrogen
 #+begin_src sh :tangle ~/.xsession
 if [ -e ~/.fehbg -a $(which feh) ]; then
