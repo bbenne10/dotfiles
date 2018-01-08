@@ -8,49 +8,49 @@
 ** Install and load zgen
 I prefer [[https://github.com/tarjoilija/zgen][zgen]] to antigen for managing my zsh configuration and I prefer to not have to think about whether it's installed
 
+#+begin_src sh :tangle ~/.zshenv
+export ZGEN_RESET_ON_CHANGE=($HOME/.zshrc)
+#+end_src
+
 #+begin_src sh :tangle ~/.zshrc
-if [ ! -f ~/.bin/zgen/zgen.zsh ]; then
-  pushd ~/.bin
-  git clone http://github.com/tarjoilija/zgen
-  popd
-fi
-source ~/.bin/zgen/zgen.zsh
-
-if ! zgen saved; then
-  echo "Creating a zgen save..."
-  zgen prezto editor key-bindings 'emacs'
-  zgen prezto editor dot-expansion 'yes'
-  zgen prezto utility:ls color 'yes'
-  zgen prezto prompt theme 'bbennett'
-
-  zgen prezto
-  zgen prezto git
-  zgen prezto command-not-found
-
-  zgen load unixorn/autoupdate-zgen
-  zgen load djui/alias-tips
-  zgen load zdharma/fast-syntax-highlighting
-  zgen load Tarrasch/zsh-autoenv
-  zgen load chrissicool/zsh-256color
-  zgen load zsh-users/zsh-completions src
-  zgen load zsh-users/zsh-autosuggestions
-  zgen load junegunn/fzf shell
-  zgen load uvaes/fzf-marks
-
-  zgen load bbenne10/antigen-themes themes
-  # zgen prezto prompt
-  zgen save
+if [ ! -f ~/.zplug/init.zsh ]; then
+  git clone http://github.com/zplug/zplug ~/.zplug
 fi
 
-# I've no idea why this isn't being picked up from the sourced fzf shell binding above...
-zle -N fzf-history-widget
-bindkey '^R' fzf-history-widget
+source ~/.zplug/init.zsh
+zplug "BurntSushi/ripgrep", \
+      from:gh-r, \
+      as:command, \
+      rename-to:rg
 
-zle -N fzf-file-widget
-bindkey '^T' fzf-file-widget
+zplug "junegunn/fzf-bin", \
+      from:gh-r, \
+      as:command, \
+      rename-to:fzf
 
-zle -N jump
-bindkey '^G' jump
+zplug "junegunn/fzf", \
+      from:github, \
+      use:"shell/{completion,key-bindings}.zsh"
+
+zplug "zdharma/fast-syntax-highlighting"
+zplug "djui/alias-tips"
+zplug "Tarrasch/zsh-autoenv"
+zplug "chrissicool/zsh-256color"
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-autosuggestions"
+zplug "uvaes/fzf-marks"
+zplug "bbenne10/antigen-themes", \
+      as:theme, \
+      use:"themes/prompt_bbennett_setup.zsh"
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+zplug load
 #+end_src
 
 ** Install and load pyenv and pyenv-virtualenv
