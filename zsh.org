@@ -139,10 +139,11 @@ export PATH
 #+end_src
 
 
-** Sane history size
+** Setup history
 #+begin_src sh :tangle ~/.zshenv
 export HISTSIZE=2000
 export SAVEHIST=$HISTSIZE
+export HISTFILE=~/.zhistory
 #+end_src
 
 
