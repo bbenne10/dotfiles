@@ -23,6 +23,11 @@ zplug "BurntSushi/ripgrep", \
       as:command, \
       rename-to:rg
 
+zplug "sharkdp/fd", \
+      from:gh-r, \
+      as:command, \
+      rename-to:fd
+
 zplug "junegunn/fzf-bin", \
       from:gh-r, \
       as:command, \
