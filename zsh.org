@@ -138,6 +138,12 @@ PATH="$PYENV_ROOT/bin:$PATH"
 export PATH
 #+end_src
 
+** Set pythonrc
+    #+begin_src sh :tangle ~/.zshenv
+    export PYTHONRC="$HOME/.pythonrc"
+    #+end_src
+
+
 
 ** Setup history
 #+begin_src sh :tangle ~/.zshenv
