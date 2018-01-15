@@ -5,12 +5,8 @@
 . ~/.zaliases
 #+end_src
 
-** Install and load zgen
-I prefer [[https://github.com/tarjoilija/zgen][zgen]] to antigen for managing my zsh configuration and I prefer to not have to think about whether it's installed
-
-#+begin_src sh :tangle ~/.zshenv
-export ZGEN_RESET_ON_CHANGE=($HOME/.zshrc)
-#+end_src
+** Install and load zplug
+I prefer [[https://github.com/zplug/zplug][zplug]] to managing my zsh configuration and I prefer to not have to think about whether it's installed
 
 #+begin_src sh :tangle ~/.zshrc
 if [ ! -f ~/.zplug/init.zsh ]; then
@@ -76,12 +72,7 @@ if command -v pyenv 1>/dev/null 2>&1; then
 fi
 #+end_src
 
-** Disable history expansion confirmation
-#+begin_src sh :tangle ~/.zshrc
-setopt no_histverify
-#+end_src
-
-** Bind a key to accept zsh-autosuggestion's suggestions (Ctrl + Space)
+** Bind a Ctrl + Space to accept zsh-autosuggestion's suggestions
 #+begin_src sh :tangle ~/.zshrc
 bindkey '^ ' autosuggest-accept
 #+end_src
