@@ -93,6 +93,39 @@ function _nvim_or_vim_or_vi () {
 alias vim=_nvim_or_vim_or_vi
 #+end_src
 
+** Zsh options
+
+Auto-cd saves quite a few keystrokes in very little time. Allows cd'ing to a directory without typing 'cd' 
+#+begin_src sh :tangle ~/.zshrc
+setopt autocd
+#+end_src
+
+Chase dots: This will remove '..' from directory paths alongside the path it's moving to (~foo/../bar~ becoms ~/bar~)
+#+begin_src sh :tangle ~/.zshrc
+setopt chase_dots
+#+end_src
+
+Append History: All zsh shells append (rather than overwrite) history incrementally.
+#+begin_src sh :tangle ~/.zshrc
+setopt append_history
+setopt inc_append_history
+#+end_src
+
+Disable history expansion confirmation
+#+begin_src sh :tangle ~/.zshrc
+setopt no_histverify
+#+end_src
+
+Disable history expansion confirmation
+#+begin_src sh :tangle ~/.zshrc
+setopt no_histverify
+#+end_src
+
+Don't allow us to clobber a file without attempting to do so
+#+begin_src sh :tangle ~/.zshrc
+setopt noclobber
+#+end_src
+
 
 ** Toggle screen blanking with a simple command
 #+begin_src sh :tangle ~/.zaliases
