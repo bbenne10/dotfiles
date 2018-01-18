@@ -58,7 +58,7 @@ main () {
   test -d "$BUILD_DIR" || mkdir -p "$BUILD_DIR"
   start_dir="$PWD"
 
-  if [ echo "$OSTYPE" | grep -vq "darwin" ]; then
+  if echo "$OSTYPE" | grep -vq "darwin"; then
     # If we're not on osx
     cd "$BUILD_DIR"
       install_srandrd
