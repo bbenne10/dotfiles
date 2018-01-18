@@ -58,18 +58,25 @@ main () {
   test -d "$BUILD_DIR" || mkdir -p "$BUILD_DIR"
   start_dir="$PWD"
 
-  cd "$BUILD_DIR"
-    install_srandrd
-    install_xinputd
-    install_xss
-    install_dwm
-    install_dwmstatus
-  cd "$start_dir"
+  if [ echo "$OSTYPE" | grep -vq "darwin" ]; then
+    # If we're not on osx
+    cd "$BUILD_DIR"
+      install_srandrd
+      install_xinputd
+      install_xss
+      install_dwm
+      install_dwmstatus
+    cd "$start_dir"
+
+    if [ -e $HOME/.xinitrc ]; then
+      rm $HOME/.xinitrc
+    fi
+
+    ln -s $HOME/.xsession $HOME/.xinitrc
+  fi
 
   tangle_dotfiles
 
-  test -L $HOME/.xinitrc || test -F $HOME/.xinitrc && rm $HOME/.xinitrc
-  ln -s $HOME/.xsession $HOME/.xinitrc
 }
 
 main
