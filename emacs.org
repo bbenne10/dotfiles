@@ -636,3 +636,10 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
   #+end_src
 
 ** Fix up hideshow mode
+  #+begin_src elisp :tangle ~/.emacs.d/packages.el
+  (use-package hideshow
+    :init
+      (setq hs-allow-nesting t)
+    :config
+      (add-hook 'prog-mode-hook (function (lambda (hs-minor-mode)))))
+  #+end_src
