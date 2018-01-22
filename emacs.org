@@ -641,5 +641,5 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
     :init
       (setq hs-allow-nesting t)
     :config
-      (add-hook 'prog-mode-hook (function (lambda (hs-minor-mode)))))
+      (add-hook 'prog-mode-hook #'hs-minor-mode))
   #+end_src
