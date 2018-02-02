@@ -177,8 +177,6 @@ export PATH
     export PYTHONRC="$HOME/.pythonrc"
     #+end_src
 
-
-
 ** Setup history
 #+begin_src sh :tangle ~/.zshenv
 export HISTSIZE=2000
@@ -215,6 +213,7 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 ** Set FZF's default options
 #+begin_src sh :tangle ~/.zshenv
 export FZF_DEFAULT_OPTS='--height 40% --reverse'
+export FZF_DEFAULT_COMMAND='fd --type file --follow'
 #+end_src
 
 ** Run keychain on shell spawn
