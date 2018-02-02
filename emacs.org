@@ -507,9 +507,32 @@
   #+end_src
 
 ** Set up Scala editing mode
+*** Scala-mode
+#+begin_src elisp :tangle ~/.emacs.d/packages.el
+(use-package scala-mode
+  :interpreter ("scala" . scala-mode))
+#+end_src
+
+*** sbt-mode
+#+begin_src elisp :tangle ~/.emacs.d/packages.el
+    (use-package sbt-mode
+  :commands sbt-start sbt-command
+  :config
+    ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+    ;; allows using SPACE when in the minibuffer
+    (substitute-key-definition
+     'minibuffer-complete-word
+     'self-insert-command
+     minibuffer-local-completion-map))
+#+end_src
+
+
+*** ENSIME
 This requires some basic setup - find it documented [[http://ensime.org/editors/emacs/install/#installing][here.]]
+
 #+begin_src elisp :tangle ~/.emacs.d/packages.el
 (use-package ensime
+  :pin melpa-stable
   :commands (ensime ensime-mode)
   :init (setq ensime-startup-notification nil ensime-startup-snapshot-notification nil)
   (add-hook 'scala-mode-hook #'ensime-mode)
