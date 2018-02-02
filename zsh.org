@@ -10,10 +10,18 @@ I prefer [[https://github.com/zplug/zplug][zplug]] to managing my zsh configurat
 
 #+begin_src sh :tangle ~/.zshrc
 if [ ! -f ~/.zplug/init.zsh ]; then
-  git clone http://github.com/zplug/zplug ~/.zplug
+  # Commented until https://github.com/zplug/zplug/issues/454 is closed
+  # PR opened: https://github.com/zplug/zplug/pull/455
+  # git clone http://github.com/zplug/zplug ~/.zplug
+  git clone --depth=1 http://github.com/bbenne10/zplug ~/.zplug
 fi
 
 source ~/.zplug/init.zsh
+# Commented until https://github.com/zplug/zplug/issues/454 is closed
+# PR opened: https://github.com/zplug/zplug/pull/455
+# zplug 'zplug/zplug', \
+#       hook-build:'zplug --self-manage'
+
 zplug "BurntSushi/ripgrep", \
       from:gh-r, \
       as:command, \
