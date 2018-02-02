@@ -41,6 +41,7 @@ zplug "junegunn/fzf", \
       from:github, \
       use:"shell/{completion,key-bindings}.zsh"
 
+zplug "zuxfoucault/colored-man-pages_mod"
 zplug "zdharma/fast-syntax-highlighting"
 zplug "djui/alias-tips"
 zplug "Tarrasch/zsh-autoenv"
@@ -189,17 +190,6 @@ export HISTFILE=~/.zhistory
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-#+end_src
-
-** Colored man page support
-#+begin_src sh :tangle ~/.zshenv
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;38;5;74m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[38;5;246m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 #+end_src
 
 ** Set $TERMCAP if its source file is available
