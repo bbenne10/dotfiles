@@ -75,7 +75,14 @@ if command -v pyenv 1>/dev/null 2>&1; then
 fi
 #+end_src
 
-** Bind a Ctrl + Space to accept zsh-autosuggestion's suggestions
+** Set up keybinds
+*** Bind some keys that zsh doesn't get right for konsole
+#+begin_src sh :tangle ~/.zshrc
+bindkey '^[[1;5D' backward-word  # C-left
+bindkey '^[[1;5C' forward-word   # C-right
+#+end_src
+
+*** Bind a Ctrl + Space to accept zsh-autosuggestion's suggestions
 #+begin_src sh :tangle ~/.zshrc
 bindkey '^ ' autosuggest-accept
 #+end_src
