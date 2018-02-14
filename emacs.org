@@ -1,6 +1,6 @@
 #+TITLE: Emacs configuration
 
-** Increase garbage collection threshold during init
+* Increase garbage collection threshold during init
   Theoretically increases boot up speed.
 
   #+begin_src elisp :tangle ~/.emacs.d/init.el
@@ -8,26 +8,26 @@
   (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000)))
   #+end_src
 
-** Store all backups and autosaves in the temp dir
+* Store all backups and autosaves in the temp dir
   #+begin_src elisp :tangle ~/.emacs.d/init.el
   (setq backup-directory-alist `((".*" . ,temporary-file-directory))
         auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
   #+end_src
 
-** Move our custom file to a location consistent with our other files (and source it)
+* Move our custom file to a location consistent with our other files (and source it)
   #+begin_src elisp :tangle ~/.emacs.d/init.el
   (setq custom-file "~/.emacs.d/custom.el")
   (load custom-file 'noerror)
   #+end_src
 
-** Load the other files in our set up
+* Load the other files in our set up
   #+begin_src elisp :tangle ~/.emacs.d/init.el
   (load "~/.emacs.d/packages.el")
   (load "~/.emacs.d/ui.el")
   (load "~/.emacs.d/languages.el")
   #+end_src
 
-** Set up Hasklig and its ligatures
+* Set up Hasklig and its ligatures
   Obviously requires [[https://github.com/i-tu/Hasklig][Hasklig]] installed.
 
   #+begin_src elisp :tangle ~/.emacs.d/ui.el
@@ -58,14 +58,14 @@
   (add-hook 'prog-mode-hook (function (lambda () (my-set-hasklig-ligatures))))
 #+end_src
 
-** Bold curent line number
+* Bold curent line number
   #+begin_src elisp :tangle ~/.emacs.d/ui.el
   (set-face-attribute 'line-number-current-line nil
                       :font "Hasklig-9:weight=Bold"
                       :inverse-video nil)
   #+end_src
 
-** Enable some nice programming features in in prog-mode
+* Enable some nice programming features in in prog-mode
   *NOTE*: This requires emacs 26 or newer!
   #+begin_src elisp :tangle ~/.emacs.d/ui.el
   (add-hook 'prog-mode-hook (function(lambda ()
@@ -76,7 +76,7 @@
   )))
   #+end_src
 
-** Strip trailing whitespace in prog-mode
+* Strip trailing whitespace in prog-mode
   This installs the hook as a buffer-local.
 
   #+begin_src elisp :tangle ~/.emacs.d/ui.el
@@ -91,7 +91,7 @@
   (tool-bar-mode 0)
   #+end_src
 
-** Set some variables (explained inline)
+* Set some variables (explained inline)
   #+begin_src elisp :tangle ~/.emacs.d/ui.el
   (setq initial-scratch-message ""                     ; disable the scratch message
         inhibit-startup-message t                      ; disable the startup screen
@@ -113,12 +113,12 @@
   )
 #+end_src
 
-** Don't make me type 'yes' or 'no', even if it's important
+* Don't make me type 'yes' or 'no', even if it's important
   #+begin_src elisp :tangle ~/.emacs.d/ui.el
   (defalias 'yes-or-no-p 'y-or-n-p)
   #+end_src
 
-** Change the Javascript linter that flycheck picks and set JS indentation to 2
+* Change the Javascript linter that flycheck picks and set JS indentation to 2
   #+begin_src elisp :tangle ~/.emacs.d/languages.el
   (add-hook 'js-mode-hook
             (function (lambda ()
@@ -127,14 +127,14 @@
                         (setq evil-shift-width 2))))
   #+end_src
 
-** Use the c/c++ GCC checker in C/C++ code
+* Use the c/c++ GCC checker in C/C++ code
   #+begin_src elisp :tangle ~/.emacs.d/languages.el
   (add-hook 'c++-mode-hook
             (function (lambda ()
                         (flycheck-select-checker 'c/c++-gcc))))
   #+end_src
 
-** Initialize existing packages
+* Initialize existing packages
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (setq package-user-dir "~/.emacs.d/elpa"
         package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
@@ -145,7 +145,7 @@
   (package-initialize)
   #+end_src
 
-** Auto-require some basic packages outside of use-package
+* Auto-require some basic packages outside of use-package
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
@@ -156,23 +156,21 @@
   (require 'delight)
   #+end_src
 
-** Instantiate a default leader key
-  This key is just left of space on my Preonic. Since I don't use that keyboard everywhere, I use my laptop's hostname to determine if I should set prefix differently
+* Instantiate a default leader key
+  This key is just left of space on my Preonic. Since I don't use that keyboard everywhere, I use my desktop's hostname to determine if I should set prefix differently
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
-  (defvar default-leader-key "<XF86TouchpadOff>")
-  (if (string= (system-name) "Bryan-Laptop")
-    (setq default-leader-key "<SPC>")
-  )
+  (defvar default-leader-key "<SPC>")
+  (if (string= (system-name) "tia-bxb-d01.ctisl.gtri.org") (setq default-leader-key "<XF86TouchpadOff>"))
   #+end_src
 
-** Set up General.el for keybindings
+* Set up General.el for keybindings
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package general
     :config
       (global-unset-key (kbd "C-h h")))
   #+end_src
 
-** Set up Company as completion framework
+* Set up Company as completion framework
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package company
     :delight company-mode
@@ -183,7 +181,7 @@
   )
   #+end_src
 
-** Org mode!
+* Org mode!
   Rather important: We use this to tangle this very file (though 24+ ships a good enough version to do so)
 
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
@@ -192,21 +190,28 @@
       (setq org-babel-load-languages
             '((python . t)
               (elisp . t)
-              (shell . t)))
-  )
+              (shell . t))))
+
   #+end_src
 
-** Discover and respect editorconfig settings
+  Make Org-mode bullets prettier
+  #+begin_src elisp :tangle ~/.emacs.d/packages.el
+   (use-package org-bullets
+      :init
+        (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  #+end_src
+
+* Discover and respect editorconfig settings
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package editorconfig)
   #+end_src
 
-** Highlight colors in HTML/CSS/files
+* Highlight colors in HTML/CSS/files
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
     (use-package rainbow-mode)
   #+end_src
 
-** Set up evil and plugins
+* Set up evil and plugins
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package evil
     :config
@@ -234,7 +239,7 @@
       (setq evil-magit-want-horizontal-movement nil))
   #+end_src
 
-** Set up counsel + projectile to easily find and swap buffers
+* Set up counsel + projectile to easily find and swap buffers
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package counsel
     :after (general)
@@ -271,7 +276,7 @@
                           default-leader-key 'counsel-projectile))
   #+end_src
 
-** Set up multi-term
+* Set up multi-term
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package multi-term
     :config
@@ -290,13 +295,13 @@
                           "c" #'evil-window-delete)
   #+end_src
 
-** Highlight TODO notes using fic-mode
+* Highlight TODO notes using fic-mode
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package fic-mode
     :config (add-hook 'prog-mode-hook (function (lambda () (fic-mode 1)))))
   #+end_src
 
-** Set up magit for git integration
+* Set up magit for git integration
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package magit
     :delight (magit-auto-revert-mode)
@@ -305,7 +310,7 @@
   )
   #+end_src
 
-** Dash integration
+* Dash integration
   *Note*: This also pulls in Helm. If you don't like that, disable it.
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package counsel-dash
@@ -334,7 +339,7 @@
                           "D" 'counsel-dash))
   #+end_src)
 
-** Set up notmuch
+* Set up notmuch
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package notmuch
     :load-path "/usr/local/share/emacs/site-lisp/notmuch/"
@@ -415,7 +420,7 @@
   )
   #+end_src
 
-** Set up Flycheck to check codebases
+* Set up Flycheck to check codebases
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package flycheck
     :after (general)
@@ -446,7 +451,7 @@
      :config (flycheck-pos-tip-mode))
   #+end_src
 
-** Highlight nested brackets differently in bracketized languages
+* Highlight nested brackets differently in bracketized languages
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package rainbow-delimiters
     :config
@@ -455,7 +460,7 @@
       (add-hook 'elisp-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable)))))
   #+end_src
 
-** Set up Python editing with LSP and auto-pyenv-mode
+* Set up Python editing with LSP and auto-pyenv-mode
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package pyenv-mode
     :init
@@ -495,7 +500,7 @@
 
 #+end_src
 
-** Set up Javascript editing
+* Set up Javascript editing
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package rjsx-mode
     :mode "\\.js[x]*\\'")
@@ -506,14 +511,14 @@
   )
   #+end_src
 
-** Set up Scala editing mode
-*** Scala-mode
+* Set up Scala editing mode
+** Scala-mode
 #+begin_src elisp :tangle ~/.emacs.d/packages.el
 (use-package scala-mode
   :interpreter ("scala" . scala-mode))
 #+end_src
 
-*** sbt-mode
+** sbt-mode
 #+begin_src elisp :tangle ~/.emacs.d/packages.el
     (use-package sbt-mode
   :commands sbt-start sbt-command
@@ -527,7 +532,7 @@
 #+end_src
 
 
-*** ENSIME
+** ENSIME
 This requires some basic setup - find it documented [[http://ensime.org/editors/emacs/install/#installing][here.]]
 
 #+begin_src elisp :tangle ~/.emacs.d/packages.el
@@ -586,12 +591,12 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
     :next-checkers '((warning . scala-scalastyle))))
 #+end_src
 
-** Set up basic Lua editing
+* Set up basic Lua editing
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package lua-mode)
   #+end_src
 
-** Set up Markdown editing
+* Set up Markdown editing
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package markdown-mode
     :commands (markdown-mode)
@@ -601,13 +606,13 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
   )
   #+end_src
 
-** Set up YAML editing
+* Set up YAML editing
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package yaml-mode
     :mode ("\\.yaml'" "\\.yml'"))
   #+end_src
 
-** Set up visual theme
+* Set up visual theme
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package all-the-icons)
 
@@ -650,7 +655,7 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
   )
   #+end_src
 
-** De-light a few dependency minor-modes
+* De-light a few dependency minor-modes
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package undo-tree
     :delight undo-tree-mode)
@@ -658,7 +663,7 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
     :delight yas-minor-mode)
   #+end_src
 
-** Fix up hideshow mode
+* Fix up hideshow mode
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package hideshow
     :init
