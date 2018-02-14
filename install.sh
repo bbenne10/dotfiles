@@ -17,6 +17,7 @@ install_generic () {
   uri="$1"
   target="$2"
 
+  [ -d "$target" ] && printf "$target already exists; skipping...\n" && return 0
   printf "Installing %s\n" "$target"
 
   git clone "$uri" "$target"
