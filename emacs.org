@@ -358,7 +358,7 @@
           mail-envelope-from 'header
           message-send-mail-function 'message-send-mail-with-sendmail
           sendmail-program "/home/bbennett37/.bin/notmuch_sendmail"
-          notmuch-message-headers '("Subject" "To" "Cc" "Date")
+          notmuch-message-headers '("Subject" "From" "To" "Cc" "Date")
           mml-default-sign-method "smime"
           )
 
