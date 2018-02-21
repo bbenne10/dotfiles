@@ -237,6 +237,10 @@
     :after magit
     :init
       (setq evil-magit-want-horizontal-movement nil))
+
+  (use-package evil-easymotion
+    :config (evilem-default-keybindings default-leader-key))
+
   #+end_src
 
 * Set up counsel + projectile to easily find and swap buffers
