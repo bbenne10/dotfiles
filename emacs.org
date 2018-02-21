@@ -230,8 +230,6 @@
   (use-package evil-surround
     :config (global-evil-surround-mode 1))
 
-  (use-package evil-visual-mark-mode
-    :config (evil-visual-mark-mode 1))
   (use-package evil-easymotion
     :config (evilem-default-keybindings default-leader-key))
 
