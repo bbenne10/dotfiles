@@ -118,22 +118,6 @@
   (defalias 'yes-or-no-p 'y-or-n-p)
   #+end_src
 
-* Change the Javascript linter that flycheck picks and set JS indentation to 2
-  #+begin_src elisp :tangle ~/.emacs.d/languages.el
-  (add-hook 'js-mode-hook
-            (function (lambda ()
-                        (flycheck-select-checker 'javascript-standard)
-                        (setq js-indent-level 2)
-                        (setq evil-shift-width 2))))
-  #+end_src
-
-* Use the c/c++ GCC checker in C/C++ code
-  #+begin_src elisp :tangle ~/.emacs.d/languages.el
-  (add-hook 'c++-mode-hook
-            (function (lambda ()
-                        (flycheck-select-checker 'c/c++-gcc))))
-  #+end_src
-
 * Initialize existing packages
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (setq package-user-dir "~/.emacs.d/elpa"
@@ -141,6 +125,7 @@
                            ("melpa-stable" . "http://stable.melpa.org/packages/")
                            ("gnu" . "http://elpa.gnu.org/packages/")))
   (defvar use-package-always-ensure t)
+  #+end_src
 
 Just calling :pin in req-package blocks doesn't work:
 [https://github.com/jwiegley/use-package/issues/343#issuecomment-220463365][See this bug]]
@@ -439,7 +424,8 @@ Just calling :pin in req-package blocks doesn't work:
       (add-hook 'elisp-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable)))))
   #+end_src
 
-* Set up Python editing with LSP and auto-pyenv-mode
+* Programming language setup
+** Python
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package pyenv-mode
     :init
@@ -479,7 +465,7 @@ Just calling :pin in req-package blocks doesn't work:
 
 #+end_src
 
-* Set up Javascript editing
+** Javascript
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package rjsx-mode
     :mode "\\.js[x]*\\'")
@@ -490,14 +476,30 @@ Just calling :pin in req-package blocks doesn't work:
   )
   #+end_src
 
-* Set up Scala editing mode
-** Scala-mode
+  Make sure that flycheck uses standard as the linter and set the indentation appropriately
+  #+begin_src elisp :tangle ~/.emacs.d/languages.el
+  (add-hook 'js-mode-hook
+            (function (lambda ()
+                        (flycheck-select-checker 'javascript-standard)
+                        (setq js-indent-level 2)
+                        (setq evil-shift-width 2))))
+  #+end_src
+
+** C/C++
+  #+begin_src elisp :tangle ~/.emacs.d/languages.el
+  (add-hook 'c++-mode-hook
+            (function (lambda ()
+                        (flycheck-select-checker 'c/c++-gcc))))
+  #+end_src
+
+** Scala
+*** Scala-mode
 #+begin_src elisp :tangle ~/.emacs.d/packages.el
 (use-package scala-mode
   :interpreter ("scala" . scala-mode))
 #+end_src
 
-** sbt-mode
+*** sbt-mode
 #+begin_src elisp :tangle ~/.emacs.d/packages.el
     (use-package sbt-mode
   :commands sbt-start sbt-command
@@ -511,7 +513,7 @@ Just calling :pin in req-package blocks doesn't work:
 #+end_src
 
 
-** ENSIME
+*** ENSIME
 This requires some basic setup - find it documented [[http://ensime.org/editors/emacs/install/#installing][here.]]
 
 #+begin_src elisp :tangle ~/.emacs.d/packages.el
@@ -570,12 +572,33 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
     :next-checkers '((warning . scala-scalastyle))))
 #+end_src
 
-* Set up basic Lua editing
+** Rust
+  #+begin_src elisp :tangle ~/.emacs.d/packages.el
+  (use-package rust-mode
+    :init
+      (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+      (add-hook 'rust-mode-hook '(lambda ()
+	     ;; (setq racer-cmd (concat (getenv "HOME") "/.rust-dev/racer/target/release/racer"))
+	     ;; (setq racer-rust-src-path (concat (getenv "HOME") "/.rust-dev/rust/src"))
+       (local-set-key (kbd "TAB") #'company-indent-or-complete-common)
+       (electric-pair-mode 1))))
+
+  (use-package racer
+    :init
+      (add-hook 'rust-mode-hook  #'racer-mode)
+      (add-hook 'racer-mode-hook #'eldoc-mode))
+  (use-package flycheck-rust
+    :init (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
+  #+end_src
+
+
+** Lua
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package lua-mode)
   #+end_src
 
-* Set up Markdown editing
+* And some non-programming languages
+** Markdown
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package markdown-mode
     :commands (markdown-mode)
@@ -585,7 +608,7 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
   )
   #+end_src
 
-* Set up YAML editing
+** YAML
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package yaml-mode
     :mode ("\\.yaml'" "\\.yml'"))
