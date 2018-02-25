@@ -142,7 +142,11 @@
                            ("gnu" . "http://elpa.gnu.org/packages/")))
   (defvar use-package-always-ensure t)
 
-  (package-initialize)
+Just calling :pin in req-package blocks doesn't work:
+[https://github.com/jwiegley/use-package/issues/343#issuecomment-220463365][See this bug]]
+  #+begin_src elisp :tangle ~/.emacs.d/packages.el
+(setq package-pinned-packages '((ensime . "melpa-stable")))
+(package-initialize)
   #+end_src
 
 * Auto-require some basic packages outside of use-package
