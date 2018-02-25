@@ -314,35 +314,6 @@
   )
   #+end_src
 
-* Dash integration
-  *Note*: This also pulls in Helm. If you don't like that, disable it.
-  #+begin_src elisp :tangle ~/.emacs.d/packages.el
-  (use-package counsel-dash
-    :after (general)
-    :init
-      (setq counsel-dash-docsets-path "~/.emacs.d/dash-docsets"
-            counsel-dash-min-length 3
-            counsel-dash-browser-func 'browse-url)
-
-      (defun counsel-dash-at-point ()
-        (interactive)
-        (counsel-dash (thing-at-point 'symbol)))
-    :commands (counsel-dash-activate-docset counsel-dash counsel-dash-at-point counsel-dash)
-    :config
-      (add-hook 'emacs-lisp-mode-hook (lambda () (setq-local counsel-dash-docsets '("Emacs Lisp"))))
-      (add-hook 'js-mode-hook (lambda () (setq-local counsel-dash-docsets '("Javascript" "MomentJS "))))
-      (add-hook 'python-mode-hook (lambda () (setq-local counsel-dash-docsets '("Python3" "Flask" "Jinja"))))
-      (add-hook 'scala-mode-hook (lambda () (setq-local counsel-dash-docsets '("Scala"))))
-      (add-hook 'c++-mode-hook (lambda () (setq-local counsel-dash-docsets '("C++"))))
-      (add-hook 'c-mode-hook (lambda () (setq-local counsel-dash-docsets '("C"))))
-      (add-hook 'sh-mode-hook (lambda () (setq-local counsel-dash-docsets '("Bash"))))
-
-      (general-define-key :states '(normal)
-                          :prefix default-leader-key
-                          "d" 'counsel-dash-at-point
-                          "D" 'counsel-dash))
-  #+end_src)
-
 * Set up notmuch
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package notmuch
