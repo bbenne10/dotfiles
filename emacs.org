@@ -597,7 +597,12 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
 
   (use-package zerodark-theme
     :config
-      (load-theme 'zerodark)
+      (if (daemonp)
+      (add-hook 'after-make-frame-functions
+          (lambda (frame)
+              (select-frame frame)
+              (load-theme 'zerodark t)))
+      (load-theme 'zerodark t))
       (zerodark-setup-modeline-format))
 
   (use-package spaceline-config
