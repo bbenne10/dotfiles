@@ -307,6 +307,7 @@ Just calling :pin in req-package blocks doesn't work:
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package notmuch
     :load-path "/usr/local/share/emacs/site-lisp/notmuch/"
+    :if (file-exists-p "/usr/local/share/emacs/site-list/notmuch/")
     :init
     (setq notmuch-saved-searches '(("Inbox" . "tag:inbox AND NOT tag:archived")
                                    ("Unread" . "tag:unread")
