@@ -156,6 +156,11 @@ export PATH
     export PYTHONRC="$HOME/.pythonrc"
     #+end_src
 
+** Set up some Rust build bits for Rustup/Racer
+    #+begin_src sh :tangle ~/.zshenv
+    export RUST_SRC_PATH=$(rustc --print sysroot)/lib/rustlib/src/rust/src
+    #+end_src
+
 ** Setup history
 #+begin_src sh :tangle ~/.zshenv
 export HISTSIZE=2000
