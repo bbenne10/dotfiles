@@ -6,55 +6,34 @@
 #+end_src
 
 ** Install and load zplug
-I prefer [[https://github.com/zplug/zplug][zplug]] to managing my zsh configuration and I prefer to not have to think about whether it's installed
+I prefer [[https://github.com/zdharma/zplugin][zplugin]] to managing my zsh configuration and I prefer to not have to think about whether it's installed
 
 #+begin_src sh :tangle ~/.zshrc
-if [ ! -f ~/.zplug/init.zsh ]; then
-  # Commented until https://github.com/zplug/zplug/issues/454 is closed
-  # PR opened: https://github.com/zplug/zplug/pull/455
-  # git clone http://github.com/zplug/zplug ~/.zplug
-  git clone --depth=1 http://github.com/bbenne10/zplug ~/.zplug
+if [ ! -d "$HOME/.zplugin/bin/.git" ]; then
+  mkdir -p "$HOME/.zplugin/"
+  git clone https://github.com/zdharma/zplugin.git "$HOME/.zplugin/bin"
 fi
 
-source ~/.zplug/init.zsh
-# Commented until https://github.com/zplug/zplug/issues/454 is closed
-# PR opened: https://github.com/zplug/zplug/pull/455
-# zplug 'zplug/zplug', \
-#       hook-build:'zplug --self-manage'
+source "$HOME/.zplugin/bin/zplugin.zsh"
 
-zplug "BurntSushi/ripgrep", \
-      from:gh-r, \
-      as:command, \
-      rename-to:rg
+zplugin load zuxfoucault/colored-man-pages_mod
+zplugin load zdharma/fast-syntax-highlighting
+zplugin load djui/alias-tips
+zplugin load Tarrasch/zsh-autoenv
+zplugin load chrissicool/zsh-256color
+zplugin load zsh-users/zsh-completions
+zplugin load zsh-users/zsh-autosuggestions
+zplugin load uvaes/fzf-marks
+zplugin load zdharma/zui
+zplugin load zdharma/zplugin-crasis
+zplugin load bbenne10/antigen-themes
 
-zplug "sharkdp/fd", \
-      from:gh-r, \
-      as:command, \
-      rename-to:fd
+zplugin ice from"gh-r" as"program"; zplugin load junegunn/fzf-bin
+zplugin ice from"gh-r" as"program" mv"fd-*/fd -> fd"; zplugin load sharkdp/fd
+zplugin ice from"gh-r" as"program"; zplugin load BurntSushi/ripgrep
 
-zplug "junegunn/fzf-bin", \
-      from:gh-r, \
-      as:command, \
-      rename-to:fzf
-
-zplug "junegunn/fzf", \
-      from:github, \
-      use:"shell/{completion,key-bindings}.zsh"
-
-zplug "zuxfoucault/colored-man-pages_mod"
-zplug "zdharma/fast-syntax-highlighting"
-zplug "djui/alias-tips"
-zplug "Tarrasch/zsh-autoenv"
-zplug "chrissicool/zsh-256color"
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-autosuggestions"
-zplug "uvaes/fzf-marks"
-zplug "bbenne10/antigen-themes", \
-      as:theme, \
-      use:"themes/prompt_bbennett_setup.zsh"
-
-zplug check || zplug install
-zplug load
+autoload -Uz compinit
+compinit
 #+end_src
 
 ** Install and load pyenv and pyenv-virtualenv
