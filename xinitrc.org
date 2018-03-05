@@ -40,11 +40,6 @@ test_and_run start-pulseaudio-x11 &
 test_and_run redshift &
 #+end_src
 
-** Startup compositor
-#+begin_src sh :tangle ~/.xsession
-test_and_run compton &
-#+end_src
-
 ** Start browser
 #+begin_src sh :tangle ~/.xsession
 test_and_run firefox &
