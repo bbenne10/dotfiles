@@ -346,16 +346,26 @@ Just calling :pin in req-package blocks doesn't work:
         (bb-notmuch-remove-inbox)
         (bb-notmuch-toggle-tag "archived"))
 
+      (defun bb-notmuch-toggle-deleted ()
+        (interactive)
+        (bb-notmuch-remove-inbox)
+        (bb-notmuch-toggle-tag "deleted"))
+
       (defun show-nm-inbox ()
         (interactive)
         (notmuch-search "tag:inbox and not tag:archived"))
 
+      (defun show-nm-inbox-unread ()
+        (interactive)
+        (notmuch-search "tag:inbox and not tag:archived and tag:unread"))
 
     :config
       ;; define keys to take us to various inboxes
       (general-define-key :keymaps 'evil-normal-state-map
                           :prefix (concat default-leader-key " " "m")
-                          "i" #'show-nm-inbox)
+                          "i" #'show-nm-inbox
+                          "u" #'show-nm-inbox-unread
+                          "/" #'notmuch-search)
 
       ;; override some behavior to be more vim like in notmuch modes.
       (general-define-key :keymaps '(notmuch-show-mode-map
@@ -387,6 +397,7 @@ Just calling :pin in req-package blocks doesn't work:
                           :prefix "t"
                           "s" #'(lambda () (interactive) (bb-notmuch-toggle-tag "school"))
                           "a" #'(lambda () (interactive) (bb-notmuch-toggle-tag "apiary"))
+                          "t" #'(lambda () (interactive) (bb-notmuch-toggle-tag "todo"))
                           "e" #'(lambda () (interactive) (bb-notmuch-toggle-tag "ea")))
   )
   #+end_src
