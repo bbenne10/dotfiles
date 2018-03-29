@@ -312,8 +312,7 @@ Just calling :pin in req-package blocks doesn't work:
 * Set up notmuch
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package notmuch
-    :load-path "/usr/local/share/emacs/site-lisp/notmuch/"
-    :if (file-exists-p "/usr/local/share/emacs/site-list/notmuch/")
+    :ensure nil
     :init
     (setq notmuch-saved-searches '(("Inbox" . "tag:inbox AND NOT tag:archived")
                                    ("Unread" . "tag:unread")
@@ -327,6 +326,7 @@ Just calling :pin in req-package blocks doesn't work:
           sendmail-program "/home/bbennett37/.bin/notmuch_sendmail"
           notmuch-message-headers '("Subject" "From" "To" "Cc" "Date")
           mml-default-sign-method "smime"
+          notmuch-fcc-dirs nil ;; exchange saves everything, so we deal with this in our 'new' script
           )
 
       (defun bb-notmuch-toggle-tag (tag)
