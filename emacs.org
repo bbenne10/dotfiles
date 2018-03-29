@@ -240,6 +240,12 @@ Just calling :pin in req-package blocks doesn't work:
                           "g" 'counsel-projectile-rg
                           "B" 'ivy-switch-buffer
                           "E" 'counsel-find-file))
+  (use-package ivy-posframe
+    :if (>= emacs-major-version 26)
+    :config
+      (setq ivy-display-function #'ivy-posframe-display-at-point)
+      (ivy-posframe-enable))
+
 
   (use-package projectile
     :delight projectile-mode
