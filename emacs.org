@@ -286,6 +286,7 @@ Just calling :pin in req-package blocks doesn't work:
 * Highlight TODO notes using fic-mode
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package fic-mode
+    :init (setq fic-highlighted-words '("FIXME" "TODO" "BUG" "NOTE"))
     :config (add-hook 'prog-mode-hook (function (lambda () (fic-mode 1)))))
   #+end_src
 
