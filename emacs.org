@@ -210,12 +210,6 @@ Just calling :pin in req-package blocks doesn't work:
   (use-package evil-matchit
     :config (global-evil-matchit-mode 1))
 
-  (use-package evil-numbers
-    :config
-      (general-define-key :states '(normal)
-                          "C-a" 'evil-numbers/inc-at-pt
-                          "C-x" 'evil-numbers/dec-at-pt))
-
   (use-package evil-surround
     :config (global-evil-surround-mode 1))
 
