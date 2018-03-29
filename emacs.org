@@ -696,3 +696,65 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
     :config
       (add-hook 'prog-mode-hook #'hs-minor-mode))
   #+end_src
+* Maybe start using exwm...who knows?
+
+#+begin_src elisp :tangle ~/.emacs.d/packages.el
+  (use-package exwm
+    :config
+      (require 'exwm-config)
+      (require 'exwm-randr)
+      (setq exwm-workspace-number 4)
+      ;; (exwm-config-default)
+      (exwm-enable)
+  
+      (defun bb-exwm-bind-command (key command &rest bindings)
+        (while key
+          (exwm-input-set-key (kbd key)
+                              `(lambda ()
+                                 (interactive)
+                                 (start-process-shell-command, command nil, command)))
+          (setq key     (pop bindings)
+                command (pop bindings))))
+  
+      ;; by default every buffer created by exwm is named '*EXWM*'.
+      ;; This makes it hard to know which buffer to select.
+      ;; Below, we change that behavior to use the instance name instead
+      (add-hook 'exwm-update-class-hook
+                (lambda ()
+                  (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                              (string= "gimp" exwm-instance-name))
+                    (exwm-workspace-rename-buffer exwm-class-name))))
+      (add-hook 'exwm-update-title-hook
+                (lambda ()
+                  (when (or (not exwm-instance-name)
+                            (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                            (string= "gimp" exwm-instance-name))
+                    (exwm-workspace-rename-buffer exwm-title))))
+  
+      (exwm-input-set-key (kbd "s-r") #'exwm-reset) ;; reset exwm
+      (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch) ;; interactively switch workspaces
+  
+      ;; set up the bindings for switching workspaces directly
+      (dotimes (i 4)
+        (exwm-input-set-key (kbd (format "s-%d" i))
+                            `(lambda ()
+                               (interactive)
+                               (exwm-workspace-switch ,i))))
+  
+      (bb-exwm-bind-command "<s-S-return>"  "st")
+      (bb-exwm-bind-command "<C-s-SPC>" "~/.bin/lock_screen")
+      (bb-exwm-bind-command "<XF86AudioPlay>" "mpc toggle")
+      (bb-exwm-bind-command "<XF86AudioNext>" "mpc next")
+      (bb-exwm-bind-command "<XF86AudioPrev>" "mpc prev")
+      (bb-exwm-bind-command "<s-p>" "dmenu_run -fn Hasklig:10 -x .225 -y 25 -w .5")
+      (bb-exwm-bind-command "<XF86AudioLowerVolume>" "pamixer set-sink-volume 0 -5%")
+      (bb-exwm-bind-command "<XF86AudioRaiseVolume>" "pamixer set-sink-volume 0 +5%")
+      (bb-exwm-bind-command "<XF86AudioRaiseMute>" "pamixer set-sink-mute 0 toggle")
+  
+      (exwm-input-set-key (kbd (concat default-leader-key "-" "b")) #'ivy-switch-buffer)
+  
+      (push ?\C-w exwm-input-prefix-keys)
+      (push ?\: exwm-input-prefix-keys)
+  
+      (exwm-randr-enable))
+  #+end_src
