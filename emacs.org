@@ -252,7 +252,7 @@ Just calling :pin in req-package blocks doesn't work:
     :init
       (setq projectile-completion-system 'ivy)
     :config
-      (projectile-global-mode))
+      (projectile-mode)
 
   (use-package counsel-projectile
     :after (projectile general)
@@ -370,13 +370,13 @@ Just calling :pin in req-package blocks doesn't work:
       ;; override some behavior to be more vim like in notmuch modes.
       (general-define-key :keymaps '(notmuch-show-mode-map
                                      notmuch-search-mode-map)
-                          "d" #'bb-notmuch-toggle-archived
-                          "a" 'bb-notmuch-toggle-archived
-                          "j" 'next-line
-                          "k" 'previous-line
-                          ":" 'evil-ex
-                          "r" 'notmuch-show-reply
-                          "R" 'notmuch-show-reply-sender
+                          "d" #'bb-notmuch-toggle-deleted
+                          "a" #'bb-notmuch-toggle-archived
+                          "j" #'next-line
+                          "k" #'previous-line
+                          ":" #'evil-ex
+                          "r" #'notmuch-show-reply
+                          "R" #'notmuch-show-reply-sender
                           "t" nil)
 
       (general-define-key :keymaps '(notmuch-show-mode-map
