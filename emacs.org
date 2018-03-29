@@ -216,11 +216,6 @@ Just calling :pin in req-package blocks doesn't work:
   (use-package evil-easymotion
     :config (evilem-default-keybindings default-leader-key))
 
-  (use-package evil-magit
-    :after magit
-    :init
-      (setq evil-magit-want-horizontal-movement nil))
-
   (use-package evil-easymotion
     :config (evilem-default-keybindings default-leader-key))
 
@@ -293,8 +288,18 @@ Just calling :pin in req-package blocks doesn't work:
   (use-package magit
     :delight (magit-auto-revert-mode)
     :config
-      (setq magit-popup-show-common-commands nil)
-  )
+      (setq magit-popup-show-common-commands nil
+            magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
+      (add-hook 'after-save-hook #'magit-after-save-refresh-status)
+      (general-define-key :keymaps 'evil-normal-state-map
+                          :prefix default-leader-key
+                          "g" #'magit))
+
+  (use-package evil-magit
+    :after magit
+    :init
+      (setq evil-magit-want-horizontal-movement nil))
+
   #+end_src
 
 * Set up notmuch
