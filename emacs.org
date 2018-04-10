@@ -252,7 +252,7 @@ Just calling :pin in req-package blocks doesn't work:
     :init
       (setq projectile-completion-system 'ivy)
     :config
-      (projectile-mode)
+      (projectile-mode))
 
   (use-package counsel-projectile
     :after (projectile general)
