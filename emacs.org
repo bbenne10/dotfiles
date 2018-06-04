@@ -22,6 +22,7 @@
 
 * Load the other files in our set up
   #+begin_src elisp :tangle ~/.emacs.d/init.el
+  (load "~/.emacs.d/private.el")
   (load "~/.emacs.d/packages.el")
   (load "~/.emacs.d/ui.el")
   (load "~/.emacs.d/languages.el")
@@ -139,8 +140,10 @@ Just calling :pin in req-package blocks doesn't work:
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package)
+    (package-install 'dash)
     (package-install 'delight))
   (require 'use-package)
+  (require 'dash)
   (require 'bind-key)
   (require 'delight)
   #+end_src
@@ -203,21 +206,30 @@ Just calling :pin in req-package blocks doesn't work:
 * Set up evil and plugins
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package evil
+    :init (setq evil-want-integration nil)
     :config
       (evil-mode 1)
       (evil-set-initial-state 'term-mode 'emacs))
 
   (use-package evil-matchit
+    :after evil
     :config (global-evil-matchit-mode 1))
 
   (use-package evil-surround
+    :after evil
     :config (global-evil-surround-mode 1))
 
   (use-package evil-easymotion
+    :after evil
     :config (evilem-default-keybindings default-leader-key))
 
   (use-package evil-easymotion
+    :after evil
     :config (evilem-default-keybindings default-leader-key))
+    
+  (use-package evil-collection
+    :after evil
+    :config (evil-collection-init))
 
   #+end_src
 
@@ -240,8 +252,10 @@ Just calling :pin in req-package blocks doesn't work:
                           "g" 'counsel-projectile-rg
                           "B" 'ivy-switch-buffer
                           "E" 'counsel-find-file))
+
   (use-package ivy-posframe
     :if (>= emacs-major-version 26)
+    :disabled t
     :config
       (setq ivy-display-function #'ivy-posframe-display-at-point)
       (ivy-posframe-enable))
@@ -262,25 +276,6 @@ Just calling :pin in req-package blocks doesn't work:
                           "e" 'counsel-projectile-find-file
                           "p" 'counsel-projectile-switch-project
                           default-leader-key 'counsel-projectile))
-  #+end_src
-
-* Set up multi-term
-  #+begin_src elisp :tangle ~/.emacs.d/packages.el
-  (use-package multi-term
-    :config
-      (setq multi-term-program "/bin/zsh")
-      (add-hook 'term-mode-hook (function (lambda () (goto-address-mode))))
-      (add-hook 'term-exec-hook (function (lambda () (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))))
-      (general-define-key :keymaps 'term-raw-map "C-w" nil)
-      (general-define-key :keymaps 'term-raw-map
-                          :prefix "C-w"
-                          "h" #'evil-window-left
-                          "j" #'evil-window-down
-                          "k" #'evil-window-up
-                          "l" #'evil-window-right
-                          "s" #'evil-window-split
-                          "v" #'evil-window-vsplit
-                          "c" #'evil-window-delete)
   #+end_src
 
 * Highlight TODO notes using fic-mode
@@ -442,6 +437,11 @@ Just calling :pin in req-package blocks doesn't work:
       (add-hook 'elisp-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable)))))
   #+end_src
 
+* Direnv 
+  #+begin_src elisp :tangle ~/.emacs.d/packages.el
+  (use-package direnv
+    :config (direnv-mode))
+  #+end_src
 * Programming language setup
 ** Python
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
@@ -452,6 +452,10 @@ Just calling :pin in req-package blocks doesn't work:
 
   (use-package pyenv-mode-auto
     :after (pyenv-mode))
+    
+  (use-package tox
+    :config 
+      (setq tox-runner 'pytest))
 
   (use-package anaconda-mode
      :after (general pyenv-mode-auto)
@@ -478,8 +482,7 @@ Just calling :pin in req-package blocks doesn't work:
                            "a" 'anaconda-mode-find-assignments
                            "r" 'anaconda-mode-find-references
                            "?" 'anaconda-mode-show-doc
-                           "t" 'python-insert-trace)
-  )
+                           "t" 'python-insert-trace))
 
 #+end_src
 
@@ -596,9 +599,8 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
     :init
       (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
       (add-hook 'rust-mode-hook '(lambda ()
-	     ;; (setq racer-cmd (concat (getenv "HOME") "/.rust-dev/racer/target/release/racer"))
-	     ;; (setq racer-rust-src-path (concat (getenv "HOME") "/.rust-dev/rust/src"))
        (local-set-key (kbd "TAB") #'company-indent-or-complete-common)
+       (setq rust-format-on-save t)
        (electric-pair-mode 1))))
 
   (use-package racer
@@ -635,16 +637,14 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
 * Set up visual theme
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package all-the-icons)
-
-  (use-package zerodark-theme
-    :config
-      (if (daemonp)
-      (add-hook 'after-make-frame-functions
-          (lambda (frame)
-              (select-frame frame)
-              (load-theme 'zerodark t)))
-      (load-theme 'zerodark t))
-      (zerodark-setup-modeline-format))
+ 
+  (use-package doom-themes
+    :init
+      (setq doom-themes-enable-bold t
+            doom-themes-enable-italic nil)
+      (load-theme 'doom-spacegrey t)
+      (doom-themes-visual-bell-config)
+      (doom-themes-org-config))
 
   (use-package spaceline-config
     :ensure spaceline
@@ -655,6 +655,12 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
             evil-insert-state-tag "I"
             evil-normal-state-tag "N"
             spaceline-highlight-face-func 'spaceline-highlight-face-evil-state))
+
+  (use-package spaceline-all-the-icons 
+    :after spaceline-config
+    :config 
+      (spaceline-all-the-icons-theme)
+      (spaceline-all-the-icons--setup-git-ahead))
 
   (use-package solaire-mode
     :init
@@ -696,65 +702,34 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
     :config
       (add-hook 'prog-mode-hook #'hs-minor-mode))
   #+end_src
-* Maybe start using exwm...who knows?
 
-#+begin_src elisp :tangle ~/.emacs.d/packages.el
-  (use-package exwm
-    :config
-      (require 'exwm-config)
-      (require 'exwm-randr)
-      (setq exwm-workspace-number 4)
-      ;; (exwm-config-default)
-      (exwm-enable)
-  
-      (defun bb-exwm-bind-command (key command &rest bindings)
-        (while key
-          (exwm-input-set-key (kbd key)
-                              `(lambda ()
-                                 (interactive)
-                                 (start-process-shell-command, command nil, command)))
-          (setq key     (pop bindings)
-                command (pop bindings))))
-  
-      ;; by default every buffer created by exwm is named '*EXWM*'.
-      ;; This makes it hard to know which buffer to select.
-      ;; Below, we change that behavior to use the instance name instead
-      (add-hook 'exwm-update-class-hook
-                (lambda ()
-                  (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
-                              (string= "gimp" exwm-instance-name))
-                    (exwm-workspace-rename-buffer exwm-class-name))))
-      (add-hook 'exwm-update-title-hook
-                (lambda ()
-                  (when (or (not exwm-instance-name)
-                            (string-prefix-p "sun-awt-X11-" exwm-instance-name)
-                            (string= "gimp" exwm-instance-name))
-                    (exwm-workspace-rename-buffer exwm-title))))
-  
-      (exwm-input-set-key (kbd "s-r") #'exwm-reset) ;; reset exwm
-      (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch) ;; interactively switch workspaces
-  
-      ;; set up the bindings for switching workspaces directly
-      (dotimes (i 4)
-        (exwm-input-set-key (kbd (format "s-%d" i))
-                            `(lambda ()
-                               (interactive)
-                               (exwm-workspace-switch ,i))))
-  
-      (bb-exwm-bind-command "<s-S-return>"  "st")
-      (bb-exwm-bind-command "<C-s-SPC>" "~/.bin/lock_screen")
-      (bb-exwm-bind-command "<XF86AudioPlay>" "mpc toggle")
-      (bb-exwm-bind-command "<XF86AudioNext>" "mpc next")
-      (bb-exwm-bind-command "<XF86AudioPrev>" "mpc prev")
-      (bb-exwm-bind-command "<s-p>" "dmenu_run -fn Hasklig:10 -x .225 -y 25 -w .5")
-      (bb-exwm-bind-command "<XF86AudioLowerVolume>" "pamixer set-sink-volume 0 -5%")
-      (bb-exwm-bind-command "<XF86AudioRaiseVolume>" "pamixer set-sink-volume 0 +5%")
-      (bb-exwm-bind-command "<XF86AudioRaiseMute>" "pamixer set-sink-mute 0 toggle")
-  
-      (exwm-input-set-key (kbd (concat default-leader-key "-" "b")) #'ivy-switch-buffer)
-  
-      (push ?\C-w exwm-input-prefix-keys)
-      (push ?\: exwm-input-prefix-keys)
-  
-      (exwm-randr-enable))
-  #+end_src
+* Spawn an eshell nicely
+  Namely, in the bottom third of the current window and with a custom name
+  #+begin_src elisp :tangle ~/.emacs.d/ui.el
+  (defun eshell-here ()
+    "Opens up a new shell in the directory associated with the
+     current buffer's file. The eshell is renamed to match that
+     directory to make multiple eshell windows easier."
+    (interactive)
+    (let* ((parent (if (buffer-file-name)
+                   (file-name-directory (buffer-file-name))
+                 default-directory))
+           (height (/ (window-total-height) 3))
+           (name   (car (last (split-string parent "/" t)))))
+           (split-window-vertically (- height))
+           (other-window 1)
+           (eshell "new")
+           (rename-buffer (concat "*eshell: " name "*"))
+            (insert (concat "ls"))
+            (eshell-send-input)))
+
+     (defun eshell/x ()
+       (insert "exit")
+       (eshell-send-input)
+       (delete-window))
+
+     (general-define-key :states '(normal)
+                         :prefix (concat default-leader-key)
+                         "!" 'eshell-here)
+                               
+    #+end_src

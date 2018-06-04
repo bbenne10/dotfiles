@@ -1,214 +1,231 @@
 #+TITLE: ZSH Configuration
 
-** Ensure zaliases gets sourced
-#+begin_src sh :tangle ~/.zshrc
-. ~/.zaliases
-#+end_src
+* Ensure zaliases gets sourced
+  This is non-standard, but I prefer to move my aliases out of my zshrc, simply due to how much I do in zshrc.
+  #+begin_src sh :tangle ~/.zshrc
+  . ~/.zaliases
+  #+end_src
 
-** Install and load zplug
-I prefer [[https://github.com/zdharma/zplugin][zplugin]] to managing my zsh configuration and I prefer to not have to think about whether it's installed
+* Install and load pyenv and pyenv-virtualenv
+  I use [[https://github.com/pyenv/pyenv][pyenv]] and [[https://github.com/pyenv/pyenv-virtualenv][pyenv-virtualenv]] to manage my Python versions.
 
-#+begin_src sh :tangle ~/.zshrc
-if [ ! -d "$HOME/.zplugin/bin/.git" ]; then
-  mkdir -p "$HOME/.zplugin/"
-  git clone https://github.com/zdharma/zplugin.git "$HOME/.zplugin/bin"
-fi
+  #+begin_src sh :tangle ~/.zshrc
 
-source "$HOME/.zplugin/bin/zplugin.zsh"
+  if [ ! -d ~/.pyenv ]; then
+    git clone http://github.com/yyuu/pyenv ~/.pyenv
+    pushd ~/.pyenv/plugins
+    git clone http://github.com/yyuu/pyenv-virtualenv ~/.pyenv/plugins/virtualenv
+    popd
+  fi
+  
+  if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+  fi
+  #+end_src
 
-zplugin load zuxfoucault/colored-man-pages_mod
-zplugin load zdharma/fast-syntax-highlighting
-zplugin load djui/alias-tips
-zplugin load Tarrasch/zsh-autoenv
-zplugin load chrissicool/zsh-256color
-zplugin load zsh-users/zsh-completions
-zplugin load zsh-users/zsh-autosuggestions
-zplugin load uvaes/fzf-marks
-zplugin load zdharma/zui
-zplugin load zdharma/zplugin-crasis
-zplugin load bbenne10/antigen-themes
+* Install and load zplugin
+  I prefer [[https://github.com/zdharma/zplugin][zplugin]] to managing my zsh configuration and I prefer to not have to think about whether it's installed
 
-zplugin ice from"gh-r" as"program"; zplugin load junegunn/fzf-bin
-zplugin ice from"gh-r" as"program" mv"fd-*/fd -> fd"; zplugin load sharkdp/fd
-zplugin ice from"gh-r" as"program"; zplugin load BurntSushi/ripgrep
+  #+begin_src sh :tangle ~/.zshrc
+  if [ ! -d "$HOME/.zplugin/bin/.git" ]; then
+    mkdir -p "$HOME/.zplugin/"
+    git clone https://github.com/zdharma/zplugin.git "$HOME/.zplugin/bin"
+  fi
+  
+  source "$HOME/.zplugin/bin/zplugin.zsh"
+  
+  zplugin load zuxfoucault/colored-man-pages_mod
+  zplugin load zdharma/fast-syntax-highlighting
+  zplugin load Tarrasch/zsh-autoenv
+  zplugin load chrissicool/zsh-256color
+  zplugin load zsh-users/zsh-completions
+  zplugin load zsh-users/zsh-autosuggestions
+  zplugin load uvaes/fzf-marks
+  zplugin snippet 'https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh'
+  zplugin snippet 'https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh'
+  zplugin light zdharma/zui
+  zplugin ice wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'; zplugin light zdharma/zplugin-crasis
+  zplugin load bbenne10/antigen-themes
+  
+  zplugin ice from"gh-r" as"program"; zplugin load junegunn/fzf-bin
+  zplugin ice from"gh-r" as"program" mv"fd-*/fd -> fd"; zplugin load sharkdp/fd
+  zplugin ice from"gh-r" as"program"; zplugin load rgburke/grv
+  zplugin ice from"gh-r" as"program" mv"ripgrep-*/rg -> rg"; zplugin load BurntSushi/ripgrep
+  
+  autoload -Uz compinit
+  compinit
+  #+end_src
 
-autoload -Uz compinit
-compinit
-#+end_src
+* Set up keybinds
+** Bind some keys that zsh doesn't get right for konsole
+    #+begin_src sh :tangle ~/.zshrc
+    bindkey '^[[1;5D' backward-word  # C-left
+    bindkey '^[[1;5C' forward-word   # C-right
+    #+end_src
 
-** Install and load pyenv and pyenv-virtualenv
-I use [[https://github.com/pyenv/pyenv][pyenv]] and [[https://github.com/pyenv/pyenv-virtualenv][pyenv-virtualenv]] to manage my Python versions.
+** Bind a Ctrl + Space to accept zsh-autosuggestion's suggestions
+    #+begin_src sh :tangle ~/.zshrc
+    bindkey '^ ' autosuggest-accept
+    #+end_src
 
-#+begin_src sh :tangle ~/.zshrc
-
-if [ ! -d ~/.pyenv ]; then
-  git clone http://github.com/yyuu/pyenv ~/.pyenv
-  pushd ~/.pyenv/plugins
-  git clone http://github.com/yyuu/pyenv-virtualenv ~/.pyenv/plugins/virtualenv
-  popd
-fi
-
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-fi
-#+end_src
-
-** Set up keybinds
-*** Bind some keys that zsh doesn't get right for konsole
-#+begin_src sh :tangle ~/.zshrc
-bindkey '^[[1;5D' backward-word  # C-left
-bindkey '^[[1;5C' forward-word   # C-right
-#+end_src
-
-*** Bind a Ctrl + Space to accept zsh-autosuggestion's suggestions
-#+begin_src sh :tangle ~/.zshrc
-bindkey '^ ' autosuggest-accept
-#+end_src
-
-** Set up some very basic aliases
-#+begin_src sh :tangle ~/.zaliases
-alias rmr='rm -r'
-alias zipfldr='zip -9 -r'
-#+end_src
+* Aliases
+** Remove recursively
+   This alias should *always* be available. Every machine. Ever.
+  #+begin_src sh :tangle ~/.zaliases
+  alias rmr='rm -r'
+  #+end_src
 
 ** Set up reliable vim aliases
-I prefer to have the ~vim~ command around for quick cli editing, but it's never quite properly available arcoss distros. So build a functiona and alias it
+   I prefer to have the ~vim~ command around for quick cli editing, but it's never quite properly available arcoss distros. 
+   So build a functiona and alias it
 
-#+begin_src sh :tangle ~/.zaliases
-function _nvim_or_vim_or_vi () {
-  nvim $@ || vim $@ || vi $@
-}
-alias vim=_nvim_or_vim_or_vi
-#+end_src
-
-** Zsh options
-
-Auto-cd saves quite a few keystrokes in very little time. Allows cd'ing to a directory without typing 'cd' 
-#+begin_src sh :tangle ~/.zshrc
-setopt autocd
-#+end_src
-
-Chase dots: This will remove '..' from directory paths alongside the path it's moving to (~foo/../bar~ becoms ~/bar~)
-#+begin_src sh :tangle ~/.zshrc
-setopt chase_dots
-#+end_src
-
-Append History: All zsh shells append (rather than overwrite) history incrementally.
-#+begin_src sh :tangle ~/.zshrc
-setopt append_history
-setopt inc_append_history
-#+end_src
-
-Disable history expansion confirmation
-#+begin_src sh :tangle ~/.zshrc
-setopt no_histverify
-#+end_src
-
-Disable history expansion confirmation
-#+begin_src sh :tangle ~/.zshrc
-setopt no_histverify
-#+end_src
-
-Don't allow us to clobber a file without attempting to do so
-#+begin_src sh :tangle ~/.zshrc
-setopt noclobber
-#+end_src
-
+ #+begin_src sh :tangle ~/.zaliases
+ function _nvim_or_vim_or_vi () {
+   nvim $@ || vim $@ || vi $@
+ }
+ alias vim=_nvim_or_vim_or_vi
+ #+end_src
 
 ** Toggle screen blanking with a simple command
+ #+begin_src sh :tangle ~/.zaliases
+ blank () {
+   DUR="$(xset q | grep Standby | cut -d' ' -f4)"
+   xset s off
+   case $DUR in
+     7200) xset dpms 300 300 300;echo "Screen blank set to 5 mins.";;
+     *) xset dpms 7200 7200 7200;echo "Screen blank set to 2 hours.";;
+   esac
+ }
+ #+end_src
+ 
+** Alias for connecting to Ga Tech VPN
 #+begin_src sh :tangle ~/.zaliases
-blank () {
-    DUR="$(xset q | grep Standby | cut -d' ' -f4)"
-    xset s off
-    case $DUR in
-    7200) xset dpms 300 300 300;echo "Screen blank set to 5 mins.";;
-    *) xset dpms 7200 7200 7200;echo "Screen blank set to 2 hours.";;
-    esac
+campus_vpn () {
+  sudo openconnect --config=$HOME/.config/openconnect/campus.conf anyc.vpn.gatech.edu
 }
 #+end_src
 
-** Set LANG and related variables to reasonable values
-Reasonable enough, as I live in the US.
+* Zsh options
+** Auto-cd saves quite a few keystrokes in very little time. Allows cd'ing to a directory without typing 'cd' 
+  #+begin_src sh :tangle ~/.zshrc
+  setopt autocd
+  #+end_src
+  
+** Chase dots: This will remove '..' from directory paths alongside the path it's moving to (~foo/../bar~ becoms ~/bar~)
+   #+begin_src sh :tangle ~/.zshrc
+   setopt chase_dots
+   #+end_src
+  
+** Append History: All zsh shells append (rather than overwrite) history incrementally.
+   #+begin_src sh :tangle ~/.zshrc
+   setopt hist_no_store
+   setopt share_history
+   setopt hist_ignore_dups
+   #+end_src
+  
+** Disable history expansion confirmation
+   #+begin_src sh :tangle ~/.zshrc
+   setopt no_histverify
+   #+end_src
+  
+** Don't allow us to clobber a file without attempting to do so
+   #+begin_src sh :tangle ~/.zshrc
+   setopt noclobber
+   #+end_src
 
-#+begin_src sh :tangle ~/.zshenv
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-#+end_src
+* Set up environment variables
+** Set LANG and related variables to reasonable values
+ Reasonable enough, as I live in the US.
+
+ #+begin_src sh :tangle ~/.zshenv
+ export LANG=en_US.UTF-8
+ export LANGUAGE=en_US.UTF-8
+ export LC_ALL=en_US.UTF-8
+ #+end_src
 
 ** Add binary storage dir to PATH
-I really don't care to see ~~\/bin~, so I hide it in ~\~/.bin~
+ I really don't care to see ~~\/bin~, so I hide it in ~\~/.bin~
 
-#+begin_src sh :tangle ~/.zshenv
-PATH=~/.bin:$PATH
-#+end_src
+ #+begin_src sh :tangle ~/.zshenv
+ PATH=~/.bin:$PATH
+ #+end_src
 
 ** Add pyenv to PATH
-#+begin_src sh :tangle ~/.zshenv
-export PYENV_ROOT="$HOME/.pyenv"
-PATH="$PYENV_ROOT/bin:$PATH"
-export PATH
-#+end_src
-
-** Set pythonrc
-    #+begin_src sh :tangle ~/.zshenv
-    export PYTHONRC="$HOME/.pythonrc"
-    #+end_src
+ #+begin_src sh :tangle ~/.zshenv
+ export PYENV_ROOT="$HOME/.pyenv"
+ PATH="$PYENV_ROOT/bin:$PATH"
+ #+end_src
 
 ** Set up some Rust build bits for Rustup/Racer
-    #+begin_src sh :tangle ~/.zshenv
-    export RUST_SRC_PATH=$(rustc --print sysroot)/lib/rustlib/src/rust/src
-    #+end_src
-
-** Setup history
-#+begin_src sh :tangle ~/.zshenv
-export HISTSIZE=2000
-export SAVEHIST=$HISTSIZE
-export HISTFILE=~/.zhistory
-#+end_src
-
-
-#+begin_src sh :tangle ~/.zshenv
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-#+end_src
+     #+begin_src sh :tangle ~/.zshenv
+     export RUST_SRC_PATH=$(rustc --print sysroot)/lib/rustlib/src/rust/src
+     PATH="$PATH:$HOME/.cargo/bin"
+     #+end_src
 
 ** Set $TERMCAP if its source file is available
-#+begin_src sh :tangle ~/.zshenv
-if [ -f ${HOME}/.termcap ]; then
-  export TERMCAP=$(< ${HOME}/.termcap)
-fi
-#+end_src
-
-** Eval dircolors for ls color support, but only if the file is there
-#+begin_src sh :tangle ~/.zshenv
-if [ -f ${HOME}/.dircolors ]; then
-  eval $(dircolors ~/.dircolors)
-fi
-#+end_src
-
-** Turn off pyenv's built-in prompt support, as I have my own prompt.
-#+begin_src sh :tangle ~/.zshenv
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-#+end_src
+ #+begin_src sh :tangle ~/.zshenv
+ if [ -f ${HOME}/.termcap ]; then
+   export TERMCAP=$(< ${HOME}/.termcap)
+ fi
+ #+end_src
 
 ** Set FZF's default options
-#+begin_src sh :tangle ~/.zshenv
-export FZF_DEFAULT_OPTS='--height 40% --reverse'
-export FZF_DEFAULT_COMMAND='fd --type file --follow'
-#+end_src
+ #+begin_src sh :tangle ~/.zshenv
+ export FZF_DEFAULT_OPTS='--height 40% --reverse'
+ export FZF_DEFAULT_COMMAND='fd --type file --follow'
+ #+end_src
 
-** Run keychain on shell spawn
-#+begin_src sh :tangle ~/.zprofile
-eval $(keychain --eval id_ed25519)
-#+end_src
+** Turn off pyenv's built-in prompt support, as I have my own prompt.
+ #+begin_src sh :tangle ~/.zshenv
+ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+ #+end_src
 
-** Hotwire TTY1 to spawn X when I log in
-#+begin_src sh :tangle ~/.zprofile
-if [[ "$TTY" == "/dev/tty1" ]]; then
-  startx;
-  logout;
-fi
-#+end_src
+** Set pythonrc
+   #+begin_src sh :tangle ~/.zshenv
+   export PYTHONRC="$HOME/.pythonrc"
+   #+end_src
+
+** Setup history
+ #+begin_src sh :tangle ~/.zshenv
+ export HISTSIZE=2000
+ export SAVEHIST=$HISTSIZE
+ export HISTFILE=~/.zhistory
+ #+end_src
+
+** Eval dircolors for ls color support, but only if the file is there
+   This really sets some environment variables, so I cheat a bit and push it into zshenv.
+   #+begin_src sh :tangle ~/.zshenv
+   if [ -f ${HOME}/.dircolors ]; then
+     eval $(dircolors ~/.dircolors)
+   fi
+   #+end_src
+
+** GNUPG setup (for yubikey)
+   #+begin_src sh :tangle ~/.zshenv
+   export GNUPGHOME="${HOME}/.config/gnupg"
+   export GPG_TTY=$(tty)
+   if [ -f "${HOME}/.config/gnupg/gpg-agent.env" ]; then
+        source "${HOME}/.config/gnupg/gpg-agent.env"
+        export GPG_AGENT_INFO
+        export SSH_AUTH_SOCK
+   fi
+   #+end_src
+** Export PATH, since it was modified above
+   #+begin_src sh :tangle ~/.zshenv
+   export PATH
+   #+end_src
+
+* Run keychain on shell spawn
+  #+begin_src sh :tangle ~/.zprofile
+  eval $(keychain --eval id_ed25519)
+  #+end_src
+
+* Hotwire TTY1 to spawn X when I log in
+  #+begin_src sh :tangle ~/.zprofile
+  if [[ "$TTY" == "/dev/tty1" ]]; then
+    startx;
+    logout;
+  fi
+  #+end_src
+
