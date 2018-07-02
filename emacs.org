@@ -443,7 +443,22 @@ Just calling :pin in req-package blocks doesn't work:
   (use-package direnv
     :config (direnv-mode))
   #+end_src
+
 * Programming language setup
+** lsp, for some later languages
+  #+begin_src elisp :tangle ~/.emacs.d/packages.el
+  (use-package lsp-mode)
+
+  (use-package lsp-ui
+    :after lsp-mode
+    :init (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+  (use-package company-lsp
+    :after company lsp-mode
+    :init (push 'company-lsp company-backends))
+
+  #+end_src
+
 ** Python
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package pyenv-mode
