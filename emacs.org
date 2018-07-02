@@ -469,11 +469,12 @@ Just calling :pin in req-package blocks doesn't work:
   (use-package pyenv-mode-auto
     :after (pyenv-mode))
     
-  (use-package tox
-    :config 
-      (setq tox-runner 'pytest))
+  (use-package lsp-python
+     :after lsp-mode
+     :init (add-hook 'python-mode-hook #'lsp-python-enable))
 
   (use-package anaconda-mode
+     :disabled t
      :after (general pyenv-mode-auto)
      :commands anaconda-mode
      :delight anaconda-mode
