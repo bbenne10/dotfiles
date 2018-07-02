@@ -613,19 +613,25 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
 ** Rust
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package rust-mode
+    :mode ("\\.rs\\'" . rust-mode)
     :init
-      (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
       (add-hook 'rust-mode-hook '(lambda ()
        (local-set-key (kbd "TAB") #'company-indent-or-complete-common)
        (setq rust-format-on-save t)
        (electric-pair-mode 1))))
 
   (use-package racer
+    :disabled t
     :init
       (add-hook 'rust-mode-hook  #'racer-mode)
       (add-hook 'racer-mode-hook #'eldoc-mode))
+
   (use-package flycheck-rust
     :init (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
+
+  (use-package lsp-rust
+    :after lsp-mode
+    :init (add-hook 'rust-mode-hook #'lsp-rust-enable))
   #+end_src
 
 
