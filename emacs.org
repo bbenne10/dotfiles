@@ -264,7 +264,8 @@ Just calling :pin in req-package blocks doesn't work:
   (use-package projectile
     :delight projectile-mode
     :init
-      (setq projectile-completion-system 'ivy)
+      (setq projectile-completion-system 'ivy
+            projectile-require-project-root nil)
     :config
       (projectile-mode))
 
