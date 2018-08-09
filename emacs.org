@@ -57,7 +57,8 @@
    (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
   #+end_src
 
-  ** Disable scrollbar, menu bar, and tool bar
+** Disable scrollbar, menu bar, and tool bar
+
   #+begin_src elisp :tangle ~/.emacs.d/ui.el
   (scroll-bar-mode 0)
   (menu-bar-mode 0)
@@ -100,8 +101,7 @@
   (defvar use-package-always-ensure t)
   #+end_src
 
-Just calling :pin in req-package blocks doesn't work:
-[https://github.com/jwiegley/use-package/issues/343#issuecomment-220463365][See this bug]]
+Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwiegley/use-package/issues/343#issuecomment-220463365][See this bug]]
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
 (setq package-pinned-packages '((ensime . "melpa-stable")))
 (package-initialize)
@@ -198,7 +198,7 @@ Just calling :pin in req-package blocks doesn't work:
   (use-package evil-easymotion
     :after evil
     :config (evilem-default-keybindings default-leader-key))
-    
+
   (use-package evil-collection
     :after evil
     :config (evil-collection-init))
@@ -419,19 +419,24 @@ Just calling :pin in req-package blocks doesn't work:
 * Programming language setup
 ** lsp, for some later languages
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
-  (use-package lsp-mode)
+  (use-package lsp-mode
+    :defer t)
 
   (use-package lsp-ui
     :after lsp-mode
     :init (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
   (use-package company-lsp
-    :after company lsp-mode
-    :init (push 'company-lsp company-backends))
-
+    :after (company lsp-mode)
+    :config (push 'company-lsp company-backends))
   #+end_src
 
 ** Python
+
+  You'll need [[https://github.com/palantir/python-language-server][python-language-server]], [[https://github.com/ambv/black][black]], and [[https://github.com/rupert/pyls-black][pyls-black]] installed inside a pyenv for this setup.
+
+
+  Enable pyenv-mode and tell emacs to extend exec-path so we can find installed shims.
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package pyenv-mode
     :init
@@ -440,59 +445,39 @@ Just calling :pin in req-package blocks doesn't work:
 
   (use-package pyenv-mode-auto
     :after (pyenv-mode))
-    
+  #+end_src
+
+  Setup lsp-python and tell it we're using flake8 rather than pycodestyle as its configruation source.
+  #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package lsp-python
-     :after lsp-mode
-     :init (add-hook 'python-mode-hook #'lsp-python-enable))
+    :init
+      (defun lsp-set-python-cfg ()
+        (let ((lsp-cfg `(:pyls (:configurationSources ("flake8")))))
+           (lsp--set-configuration lsp-cfg)))
+    :hook ((python-mode . lsp-python-enable)
+           (lsp-after-initialize . lsp-set-python-cfg)))
+  #+end_src
 
-  (use-package anaconda-mode
-     :disabled t
-     :after (general pyenv-mode-auto)
-     :commands anaconda-mode
-     :delight anaconda-mode
-     :init
-       (defun python-insert-trace ()
-         ;; insert a line that impots pdb and sets a trace just below the current line
-         (interactive)
-         (move-end-of-line 1)
-         (insert "\n")
-         (indent-according-to-mode)
-         (insert "import pdb; pdb.set_trace()"))
-
-       (add-hook 'python-mode-hook
-                 (function
-                  (lambda () (setq evil-shift-width python-indent-offset)
-                    (anaconda-mode 1))))
-
-       (general-define-key :keymaps 'anaconda-mode-map
-                           :states '(normal)
-                           :prefix (concat default-leader-key "l")
-                           "d" 'anaconda-mode-find-definitions
-                           "a" 'anaconda-mode-find-assignments
-                           "r" 'anaconda-mode-find-references
-                           "?" 'anaconda-mode-show-doc
-                           "t" 'python-insert-trace))
-
-#+end_src
+  Blacken python buffers on save
+  #+begin_src elisp :tangle ~/.emacs.d/packages.el
+  (use-package blacken
+    :hook (python-mode . blacken-mode))
+  #+end_src
 
 ** Javascript
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package rjsx-mode
-    :mode "\\.js[x]*\\'")
-  (use-package lsp-javascript-typescript
-    :config
-      (add-hook 'js-mode-hook #'lsp-javascript-typescript-enable)
-      (add-hook 'rjsx-mode-hook #'lsp-javascript-typescript-enable)
-  )
-  #+end_src
+    :mode "\\.js[x]*\\'"
+    :init
+      (defun setup-js-mode ()
 
-  Make sure that flycheck uses standard as the linter and set the indentation appropriately
-  #+begin_src elisp :tangle ~/.emacs.d/languages.el
-  (add-hook 'js-mode-hook
-            (function (lambda ()
-                        (flycheck-select-checker 'javascript-standard)
-                        (setq js-indent-level 2)
-                        (setq evil-shift-width 2))))
+        (setq js2-strict-missing-semi-warning nil
+              js2-basic-offset 2
+              js-indent-level 2
+              evil-shift-width 2)
+        (flycheck-select-checker 'javascript-standard))
+    :hook (js-mode . setup-js-mode))
+
   #+end_src
 
 ** C/C++
