@@ -28,43 +28,15 @@
   (load "~/.emacs.d/languages.el")
   #+end_src
 
-* Set up Hasklig and its ligatures
-  Obviously requires [[https://github.com/i-tu/Hasklig][Hasklig]] installed.
+* Set up font
+  Obviously requires [[https://sourcefoundry.org/hack/][Hack]] installed.
 
   #+begin_src elisp :tangle ~/.emacs.d/ui.el
-  (setq default-frame-alist '((font . "Hasklig-9")))
-
-  (defun my-correct-symbol-bounds (pretty-alist)
-    (mapcar (lambda (el)
-              (setcdr el (string ?\t (cdr el)))
-              el)
-            pretty-alist))
-  (defun my-ligature-list (ligatures codepoint-start)
-    (let ((codepoints (-iterate '1+ codepoint-start (length ligatures))))
-      (-zip-pair ligatures codepoints)))
-  (setq my-hasklig-ligatures
-        (let* ((ligs '("&&" "***" "*>" "\\\\" "||" "|>" "::"
-                       "==" "===" "==>" "=>" "=<<" "!!" ">>"
-                       ">>=" ">>>" ">>-" ">-" "->" "-<" "-<<"
-                       "<*" "<*>" "<|" "<|>" "<$>" "<>" "<-"
-                       "<<" "<<<" "<+>" ".." "..." "++" "+++"
-                       "/=" ":::" ">=>" "->>" "<=>" "<=<" "<->")))
-          (my-correct-symbol-bounds (my-ligature-list ligs #Xe100))))
-
-  (defun my-set-hasklig-ligatures ()
-    (setq prettify-symbols-alist
-          (append my-hasklig-ligatures prettify-symbols-alist))
-    (prettify-symbols-mode))
-
-  (add-hook 'prog-mode-hook (function (lambda () (my-set-hasklig-ligatures))))
-#+end_src
-
-* Bold curent line number
-  #+begin_src elisp :tangle ~/.emacs.d/ui.el
+  (setq default-frame-alist '((font . "Hack-9")))
   (set-face-attribute 'line-number-current-line nil
-                      :font "Hasklig-9:weight=Bold"
+                      :font "Hack-9:weight=Bold"
                       :inverse-video nil)
-  #+end_src
+#+end_src
 
 * Enable some nice programming features in in prog-mode
   *NOTE*: This requires emacs 26 or newer!
