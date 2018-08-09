@@ -632,7 +632,11 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
 * Set up visual theme
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package all-the-icons)
- 
+
+  (use-package doom-modeline
+    :defer t
+    :hook (after-init . doom-modeline-init))
+
   (use-package doom-themes
     :init
       (setq doom-themes-enable-bold t
@@ -640,22 +644,6 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
       (load-theme 'doom-spacegrey t)
       (doom-themes-visual-bell-config)
       (doom-themes-org-config))
-
-  (use-package spaceline-config
-    :ensure spaceline
-    :config
-      (setq evil-insert-state-message nil
-            evil-visual-state-message nil
-            evil-visual-state-tag "V"
-            evil-insert-state-tag "I"
-            evil-normal-state-tag "N"
-            spaceline-highlight-face-func 'spaceline-highlight-face-evil-state))
-
-  (use-package spaceline-all-the-icons 
-    :after spaceline-config
-    :config 
-      (spaceline-all-the-icons-theme)
-      (spaceline-all-the-icons--setup-git-ahead))
 
   (use-package solaire-mode
     :init
