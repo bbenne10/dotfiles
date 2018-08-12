@@ -619,6 +619,13 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
 
   (use-package doom-modeline
     :defer t
+    :init
+      (setq evil-normal-state-tag   (propertize " NORMAL " 'face '((:background "black" :foreground "green")))
+            evil-emacs-state-tag    (propertize " EMACS " 'face '((:background "orange" :foreground "black")))
+            evil-insert-state-tag   (propertize " INSERT " 'face '((:background "blue")))
+            evil-motion-state-tag   (propertize " MOTION " 'face '((:background "blue")))
+            evil-visual-state-tag   (propertize " VISUAL " 'face '((:background "grey80" :foreground "black")))
+            evil-operator-state-tag (propertize " OPERATOR " 'face '((:background "purple"))))
     :hook (after-init . doom-modeline-init))
 
   (use-package doom-themes
