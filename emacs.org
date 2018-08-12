@@ -22,7 +22,6 @@
 
 * Load the other files in our set up
   #+begin_src elisp :tangle ~/.emacs.d/init.el
-  (load "~/.emacs.d/private.el")
   (load "~/.emacs.d/packages.el")
   (load "~/.emacs.d/ui.el")
   (load "~/.emacs.d/languages.el")
