@@ -42,6 +42,7 @@
   zplugin load zsh-users/zsh-completions
   zplugin load zsh-users/zsh-autosuggestions
   zplugin load uvaes/fzf-marks
+  zplugin snippet OMZ::plugins/gpg-agent/gpg-agent.plugin.zsh
   zplugin snippet 'https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh'
   zplugin snippet 'https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh'
   zplugin light zdharma/zui
@@ -201,16 +202,6 @@ campus_vpn () {
    fi
    #+end_src
 
-** GNUPG setup (for yubikey)
-   #+begin_src sh :tangle ~/.zshenv
-   export GNUPGHOME="${HOME}/.config/gnupg"
-   export GPG_TTY=$(tty)
-   if [ -f "${HOME}/.config/gnupg/gpg-agent.env" ]; then
-        source "${HOME}/.config/gnupg/gpg-agent.env"
-        export GPG_AGENT_INFO
-        export SSH_AUTH_SOCK
-   fi
-   #+end_src
 ** Export PATH, since it was modified above
    #+begin_src sh :tangle ~/.zshenv
    export PATH
