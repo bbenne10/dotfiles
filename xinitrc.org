@@ -82,7 +82,8 @@ else
 fi
 #+end_src
 
-** And lastly, start bspwm
+** And lastly, start dwm
 #+begin_src sh :tangle ~/.xsession
-  dbus-launch --exit-with-session bspwm
+  ~/.bin/dwmstatus &
+  dbus-launch --exit-with-session dwm
 #+end_src
