@@ -207,11 +207,6 @@ campus_vpn () {
    export PATH
    #+end_src
 
-* Run keychain on shell spawn
-  #+begin_src sh :tangle ~/.zprofile
-  eval $(keychain --eval id_ed25519)
-  #+end_src
-
 * Hotwire TTY1 to spawn X when I log in
   #+begin_src sh :tangle ~/.zprofile
   if [[ "$TTY" == "/dev/tty1" ]]; then
