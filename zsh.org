@@ -37,7 +37,6 @@
   
   zplugin load zuxfoucault/colored-man-pages_mod
   zplugin load zdharma/fast-syntax-highlighting
-  zplugin load Tarrasch/zsh-autoenv
   zplugin load chrissicool/zsh-256color
   zplugin load zsh-users/zsh-completions
   zplugin load zsh-users/zsh-autosuggestions
@@ -53,6 +52,11 @@
   zplugin ice from"gh-r" as"program" mv"fd-*/fd -> fd"; zplugin load sharkdp/fd
   zplugin ice from"gh-r" as"program"; zplugin load rgburke/grv
   zplugin ice from"gh-r" as"program" mv"ripgrep-*/rg -> rg"; zplugin load BurntSushi/ripgrep
+  zplugin ice from"gh-r" as"program" mv"direnv* -> direnv" atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' pick"direnv";zplugin light direnv/direnv
+
+  if [ -f "$HOME/.zplugin/plugins/direnv---direnv/zhook.zsh" ]; then
+    . "$HOME/.zplugin/plugins/direnv---direnv/zhook.zsh"
+  fi
   
   autoload -Uz compinit
   compinit
