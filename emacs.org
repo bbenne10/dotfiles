@@ -633,7 +633,7 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
     :init
       (setq doom-themes-enable-bold t
             doom-themes-enable-italic nil)
-      (load-theme 'doom-spacegrey t)
+      (load-theme 'doom-nord t)
       (doom-themes-visual-bell-config)
       (doom-themes-org-config))
 
