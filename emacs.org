@@ -251,7 +251,7 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package fic-mode
     :init (setq fic-highlighted-words '("FIXME" "TODO" "BUG" "NOTE"))
-    :config (add-hook 'prog-mode-hook (function (lambda () (fic-mode 1)))))
+    :hook (prog-mode . fic-mode))
   #+end_src
 
 * Set up magit for git integration
