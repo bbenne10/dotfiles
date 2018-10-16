@@ -153,7 +153,7 @@ campus_vpn () {
  I really don't care to see ~~\/bin~, so I hide it in ~\~/.bin~
 
  #+begin_src sh :tangle ~/.zshenv
- PATH=~/.bin:$PATH
+ PATH=~/.bin:~/.local/bin/:$PATH
  #+end_src
 
 ** Add pyenv to PATH
