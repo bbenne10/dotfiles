@@ -209,9 +209,7 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
     :after (general)
     :delight ivy-mode
     :init
-    (defun counsel-ag-project-at-point ()
-      (interactive)
-      (counsel-ag (thing-at-point 'symbol) (projectile-project-root)))
+      (setq counsel-projectile-rg-initial-input '(thing-at-point 'symbol t))
     :config
       (ivy-mode 1)
       (general-define-key :states '(normal)
@@ -219,7 +217,7 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
                           "M-x" 'counsel-M-x)
       (general-define-key :states '(normal)
                           :prefix default-leader-key
-                          "g" 'counsel-projectile-rg
+                          "/" 'counsel-projectile-rg
                           "B" 'ivy-switch-buffer
                           "E" 'counsel-find-file))
 
