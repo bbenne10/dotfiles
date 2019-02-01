@@ -47,9 +47,9 @@ test_and_run firefox &
 
 ** Start screen locker via XSS
 #+begin_src sh :tangle ~/.xsession
-if [ -e ~/.bin/xss ]; then
+if [ -e ~/.local/bin/xss ]; then
     xset s 300
-  ~/.bin/xss ~/.bin/lock_screen &
+  ~/.local/bin/xss ~/.local/bin/lock_screen &
 fi
 #+end_src
 
@@ -59,8 +59,8 @@ This requires [[https://github.com/bbenne10/xinputd][xinputd]], which is install
 #+begin_src sh :tangle ~/.xsession
 setxkbmap -option caps:escape
 
-if [ -e ~/.bin/xinputd ]; then
-  xinputd setxkbmap -option caps:escape
+if [ -e ~/.local/bin/xinputd ]; then
+  ~/.local/bin/xinputd setxkbmap -option caps:escape
 fi
 #+end_src
 
@@ -68,8 +68,8 @@ fi
 This requires [[https://github.com/bbenne10/srandrd][srandrd]], which is installed in install.sh.
 
 #+begin_src sh :tangle ~/.xsession
-if [ -e ~/.bin/srandrd ]; then
-  srandrd ~/code/srandrd/example_consumers/toggle_monitors.sh
+if [ -e ~/.local/bin/srandrd ]; then
+  ~/.local/bin/srandrd ~/code/srandrd/example_consumers/toggle_monitors.sh
 fi
 #+end_src
 
@@ -84,6 +84,6 @@ fi
 
 ** And lastly, start dwm
 #+begin_src sh :tangle ~/.xsession
-  ~/.bin/dwmstatus &
+  ~/.local/bin/dwmstatus &
   dbus-launch --exit-with-session dwm
 #+end_src

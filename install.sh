@@ -1,6 +1,5 @@
 #!/bin/sh
 
-BIN_DIR="$HOME/.bin"
 BUILD_DIR="../"  # assume we want builds/ alongside our dotfiles repo
 
 SRANDRD_URI="git@github.com:bbenne10/srandrd.git"
@@ -23,7 +22,7 @@ install_generic () {
   git clone "$uri" "$target"
   cd "$target"
     if make; then
-        cp "$target" "$BIN_DIR"
+        make PREFIX=$HOME/.local install
     else
       error "Failed to build $target."
     fi
