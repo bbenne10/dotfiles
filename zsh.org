@@ -13,14 +13,11 @@
 
   if [ ! -d ~/.pyenv ]; then
     git clone http://github.com/yyuu/pyenv ~/.pyenv
-    pushd ~/.pyenv/plugins
-    git clone http://github.com/yyuu/pyenv-virtualenv ~/.pyenv/plugins/virtualenv
     popd
   fi
   
   if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
   fi
   #+end_src
 
@@ -182,11 +179,6 @@ campus_vpn () {
  export FZF_DEFAULT_COMMAND='fd --type file --follow'
  #+end_src
 
-** Turn off pyenv's built-in prompt support, as I have my own prompt.
- #+begin_src sh :tangle ~/.zshenv
- export PYENV_VIRTUALENV_DISABLE_PROMPT=1
- #+end_src
-
 ** Set pythonrc
    #+begin_src sh :tangle ~/.zshenv
    export PYTHONRC="$HOME/.pythonrc"
@@ -207,6 +199,11 @@ campus_vpn () {
    fi
    #+end_src
 
+** Add poetry to PATH
+   [[https://poetry.eustace.io][Poetry]] only installs to ~/.poetry, so we have to modify $PATH to point to it
+   #+begin_src sh :tangle ~/.zshenv
+   PATH="$PATH:$HOME/.poetry/bin"
+   #+end_src
 ** Export PATH, since it was modified above
    #+begin_src sh :tangle ~/.zshenv
    export PATH
