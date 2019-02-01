@@ -51,6 +51,7 @@
   zplugin ice from"gh-r" as"program" mv"ripgrep-*/rg -> rg"; zplugin load BurntSushi/ripgrep
   zplugin ice from"gh-r" as"program" mv"direnv* -> direnv" atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' pick"direnv";zplugin light direnv/direnv
   zplugin ice from"gh-r" as"program" mv"docker-compose* -> docker-compose" pick"docker-compose"; zplugin light docker/compose
+  zplugin ice from"gh-r" as"program" pick"drone"; zplugin light drone/drone-cli
 
   if [ -f "$HOME/.zplugin/plugins/direnv---direnv/zhook.zsh" ]; then
     . "$HOME/.zplugin/plugins/direnv---direnv/zhook.zsh"
