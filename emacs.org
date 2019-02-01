@@ -45,18 +45,11 @@
     (show-paren-mode 1)
     (global-hl-line-mode 1)
     (display-line-numbers-mode)
-  )))
+    (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
+  )
   #+end_src
 
-* Strip trailing whitespace in prog-mode
-  This installs the hook as a buffer-local.
-
-  #+begin_src elisp :tangle ~/.emacs.d/ui.el
-  (add-hook 'prog-mode-hook (lambda ()
-   (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))
-  #+end_src
-
-** Disable scrollbar, menu bar, and tool bar
+* Disable scrollbar, menu bar, and tool bar
 
   #+begin_src elisp :tangle ~/.emacs.d/ui.el
   (scroll-bar-mode 0)
