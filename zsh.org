@@ -104,11 +104,16 @@
  #+end_src
  
 ** Alias for connecting to Ga Tech VPN
-#+begin_src sh :tangle ~/.zaliases
-campus_vpn () {
-  sudo openconnect --config=$HOME/.config/openconnect/campus.conf anyc.vpn.gatech.edu
-}
-#+end_src
+ #+begin_src sh :tangle ~/.zaliases
+ campus_vpn () {
+   sudo openconnect --config=$HOME/.config/openconnect/campus.conf anyc.vpn.gatech.edu
+ }
+ #+end_src
+
+** Watch GamesDoneQuick
+  #+begin_src sh :tangle ~/.zaliases
+  alias watch_gdq="mpv http://twitch.tv/gamesdonequick"
+  #+end_src
 
 * Zsh options
 ** Auto-cd saves quite a few keystrokes in very little time. Allows cd'ing to a directory without typing 'cd' 
