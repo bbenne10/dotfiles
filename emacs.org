@@ -427,13 +427,8 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
 
   Enable pyenv-mode and tell emacs to extend exec-path so we can find installed shims.
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
-  (use-package pyenv-mode
-    :init
-     (setq exec-path (cons (format "%s/.pyenv/shims" (getenv "HOME")) exec-path))
-     (add-hook 'python-mode-hook (function (lambda () (pyenv-mode)))))
-
-  (use-package pyenv-mode-auto
-    :after (pyenv-mode))
+  (use-package auto-virtualenv
+    :hook (python-mode . auto-virtualenv-set-virtualenv))
   #+end_src
 
   Setup lsp-python and tell it we're using flake8 rather than pycodestyle as its configruation source.
