@@ -75,11 +75,7 @@ fi
 
 ** Set the wallpaper - either via feh or nitrogen
 #+begin_src sh :tangle ~/.xsession
-if [ -e ~/.fehbg -a $(which feh) ]; then
-  ~/.fehbg
-else
-  test_and_run nitrogen --restore
-fi
+xsetroot -bg "#3B4252" -fg "#2f3441" -mod 8 8
 #+end_src
 
 ** And lastly, start dwm
