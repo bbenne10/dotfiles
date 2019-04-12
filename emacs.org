@@ -442,8 +442,6 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
 
   You'll need [[https://github.com/palantir/python-language-server][python-language-server]], [[https://github.com/ambv/black][black]], and [[https://github.com/rupert/pyls-black][pyls-black]] installed inside a pyenv for this setup.
 
-
-  Enable pyenv-mode and tell emacs to extend exec-path so we can find installed shims.
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package auto-virtualenv
     :hook (python-mode . auto-virtualenv-set-virtualenv))
