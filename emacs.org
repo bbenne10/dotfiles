@@ -370,6 +370,13 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
   )
   #+end_src
 
+* Visual Fill Column (but only for notmuch)
+  #+begin_src elisp :tangle ~/.emacs.d/packages.el
+  (use-package visual-fill-column
+    :hook ((notmuch-show . visual-line-mode)
+           (notmuch-show . visual-fill-column-mode)))
+  #+end_src
+
 * Set up Flycheck to check codebases
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package flycheck
