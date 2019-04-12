@@ -111,8 +111,17 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
   (require 'delight)
   #+end_src
 
+* Ensure exec-path has a few key directories in it
+  #+begin_src elisp :tangle ~/.emacs.d/init.el
+  (use-package exec-path-from-shell
+    :config
+      (when (memq window-system '(mac ns x))
+        (exec-path-from-shell-initialize)))
+  #+end_src
+
 * Instantiate a default leader key
-  This key is just left of space on my Preonic. Since I don't use that keyboard everywhere, I use my desktop's hostname to determine if I should set prefix differently
+  This key is just left of space on my Preonic.
+  Since I don't use that keyboard everywhere, I use my desktop's hostname to determine if I should set prefix differently
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (defvar default-leader-key "<SPC>")
   (if (string= (system-name) "tia-bxb-d01.ctisl.gtri.org") (setq default-leader-key "<XF86TouchpadOff>"))
@@ -226,7 +235,9 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
     :delight projectile-mode
     :init
       (setq projectile-completion-system 'ivy
-            projectile-require-project-root nil)
+            projectile-require-project-root nil
+            projectile-git-command "fd . --print0 --color never"
+            projectile-indexing-method 'alien)
     :config
       (projectile-mode))
 
