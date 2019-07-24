@@ -72,9 +72,9 @@
     # TODO: find out why these aren't bound correctly
     # `bindkey -M emacs` seems to indicate they should be...
     # urxvt: C-left
-    bindkey '^[0d' backward-word
+    bindkey '^[Od' emacs-backward-word
     # urxvt: C-right
-    bindkey '^[0c' forward-word
+    bindkey '^[Oc' emacs-forward-word
     #+end_src
 
 ** Bind a Ctrl + Space to accept zsh-autosuggestion's suggestions
