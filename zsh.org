@@ -38,6 +38,8 @@
   zplugin load zsh-users/zsh-completions
   zplugin load zsh-users/zsh-autosuggestions
   zplugin snippet OMZ::plugins/gpg-agent/gpg-agent.plugin.zsh
+  zplugin snippet OMZ::plugins/docker-compose/docker-compose.plugin.zsh
+  zplugin snippet OMZ::plugins/docker/_docker
   zplugin load bbenne10/antigen-themes
   
   zplugin ice from"gh-r" as"program"; zplugin load junegunn/fzf-bin
