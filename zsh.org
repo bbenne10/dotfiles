@@ -122,6 +122,47 @@
   alias watch_gdq="mpv http://twitch.tv/gamesdonequick"
   #+end_src
 
+** Pushover
+  #+begin_src sh :tangle ~/.zaliases
+  get_piped() {
+    piped=''
+    if [ ! -t 0 ]; then
+      while read data; do
+        piped=$data
+      done
+    fi
+    echo $piped
+  }
+
+  send_to_pushover() {
+    if [[ ! -z $PUSHOVER_APP_TOKEN && ! -z $PUSHOVER_USER_TOKEN ]]; then
+      message=$(get-piped)
+
+      if [[ -z $1 ]]; then
+        print -R "${message_error}Message not set."
+        kill -INT $$
+      fi
+
+      # Check piping.
+      if [ -z "$message" ]; then
+        message=$1
+      fi
+
+      message=$(echo "$message" | perl -MURI::Escape -ne 'chomp;print uri_escape($_),"\n"')
+      po_data="token=${PUSHOVER_APP_TOKEN}&user=${PUSHOVER_USER_TOKEN}&message=${message}"
+
+      output=$(curl POST -s https://api.pushover.net/1/messages.json -d $po_data 2>&1)
+      po_status=$(echo $output | sed -E -n 's/.*"status":"{0,1}([^,"]+)(,|").*/\1/p')
+      po_request=$(echo $output | sed -E -n 's/.*"request":"{0,1}([^,"]+)(,|").*/\1/p')
+
+      print -P "${message_complete}Pushover - sent the message: \"${1}\" and recieved the receipt id of \'${po_request}\'"
+
+    else
+      print -R "${message_error}PUSHOVER_API_TOKEN has not been set."
+    fi
+  }
+  #+end_src
+
 * Zsh options
 ** Auto-cd saves quite a few keystrokes in very little time. Allows cd'ing to a directory without typing 'cd' 
   #+begin_src sh :tangle ~/.zshrc
