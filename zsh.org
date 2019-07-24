@@ -60,10 +60,19 @@
   #+end_src
 
 * Set up keybinds
-** Bind some keys that zsh doesn't get right for konsole
+** Bind some keys that zsh doesn't get right for konsole / urxvt
     #+begin_src sh :tangle ~/.zshrc
-    bindkey '^[[1;5D' backward-word  # C-left
-    bindkey '^[[1;5C' forward-word   # C-right
+    # konsole: C-left
+    bindkey '^[[1;5D' backward-word
+    # konsole: C-right
+    bindkey '^[[1;5C' forward-word
+
+    # TODO: find out why these aren't bound correctly
+    # `bindkey -M emacs` seems to indicate they should be...
+    # urxvt: C-left
+    bindkey '^[0d' backward-word
+    # urxvt: C-right
+    bindkey '^[0c' forward-word
     #+end_src
 
 ** Bind a Ctrl + Space to accept zsh-autosuggestion's suggestions
