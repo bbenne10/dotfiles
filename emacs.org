@@ -4,11 +4,11 @@
 :END:
 
 * Increase garbage collection threshold during init
-  Theoretically increases boot up speed.
-
   #+begin_src elisp :tangle ~/.emacs.d/init.el
-  (setq gc-cons-threshold 64000000)
-  (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000)))
+  (setq gc-cons-threshold 402653184
+          gc-cons-percentage 0.6)
+  (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 16777216
+                                           gc-cons-percentage 0.1)))
   #+end_src
 
 * Store all backups and autosaves in the temp dir
