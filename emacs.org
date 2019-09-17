@@ -378,37 +378,6 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
            (notmuch-show . visual-fill-column-mode)))
   #+end_src
 
-* Set up Flycheck to check codebases
-  #+begin_src elisp :tangle ~/.emacs.d/packages.el
-  (use-package flycheck
-    :after (general)
-    :delight flycheck-mode
-    :commands (flycheck-mode)
-    :init
-      (add-to-list 'display-buffer-alist
-                   `(,(rx bos "*Flycheck errors*" eos)
-                     (display-buffer-reuse-window
-                      display-buffer-in-side-window)
-                     (reusable-frames . visible)
-                     (side . bottom)
-                     (window-height . 0.2)))
-      (defun delete-flycheck-errors-list ()
-        (interactive)
-        (if (get-buffer-window "*Flycheck errors*" "visible") (delete-window (get-buffer-window "*Flycheck errors*" "visible"))))
-    :config
-      (general-define-key :prefix default-leader-key
-                          :states '(normal)
-                          "lo" 'flycheck-list-errors
-                          "lc" 'delete-flycheck-errors-list
-                          "ln" 'flycheck-next-error
-                          "lp" 'flycheck-previous-error)
-      (add-hook 'prog-mode-hook  (function (lambda () (flycheck-mode))))
-    )
-  (use-package flycheck-pos-tip
-     :after flycheck
-     :config (flycheck-pos-tip-mode))
-  #+end_src
-
 * Highlight nested brackets differently in bracketized languages
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package rainbow-delimiters
