@@ -87,39 +87,29 @@
   (defalias 'yes-or-no-p 'y-or-n-p)
   #+end_src
 
-* Initialize existing packages
+* Manually set load path
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
-  (setq package-user-dir "~/.emacs.d/elpa"
-        package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-                           ("melpa-stable" . "http://stable.melpa.org/packages/")
-                           ("gnu" . "http://elpa.gnu.org/packages/")))
-  (defvar use-package-always-ensure t)
-  #+end_src
-
-Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwiegley/use-package/issues/343#issuecomment-220463365][See this bug]]
-  #+begin_src elisp :tangle ~/.emacs.d/packages.el
-(setq package-pinned-packages '((ensime . "melpa-stable")))
+  (setq
+     load-prefer-newer t
+     package-user-dir "~/.emacs.d/elpa"
+     package--init-file-ensured t
+     package-enable-at-startup nil
+     load-path (append load-path (directory-files package-user-dir t "^[^.]" t))
+     package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+         ("melpa-stable" . "http://stable.melpa.org/packages/")
+         ("gnu" . "http://elpa.gnu.org/packages/")))
+  (unless (file-directory-p package-user-dir)
+           (make-directory package-user-dir t))
   #+end_src
 
 * Auto-require some basic packages outside of use-package
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
+  (require 'package)
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
-    (package-install 'use-package)
-    (package-install 'dash)
-    (package-install 'delight))
+    (package-install 'use-package))
   (require 'use-package)
-  (require 'dash)
-  (require 'bind-key)
-  (require 'delight)
-  #+end_src
-
-* Ensure exec-path has a few key directories in it
-  #+begin_src elisp :tangle ~/.emacs.d/init.el
-  (use-package exec-path-from-shell
-    :config
-      (when (memq window-system '(mac ns x))
-        (exec-path-from-shell-initialize)))
+  (setq use-package-always-ensure t)
   #+end_src
 
 * Instantiate a default leader key
@@ -135,6 +125,16 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
   (use-package general
     :config
       (global-unset-key (kbd "C-h h")))
+  #+end_src
+
+* Ensure exec-path has a few key directories in it
+  #+begin_src elisp :tangle ~/.emacs.d/packages.el
+  (use-package exec-path-from-shell
+    :demand t
+    :config
+      (setq exec-path-from-shell-check-startup-files nil)
+      (when (memq window-system '(mac ns x))
+        (exec-path-from-shell-initialize)))
   #+end_src
 
 * Set up Company as completion framework
