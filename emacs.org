@@ -1,4 +1,7 @@
 #+TITLE: Emacs configuration
+:PROPERTIES:
+:VISIBILITY: children
+:END:
 
 * Increase garbage collection threshold during init
   Theoretically increases boot up speed.
