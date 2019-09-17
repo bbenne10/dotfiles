@@ -228,17 +228,8 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
                           "M-x" 'counsel-M-x)
       (general-define-key :states '(normal)
                           :prefix default-leader-key
-                          "/" 'counsel-projectile-rg
                           "B" 'ivy-switch-buffer
                           "E" 'counsel-find-file))
-
-  (use-package ivy-posframe
-    :if (>= emacs-major-version 26)
-    :disabled t
-    :config
-      (setq ivy-display-function #'ivy-posframe-display-at-point)
-      (ivy-posframe-enable))
-
 
   (use-package projectile
     :delight projectile-mode
@@ -255,6 +246,7 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
     :config
       (general-define-key :states '(normal)
                           :prefix default-leader-key
+                          "/" 'counsel-projectile-rg
                           "e" 'counsel-projectile-find-file
                           "p" 'counsel-projectile-switch-project
                           default-leader-key 'counsel-projectile))
