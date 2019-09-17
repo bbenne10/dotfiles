@@ -396,16 +396,19 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
 * Programming language setup
 ** lsp, for some later languages
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
-  (use-package lsp-mode
-    :defer t)
-
-  (use-package lsp-ui
-    :after lsp-mode
-    :init (add-hook 'lsp-mode-hook 'lsp-ui-mode))
-
-  (use-package company-lsp
-    :after (company lsp-mode)
-    :config (push 'company-lsp company-backends))
+  (use-package flymake-diagnostic-at-point
+    :hook (flymake-mode . flymake-diagnostic-at-point)
+  )
+  (use-package eglot
+    :commands (eglot eglot-ensure)
+    :hook ((python-mode . eglot-ensure)
+           (rust-mode . eglot-ensure))
+  )
+  (use-package eldoc-box
+    :after eglot
+    :config
+      (add-hook 'eglot--managed-mode-hook #'eldoc-box-hover-mode t)
+  )
   #+end_src
 
 ** Python
@@ -417,17 +420,6 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
     :hook (python-mode . auto-virtualenv-set-virtualenv))
   #+end_src
 
-  Setup lsp-python and tell it we're using flake8 rather than pycodestyle as its configruation source.
-  #+begin_src elisp :tangle ~/.emacs.d/packages.el
-  (use-package lsp-python
-    :init
-      (defun lsp-set-python-cfg ()
-        (let ((lsp-cfg `(:pyls (:configurationSources ("flake8")))))
-           (lsp--set-configuration lsp-cfg)))
-    :hook ((python-mode . lsp-python-enable)
-           (lsp-after-initialize . lsp-set-python-cfg)))
-  #+end_src
-
   Blacken python buffers on save
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package blacken
@@ -436,107 +428,19 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
 
 ** Javascript
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
-  (use-package rjsx-mode
-    :mode "\\.js[x]*\\'"
+  (use-package web-mode
+    :mode (".jsx?$" ".html$" ".css$")
     :init
-      (defun setup-js-mode ()
-
-        (setq js2-strict-missing-semi-warning nil
-              js2-basic-offset 2
-              js-indent-level 2
-              js-switch-indent-offset 2
-              evil-shift-width 2)
-        (flycheck-select-checker 'javascript-standard))
-    :hook (js-mode . setup-js-mode))
-
+      (setq web-mode-markup-indent-offset 2
+            web-mode-code-indent-offset 2
+            web-mode-css-indent-offset 2
+            web-mode-attr-indent-offset 2
+            web-mode-enable-css-colorization t
+            web-mode-enable-current-column-highlight t
+            web-mode-enable-auto-quoting nil
+      )
+  )
   #+end_src
-
-** C/C++
-  #+begin_src elisp :tangle ~/.emacs.d/languages.el
-  (add-hook 'c++-mode-hook
-            (function (lambda ()
-                        (flycheck-select-checker 'c/c++-gcc))))
-  #+end_src
-
-** Scala
-*** Scala-mode
-#+begin_src elisp :tangle ~/.emacs.d/packages.el
-(use-package scala-mode
-  :interpreter ("scala" . scala-mode))
-#+end_src
-
-*** sbt-mode
-#+begin_src elisp :tangle ~/.emacs.d/packages.el
-    (use-package sbt-mode
-  :commands sbt-start sbt-command
-  :config
-    ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
-    ;; allows using SPACE when in the minibuffer
-    (substitute-key-definition
-     'minibuffer-complete-word
-     'self-insert-command
-     minibuffer-local-completion-map))
-#+end_src
-
-
-*** ENSIME
-This requires some basic setup - find it documented [[http://ensime.org/editors/emacs/install/#installing][here.]]
-
-#+begin_src elisp :tangle ~/.emacs.d/packages.el
-(use-package ensime
-  :pin melpa-stable
-  :commands (ensime ensime-mode)
-  :init (setq ensime-startup-notification nil ensime-startup-snapshot-notification nil)
-  (add-hook 'scala-mode-hook #'ensime-mode)
-  :config (set-face-attribute 'ensime-implicit-highlight nil
-                              :underline nil
-                              :slant 'italic)
-  (defun flycheck-verify-ensime ()
-    "Verify the Ensime syntax checker."
-    (list (flycheck-verification-result-new
-           :label "Ensime Mode"
-           :message (if ensime-mode "Enabled" "Disabled")
-           :face (if ensime-mode 'success '(bold warning)))
-
-          (flycheck-verification-result-new :label "Ensime connection"
-                                            :message (if (ensime-connected-p) "open" "closed")
-                                            :face (if (ensime-connected-p) 'success '(bold warning)))))
-
-  (defun flycheck-ensime-parse-note (note checker)
-    "Parse a single Ensime NOTE for CHECKER into an error."
-    (let ((severity (plist-get note :severity)))
-      (unless (symbolp severity) (setq severity (intern severity)))
-      (flycheck-error-new-at (plist-get note :line) (plist-get note :col) severity (plist-get note :msg)
-                             :checker checker
-                             :filename (plist-get note :file)
-                             :buffer (current-buffer))))
-  (defun flycheck-ensime-parse-notes (notes checker)
-    "Parse Ensime NOTES for CHECKER into Flycheck errors."
-    (mapcar (lambda (n) (flycheck-ensime-parse-note n checker)) notes))
-
-  (defun flycheck-ensime-start (checker callback)
-    "Start a syntax CHECKER with Ensime."
-    (condition-case err
-        (let* ((notes (ensime-scala-compiler-notes (ensime-connection)))
-               (errors (flycheck-ensime-parse-notes notes checker)))
-          (funcall callback 'finished errors))
-      (error (funcall callback 'errored (error-message-string err)))))
-
-  (defun flycheck-ensime-setup ()
-    "Setup Flycheck for Ensime."
-    (interactive)
-    (add-to-list 'flycheck-checkers 'scala-ensime)
-    (advice-add 'ensime-make-note-overlays
-                :override #'ignore '((name . flycheck-ensime-disable-ensime-overlays))))
-
-  (flycheck-define-generic-checker 'scala-ensime
-    "A Scala syntax checker using Ensime."
-    :start #'flycheck-ensime-start
-    :verify #'flycheck-verify-ensime
-    :modes '(scala-mode)
-    :predicate (lambda () (and ensime-mode (ensime-connection-or-nil)))
-    :next-checkers '((warning . scala-scalastyle))))
-#+end_src
 
 ** Rust
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
@@ -553,13 +457,6 @@ This requires some basic setup - find it documented [[http://ensime.org/editors/
     :init
       (add-hook 'rust-mode-hook  #'racer-mode)
       (add-hook 'racer-mode-hook #'eldoc-mode))
-
-  (use-package flycheck-rust
-    :init (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
-
-  (use-package lsp-rust
-    :after lsp-mode
-    :init (add-hook 'rust-mode-hook #'lsp-rust-enable))
   #+end_src
 
 
