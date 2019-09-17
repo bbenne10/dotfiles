@@ -48,7 +48,7 @@ url/
 	default = current
 [user]
 	name = Bryan Bennett
-	email = Bryan.Bennett@gtri.gatech.edu
+	email = bbenne10@gmail.com
 	signingkey = 4AF3A523BC147CA2
 [commit]
 	gpgsign = true
