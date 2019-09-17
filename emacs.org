@@ -210,8 +210,14 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
 
 * Set up counsel + projectile to easily find and swap buffers
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
+  (use-package swiper
+    :after (general)
+    :commands (swiper)
+  )
+
   (use-package counsel
     :after (general)
+    :commands (swiper counsel-M-x)
     :delight ivy-mode
     :init
       (setq counsel-projectile-rg-initial-input '(thing-at-point 'symbol t))
