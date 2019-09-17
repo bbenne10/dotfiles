@@ -292,7 +292,7 @@ Just calling :pin in req-package blocks doesn't work: [[https://github.com/jwieg
           mail-specify-envelope-from t
           mail-envelope-from 'header
           message-send-mail-function 'message-send-mail-with-sendmail
-          sendmail-program "/home/bbennett37/.bin/notmuch_sendmail"
+          sendmail-program "~/.local/bin/notmuch_sendmail"
           notmuch-message-headers '("Subject" "From" "To" "Cc" "Date")
           mml-default-sign-method "smime"
           notmuch-fcc-dirs nil ;; exchange saves everything, so we deal with this in our 'new' script
