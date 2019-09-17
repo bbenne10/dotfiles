@@ -544,6 +544,7 @@
 * Fix up hideshow mode
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
   (use-package hideshow
+    :ensure nil
     :init
       (setq hs-allow-nesting t)
     :config
