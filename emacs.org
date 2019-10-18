@@ -396,8 +396,13 @@
 * Programming language setup
 ** lsp, for some later languages
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
+  ;; TODO: figure out why this works but changing to :hook didn't...
   (use-package flymake-diagnostic-at-point
-    :hook (flymake-mode . flymake-diagnostic-at-point)
+    :after flymake
+    :init
+      (defun display-popup (text) (eldoc-box--display text))
+      (setq flymake-diagnostic-at-point-display-diagnostic-function #'display-popup)
+    :config (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
   )
   (use-package eglot
     :commands (eglot eglot-ensure)
