@@ -444,6 +444,7 @@
             web-mode-enable-current-column-highlight t
             web-mode-enable-auto-quoting nil
       )
+      (add-to-list 'eglot-server-programs '(web-mode . ("javascript-typescript-stdio")))
   )
   #+end_src
 
