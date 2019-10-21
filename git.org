@@ -1,5 +1,10 @@
 #+TITLE: Git config
 
+#+NAME: get_username
+#+BEGIN_SRC emacs-lisp
+  (user-login-name)
+#+END_SRC
+
 ** Global Git Ignore
 #+begin_src conf :tangle ~/.gitignore
 *.pyc
@@ -16,40 +21,52 @@ url/
 .DS_Store
 **/*.elc
 .projectile
+.direnv/
+.envrc
 #+end_src
 
 ** Global Git config
-#+begin_src conf :tangle ~/.gitconfig
+#+begin_src conf :tangle ~/.gitconfig :noweb yes
 [alias]
-	graph = log --graph --oneline --decorate
-	up = "!git pull --ff-only && git submodule update --init --recursive"
-	wip = commit -am WIP
-	unwip = "!git log --oneline -1 | grep -q wip && git reset HEAD~"
+  graph = log --graph --oneline --decorate
+  up = "!git pull --ff-only && git submodule update --init --recursive"
+  wip = commit -am WIP
+  unwip = "!git log --pretty=%B -1 | grep -iq wip && git reset HEAD~"
+
 [color]
 	ui = true
+
 [core]
 	editor = emacs -nw
-	excludesfile = /home/bryan/.gitignore
+	excludesfile = /home/<<get_username()>>/.gitignore
+
 [diff]
 	algorithm = histogram
 	compactionHeuristic = true
+
 [diftool]
 	prompt = false
+
 [difftool]
 	prompt = false
+
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+
 [pull]
 	default = current
+
 [push]
 	default = current
+
 [user]
 	name = Bryan Bennett
 	email = bbenne10@gmail.com
 	signingkey = 4AF3A523BC147CA2
+
 [commit]
 	gpgsign = true
 #+end_src

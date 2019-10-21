@@ -1,7 +1,5 @@
 #+TITLE: Emacs configuration
-:PROPERTIES:
-:VISIBILITY: children
-:END:
+#+PROPERTY: VISIBILITY: children
 
 * Increase garbage collection threshold during init
   #+begin_src elisp :tangle ~/.emacs.d/init.el
