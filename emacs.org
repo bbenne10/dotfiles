@@ -150,13 +150,52 @@
   Rather important: We use this to tangle this very file (though 24+ ships a good enough version to do so)
 
   #+begin_src elisp :tangle ~/.emacs.d/packages.el
+  (setq agenda-path "/ssh:bryan@bryan-bennett.com:~bryan/synced/agenda.org")
   (use-package org
+    :defer t
+    :mode ("\\.org$" . org-mode)
+    :bind (("C-c l" . org-store-link)
+            ("C-c c" . org-capture)
+            ("C-c a" . org-agenda)
+            ("C-c o" . (lambda () (interactive) (find-file agenda-path)))
+            :map org-mode-map
+              ;; ("C-h" . org-delete-backward-char)
+              ("C-c !" . org-time-stamp-inactive))
     :config
       (setq org-babel-load-languages
             '((python . t)
               (elisp . t)
-              (shell . t))))
-
+              (shell . t))
+            org-agenda-files '(agenda-path)
+            org-capture-templates '(
+              ("t"
+               "Todo - Personal"
+               entry
+               (file+olp agenda-path "Agenda" "Personal"))
+              ("T"
+               "Todo - Work"
+               entry
+               (file+olp agenda-path "Agenda" "Work"))
+              ("g"
+               "Grocery Item"
+               checkitem
+               (file+olp agenda-path "Purchases" "Groceries"))
+              ("p"
+               "Purchase - Personal"
+               checkitem
+               (file+olp agenda-path "Purchases" "Personal"))
+              ("P"
+               "Purchase - Shared"
+               checkitem
+               (file+olp agenda-path "Purchases" "Shared"))
+              ("r"
+               "Recipe (to Try)"
+               entry
+               (file+olp agenda-path "Purchases" "Shared")
+               "* [[%^{url?}][%^{title?}]]"
+              )
+            )
+      ))
   #+end_src
 
   Make Org-mode bullets prettier
