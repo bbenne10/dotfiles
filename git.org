@@ -5,6 +5,11 @@
   (user-login-name)
 #+END_SRC
 
+#+NAME: get_gpg_path
+#+BEGIN_SRC emacs-lisp
+  (seq-some #'executable-find [ "gpg" "gpg2"])
+#+END_SRC
+
 ** Global Git Ignore
 #+begin_src conf :tangle ~/.gitignore
 *.pyc
@@ -69,4 +74,7 @@ url/
 
 [commit]
 	gpgsign = true
+
+[gpg]
+  program = <<get_gpg_path()>>
 #+end_src
