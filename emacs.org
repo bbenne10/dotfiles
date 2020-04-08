@@ -83,29 +83,22 @@
   (defalias 'yes-or-no-p 'y-or-n-p)
   #+end_src
 
-* Manually set load path
-  #+begin_src elisp :tangle ~/.emacs.d/packages.el
-  (setq
-     load-prefer-newer t
-     package-user-dir "~/.emacs.d/elpa"
-     package--init-file-ensured t
-     package-enable-at-startup nil
-     load-path (append load-path (directory-files package-user-dir t "^[^.]" t))
-     package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-         ("melpa-stable" . "http://stable.melpa.org/packages/")
-         ("gnu" . "http://elpa.gnu.org/packages/")))
-  (unless (file-directory-p package-user-dir)
-           (make-directory package-user-dir t))
-  #+end_src
-
 * Auto-require some basic packages outside of use-package
   #+begin_src elisp :tangle ~/.config/emacs/packages.el
-  (require 'package)
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-  (require 'use-package)
-  (setq use-package-always-ensure t)
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+  (setq straight-use-package-by-default t)
+  (straight-use-package 'use-package)
   #+end_src
 
 * Instantiate a default leader key
