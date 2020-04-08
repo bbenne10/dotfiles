@@ -31,10 +31,10 @@
   Obviously requires [[https://sourcefoundry.org/hack/][Hack]] installed.
 
   #+begin_src elisp :tangle ~/.config/emacs/ui.el
-  (setq default-frame-alist '((font . "Hack-9")))
+  (add-to-list 'default-frame-alist '(font . "JetBrains Mono-12"))
   (set-face-attribute 'line-number-current-line nil
-                      :font "Hack-9:weight=Bold"
-                      :inverse-video nil)
+		      :font (concat "JetBrains Mono-12:weight=Bold")
+		      :inverse-video nil)
 #+end_src
 
 * Enable some nice programming features in in prog-mode
