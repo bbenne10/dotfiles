@@ -440,29 +440,6 @@
        (load-theme 'doom-nord t))
       (doom-themes-visual-bell-config)
       (doom-themes-org-config))
-
-  (use-package solaire-mode
-    :init
-      (setq solaire-mode-remap-modeline nil)
-      (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
-      (defface solaire-default-face
-        '((t :inherit default :background "#1f2021"))
-        "Face for solaire"
-      )
-      (defface solaire-minibuffer-face
-        '((t :background "#22252c" :foreground "#abb2bf"))
-        "Face for solaire - minibuffer"
-      )
-      (defface solaire-line-number-face
-        '((t :inherit 'line-number :background "#22252c"))
-        "Face for solaire - line number"
-      )
-      (defface solaire-hl-line-face
-        '((t :inherit 'hl-line :background "#22252c"))
-        "Face for solaire - highlghted line number"
-      )
-      (solaire-mode-swap-bg)
-  )
   #+end_src
 
 * De-light a few dependency minor-modes
