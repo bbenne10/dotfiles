@@ -222,14 +222,6 @@
     :after evil
     :config (global-evil-surround-mode 1))
 
-  (use-package evil-easymotion
-    :after evil
-    :config (evilem-default-keybindings default-leader-key))
-
-  (use-package evil-easymotion
-    :after evil
-    :config (evilem-default-keybindings default-leader-key))
-
   (use-package evil-collection
     :after evil
     :config (evil-collection-init))
