@@ -1,2 +1,0 @@
-#!/bin/bash
-tee >(notmuch insert --folder='Sent Items') | msmtp -a work $*
