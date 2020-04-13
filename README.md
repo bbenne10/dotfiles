@@ -7,7 +7,7 @@ Based on org-mode and org-mode-babel.
 ## To install
 
 You'll need org-mode and org-mode-babel around. 
-You'll probably need emacs newer than ~22 for that, but the installed configuration is tailored to >=25.
+You'll probably need emacs newer than ~24 for that, but the installed configuration is tailored to >=27.
 
 If you still want to install this:
 
