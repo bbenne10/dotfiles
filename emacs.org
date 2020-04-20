@@ -204,6 +204,14 @@ for debugging startup times :)
   (use-package ripgrep)
   #+end_src
 
+* Make folding work okay
+  Still haven't found a great folding library for emacs.
+  Origami.el will have to do for now
+  #+begin_src elisp :tangle ~/.config/emacs/init_editing.el
+    (use-package origami
+      :hook (prog-mode . origami-mode))
+  #+end_src
+
 * projectile: So that we can jump around easily
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
   (use-package projectile
