@@ -199,6 +199,11 @@ for debugging startup times :)
       (global-company-mode 1)
   )
   #+end_src
+* Ripgrep for searching
+  #+begin_src elisp :tangle ~/.config/emacs/init_core.el
+  (use-package ripgrep)
+  #+end_src
+
 * projectile: So that we can jump around easily
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
   (use-package projectile
