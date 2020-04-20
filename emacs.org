@@ -127,6 +127,14 @@ for debugging startup times :)
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
   (use-package esup)
   #+end_src
+* Make sure that we have our exec-path correct
+#+begin_src elisp :tangle ~/.config/emacs/init_core.el
+  (use-package exec-path-from-shell
+    :if (memq window-system '(mac ns))
+    :init (setq exec-path-from-shell-check-startup-files nil
+                exec-path-from-shell-shell-name "/opt/local/bin/zsh")
+    :config (exec-path-from-shell-initialize))
+#+end_src
 * Theme!
   #+begin_src elisp :tangle ~/.config/emacs/init_ui.el
     (use-package doom-themes
