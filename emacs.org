@@ -156,25 +156,26 @@ for debugging startup times :)
 
 * Set up evil and plugins
   Set up evil, but defer JUUUUUST a bit, since it's pretty slow
-  #+begin_src elisp :tangle ~/.config/emacs/init_editing.el
+  #+begin_src elisp :tangle ~/.config/emacs/init_core.el
+    (use-package evil-leader
+        :config
+        (evil-leader/set-leader "<SPC>")
+        (evil-leader/set-key "B" 'ido-switch-buffer)
+        (global-evil-leader-mode))
     (use-package evil
-      :demand t
-      :defer 0.1
-      :config
+        :demand t
+        :after evil-leader
+        :defer 0.1
+        :config
         (evil-mode 1))
 
     (use-package evil-matchit
-      :after evil
-      :config (global-evil-matchit-mode 1))
+        :after evil
+        :config (global-evil-matchit-mode 1))
 
     (use-package evil-surround
-      :after evil
-      :config (global-evil-surround-mode 1))
-
-    ;; (use-package evil-collection
-    ;;   :after evil
-    ;;   :config (evil-collection-init))
-
+        :after evil
+        :config (global-evil-surround-mode 1))
   #+end_src
 * Selectrum + Prescient for filtering stuff
 #+begin_src elisp :tangle ~/.config/emacs/init_ui.el
