@@ -242,17 +242,18 @@ for debugging startup times :)
   #+end_src
 * Set up magit for git integration
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
-  (use-package magit
-    :commands (magit-status)
-    :config
-      (setq magit-popup-show-common-commands nil
-            magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
-      (add-hook 'after-save-hook #'magit-after-save-refresh-status))
-
-  (use-package evil-magit
-    :after magit
-    :init
-      (setq evil-magit-want-horizontal-movement nil))
+    (use-package magit
+      :commands (magit-status)
+      :hook (after-save . magit-after-save-refresh-status)
+      :defer 5
+      :config
+        (setq magit-popup-show-common-commands nil
+              magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
+        (evil-leader/set-key "g" 'magit)
+    (use-package evil-magit
+      :after magit
+      :init
+        (setq evil-magit-want-horizontal-movement nil))
 
   #+end_src
 
