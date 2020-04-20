@@ -221,17 +221,24 @@ for debugging startup times :)
 
 * projectile: So that we can jump around easily
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
-  (use-package projectile
-    :delight projectile-mode
-    :commands (projectile-switch-project projectile-find-file projectile-mode)
-    :defer 1
-    :init
-      (setq projectile-completion-system 'default
-            projectile-require-project-root nil
-            projectile-git-command "fd . --print0 --color never"
-            projectile-indexing-method 'alien)
-    :config
-      (projectile-mode))
+    (use-package projectile
+      :delight projectile-mode
+      :commands (projectile-switch-project projectile-find-file projectile-mode)
+      :after evil-leader
+      :init
+        (setq projectile-completion-system 'default
+              projectile-require-project-root nil
+              projectile-git-command "fd . --print0 --color never"
+              projectile-indexing-method 'alien
+              projectile-project-search-path '("~/code"))
+      :config
+        (evil-leader/set-key
+          "p" 'projectile-switch-project
+          "b" 'projectile-find-file
+          "/" 'projectile-ripgrep
+          evil-leader/leader 'projectile-find-file
+        )
+        (projectile-mode))
   #+end_src
 * Set up magit for git integration
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
