@@ -177,6 +177,13 @@ for debugging startup times :)
         :after evil
         :config (global-evil-surround-mode 1))
   #+end_src
+* Neotree for a left-hand side directory overview
+  #+begin_src elisp :tangle ~/.config/emacs/init_ui.el
+    (use-package neotree
+        :bind (("<f8>" . neotree-toggle))
+        :config (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+  #+end_src
+
 * Selectrum + Prescient for filtering stuff
 #+begin_src elisp :tangle ~/.config/emacs/init_ui.el
   (use-package selectrum
