@@ -22,13 +22,13 @@ Then we set a hook to set the gc and file-name-handler-alist back to their origi
   #+begin_src elisp :tangle ~/.config/emacs/early-init.el
     (set-face-attribute 'default nil
       :family "JetBrains Mono"
-      :height 100
+      :height 120
       :width 'normal
       :weight 'normal)
 
     (set-face-attribute 'line-number-current-line nil
       :family "JetBrains Mono"
-      :height 100
+      :height 120
       :width 'expanded
       :weight 'normal
       :inverse-video nil)
