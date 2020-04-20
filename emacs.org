@@ -356,11 +356,16 @@ for debugging startup times :)
   :mode (".lua$"))
 #+end_src
 * YAML
- #+begin_src elisp :tangle ~/.config/emacs/init_programming.el
+ #+begin_src elisp :tangle ~/.config/emacs/init_editing.el
  (use-package yaml-mode
    :mode ("\\.yaml'" "\\.yml'"))
  #+end_src
 
+* Markdown
+ #+begin_src elisp :tangle ~/.config/emacs/init_editing.el
+ (use-package markdown-mode
+   :mode (("\\.md'" . gfm-mode)))
+ #+end_src
 * Org mode!
   Rather important: We use this to tangle this very file (though 24+ ships a good enough version to do so)
 
