@@ -447,3 +447,34 @@ for debugging startup times :)
     :ensure org-plus-contrib
     :commands (org-babel-expand:emacs-lisp org-babel-expand-body:emacs-lisp))
     #+end_src
+* VTerm (For an embedded terminal in emacs)
+ #+begin_src elisp :tangle ~/.config/emacs/init_core.el
+(use-package vterm
+    :config
+      (when (memq window-system '(mac ns)) (setq vterm-shell "/opt/local/bin/zsh"))
+      (setq vterm-kill-buffer-on-exit t
+              vterm-copy-exclude-prompt t)
+      (evil-set-initial-state 'vterm-mode 'insert)
+
+      (defun bb-vterm-exit-close-window (buffer event_desc)
+          "Kill the containing window when a vterm process exits"
+          (when buffer
+          (delete-window (get-buffer-window buffer))))
+
+      (add-hook 'vterm-exit-functions 'bb-vterm-exit-close-window)
+      (defun shell-here ()
+          "Opens up a new shell in the directory associated with the
+          current buffer's file. The eshell is renamed to match that
+          directory to make multiple eshell windows easier."
+          (interactive)
+          (let* ((parent (if (buffer-file-name)
+                              (file-name-directory (buffer-file-name))
+                          default-directory))
+                  (height (/ (window-total-height) 3))
+                  (name   (car (last (split-string parent "/" t)))))
+          (split-window-vertically (- height))
+          (other-window 1)
+          (vterm)
+          (rename-buffer (concat "*vterm: " name "*"))))
+      (evil-leader/set-key "!" 'shell-here))
+#+end_src
