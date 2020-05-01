@@ -46,6 +46,15 @@
   compinit
   #+end_src
 
+* VTerm Support in PROMPT
+  #+begin_src sh :tangle ~/.zshrc
+    vterm_prompt_end() {
+        vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
+    }
+    setopt PROMPT_SUBST
+    PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
+  #+end_src
+
 * Set up keybinds
 ** Bind some keys that zsh doesn't get right for konsole / urxvt
     #+begin_src sh :tangle ~/.zshrc
@@ -148,6 +157,14 @@
       print -R "${message_error}PUSHOVER_API_TOKEN has not been set."
     fi
   }
+  #+end_src
+
+
+** Support for VTerm in Emacs
+  #+begin_src sh :tangle ~/.zaliases
+    function vterm_printf() {
+      printf "\e]%s\e\\" "$1"
+    }
   #+end_src
 
 * Zsh options
