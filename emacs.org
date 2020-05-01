@@ -300,9 +300,9 @@ for debugging startup times :)
  (use-package flymake-diagnostic-at-point
    :commands (flymake-diagnostic-at-point-mode)
    :init
-     (defun display-popup (text) (eldoc-box--display text))
-     (setq flymake-diagnostic-at-point-display-diagnostic-function #'display-popup)
    :config (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
+     (defun bb-display-popup (text) (eldoc-box--display text))
+     (setq flymake-diagnostic-at-point-display-diagnostic-function #'bb-display-popup)
  )
  (use-package eglot
    :commands (eglot eglot-ensure)
