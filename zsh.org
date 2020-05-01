@@ -6,21 +6,6 @@
   . ~/.zaliases
   #+end_src
 
-* Install and load pyenv and pyenv-virtualenv
-  I use [[https://github.com/pyenv/pyenv][pyenv]] and [[https://github.com/pyenv/pyenv-virtualenv][pyenv-virtualenv]] to manage my Python versions.
-
-  #+begin_src sh :tangle ~/.zshrc
-
-  if [ ! -d ~/.pyenv ]; then
-    git clone http://github.com/yyuu/pyenv ~/.pyenv
-    popd
-  fi
-  
-  if command -v pyenv 1>/dev/null 2>&1; then
-    eval "$(pyenv init -)"
-  fi
-  #+end_src
-
 * Install and load zplugin
   I prefer [[https://github.com/zdharma/zplugin][zplugin]] to managing my zsh configuration and I prefer to not have to think about whether it's installed
 
