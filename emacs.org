@@ -296,11 +296,10 @@ for debugging startup times :)
   #+end_src
 * lsp, for some later languages
  #+begin_src elisp :tangle ~/.config/emacs/init_programming.el
- ;; TODO: figure out why this works but changing to :hook didn't...
  (use-package flymake-diagnostic-at-point
    :commands (flymake-diagnostic-at-point-mode)
+   :hook (flymake-mode . flymake-diagnostic-at-point-mode)
    :init
-   :config (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
      (defun bb-display-popup (text) (eldoc-box--display text))
      (setq flymake-diagnostic-at-point-display-diagnostic-function #'bb-display-popup)
  )
@@ -311,9 +310,7 @@ for debugging startup times :)
  )
  (use-package eldoc-box
    :commands (eldoc-box-hover-mode)
-   :after eglot
-   :config
-     (add-hook 'eglot--managed-mode-hook #'eldoc-box-hover-mode t)
+   :hook (eglot--managed-mode . eldoc-box-hover-mode)
  )
  #+end_src
 * Python
