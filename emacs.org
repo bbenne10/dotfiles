@@ -159,8 +159,7 @@ for debugging startup times :)
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
     (use-package evil-leader
         :config
-        (evil-leader/set-leader "<SPC>")
-        (evil-leader/set-key "B" 'ido-switch-buffer)
+        (evil-leader/set-leader bb-default-leader-key)
         (global-evil-leader-mode))
     (use-package evil
         :demand t
@@ -219,8 +218,20 @@ for debugging startup times :)
       :hook (prog-mode . origami-mode))
   #+end_src
 
-* projectile: So that we can jump around easily
+* projectile and perspective: So that we can jump around easily
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
+    (use-package perspective
+      :config
+        (evil-leader/set-key "B" 'persp-switch-to-buffer)
+        (persp-mode))
+
+    (use-package persp-projectile
+        :straight (persp-projectile
+                   :host github
+                   :repo "bbatsov/persp-projectile")
+        :commands (projectile-persp-switch-project)
+        :init (evil-leader/set-key "p" 'projectile-persp-switch-project))
+
     (use-package projectile
       :delight projectile-mode
       :commands (projectile-switch-project projectile-find-file projectile-mode)
@@ -231,13 +242,13 @@ for debugging startup times :)
               projectile-git-command "fd . --print0 --color never"
               projectile-indexing-method 'alien
               projectile-project-search-path '("~/code"))
-      :config
+
         (evil-leader/set-key
-          "p" 'projectile-switch-project
           "b" 'projectile-find-file
           "/" 'projectile-ripgrep
           evil-leader/leader 'projectile-find-file
         )
+      :config
         (projectile-mode))
   #+end_src
 * Set up magit for git integration
