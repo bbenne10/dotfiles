@@ -447,8 +447,3 @@ for debugging startup times :)
     :ensure org-plus-contrib
     :commands (org-babel-expand:emacs-lisp org-babel-expand-body:emacs-lisp))
     #+end_src
-* Make Org-mode bullets prettier
-  #+begin_src elisp :tangle ~/.config/emacs/packages.el
-   (use-package org-bullets
-     :hook (org-mode . org-bullets-mode))
-  #+end_src
