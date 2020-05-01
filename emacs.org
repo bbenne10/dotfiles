@@ -426,26 +426,6 @@ for debugging startup times :)
             )
       )
   )
-  ;; Avoid `org-babel-do-load-languages' since it does an eager require.
-  (use-package ob-python
-    :defer t
-    :ensure org-plus-contrib
-    :commands (org-babel-execute:python))
-
-  (use-package ob-shell
-    :defer t
-    :ensure org-plus-contrib
-    :commands
-    (org-babel-execute:sh
-     org-babel-expand-body:sh
-
-     org-babel-execute:bash
-     org-babel-expand-body:bash))
-
-  (use-package ob-emacs-lisp
-    :defer t
-    :ensure org-plus-contrib
-    :commands (org-babel-expand:emacs-lisp org-babel-expand-body:emacs-lisp))
     #+end_src
 * VTerm (For an embedded terminal in emacs)
  #+begin_src elisp :tangle ~/.config/emacs/init_core.el
