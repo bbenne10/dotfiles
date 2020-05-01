@@ -268,15 +268,6 @@ for debugging startup times :)
 
   #+end_src
 
-# * Highlight nested brackets differently in bracketized languages
-#   #+begin_src elisp :tangle ~/.config/emacs/packages.el
-#   (use-package rainbow-delimiters
-#     :config
-#       (add-hook 'c-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable))))
-#       (add-hook 'scala-mode-hook (function (lambda () (rainbow-delimiters-mode-enable))))
-#       (add-hook 'elisp-mode-common-hook (function (lambda () (rainbow-delimiters-mode-enable)))))
-#   #+end_src
-
 * Setup Direnv so we can properly change environements :)
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
   (use-package direnv
