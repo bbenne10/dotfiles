@@ -251,8 +251,11 @@ for debugging startup times :)
       :config
         (projectile-mode))
   #+end_src
-* Set up magit for git integration
+* Set up integration with Git
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
+    (use-package git-gutter
+      :hook (prog-mode . git-gutter-mode)
+      :init (setq git-gutter:update-interval 2))
     (use-package magit
       :commands (magit-status)
       :hook (after-save . magit-after-save-refresh-status)
