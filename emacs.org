@@ -146,7 +146,8 @@ for debugging startup times :)
       :config (doom-modeline-mode))
   #+end_src
 
-* Instantiate a default leader key
+* Set up evil and plugins
+** Instantiate a default leader key
   This key is just left of space on my Preonic.
   Since I don't use that keyboard everywhere, I use my desktop's hostname to determine if I should set prefix differently
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
@@ -154,7 +155,6 @@ for debugging startup times :)
   (if (string= (system-name) "tia-bxb-d01.ctisl.gtri.org") (setq bb-default-leader-key "<XF86TouchpadOff>"))
   #+end_src
 
-* Set up evil and plugins
   Set up evil, but defer JUUUUUST a bit, since it's pretty slow
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
     (use-package evil-leader
@@ -257,10 +257,10 @@ for debugging startup times :)
       :commands (magit-status)
       :hook (after-save . magit-after-save-refresh-status)
       :defer 5
-      :config
+      :init
+        (evil-leader/set-key "g" 'magit)
         (setq magit-popup-show-common-commands nil
               magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
-        (evil-leader/set-key "g" 'magit)
     (use-package evil-magit
       :after magit
       :init
