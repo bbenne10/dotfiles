@@ -213,10 +213,12 @@
  #+end_src
 
 ** Set up some Rust build bits for Rustup/Racer
-     #+begin_src sh :tangle ~/.zshenv
-     export RUST_SRC_PATH=$(rustc --print sysroot)/lib/rustlib/src/rust/src
-     PATH="$PATH:$HOME/.cargo/bin"
-     #+end_src
+ #+begin_src sh :tangle ~/.zshenv
+ if [ -d "${HOME}/.cargo/bin/" ]; then
+   PATH="$PATH:$HOME/.cargo/bin"
+   export RUST_SRC_PATH=$(rustc --print sysroot)/lib/rustlib/src/rust/src
+ fi
+ #+end_src
 
 ** Set $TERMCAP if its source file is available
  #+begin_src sh :tangle ~/.zshenv
