@@ -243,11 +243,34 @@ for debugging startup times :)
               projectile-indexing-method 'alien
               projectile-project-search-path '("~/code"))
 
-        (evil-leader/set-key
-          "b" 'projectile-find-file
-          "/" 'projectile-ripgrep
-          evil-leader/leader 'projectile-find-file
-        )
+      (defvar grep-find-file--hist+ nil)
+      (defun grep-find-file+ ()
+        (interactive)
+        (let* ((s (read-string "Search term: " (thing-at-point 'symbol) 'grep-find-file--hist))
+               (default-directory (file-name-directory
+                                   (or (locate-dominating-file "." ".git" )
+                                       default-directory)))
+               (results (process-lines "rg" "--line-number" s))
+               (cands ()))
+          (dolist (line results)
+            (let ((parts (split-string line ":" t "[ \t\n\r]+")))
+              (when (= (length parts) 3)
+                (cl-destructuring-bind (file lnum match)  parts
+                  (push (propertize match
+                                    'selectrum-candidate-display-right-margin
+                                    (propertize (concat file ":" lnum) 'face 'shadow)
+                                    'file file
+                                    'lnum (string-to-number lnum))
+                        cands)))))
+          (setq cands (nreverse cands))
+          (let ((res (completing-read "Goto match: " cands)))
+            (find-file (get-text-property 0 'file res))
+            (goto-line (get-text-property 0 'lnum res)))))
+
+      (evil-leader/set-key
+        "b" 'projectile-find-file
+        evil-leader/leader 'projectile-find-file
+        "/" 'grep-find-file+)
       :config
         (projectile-mode))
   #+end_src
