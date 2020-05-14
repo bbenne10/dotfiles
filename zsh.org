@@ -258,6 +258,13 @@
    #+begin_src sh :tangle ~/.zshenv
    PATH="$PATH:$HOME/.poetry/bin"
    #+end_src
+** Add MacPorts bin to PATH if on OSX
+   #+begin_src sh :tangle ~/.zshenv
+   if [ "$(uname -s)" = "Darwin" ]; then
+     PATH="/opt/local/bin/:/opt/local/sbin/:/usr/local/bin:$PATH"
+   fi
+   #+end_src
+
 ** Export PATH, since it was modified above
    #+begin_src sh :tangle ~/.zshenv
    export PATH
