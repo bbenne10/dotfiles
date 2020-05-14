@@ -6,44 +6,44 @@
   . ~/.zaliases
   #+end_src
 
-* Install and load zplugin
-  I prefer [[https://github.com/zdharma/zplugin][zplugin]] to managing my zsh configuration and I prefer to not have to think about whether it's installed
+* Install and load zinit
+  I prefer [[https://github.com/zdharma/zinit][zinit]] to managing my zsh configuration and I prefer to not have to think about whether it's installed
 
   #+begin_src sh :tangle ~/.zshrc
-  if [ ! -d "$HOME/.zplugin/bin/.git" ]; then
-    mkdir -p "$HOME/.zplugin/"
-    git clone https://github.com/zdharma/zplugin.git "$HOME/.zplugin/bin"
-  fi
-  
-  source "$HOME/.zplugin/bin/zplugin.zsh"
-  
-  zplugin load zuxfoucault/colored-man-pages_mod
-  zplugin load zdharma/fast-syntax-highlighting
-  zplugin load chrissicool/zsh-256color
-  zplugin load zsh-users/zsh-completions
-  zplugin load zsh-users/zsh-autosuggestions
-  zplugin snippet OMZ::plugins/gpg-agent/gpg-agent.plugin.zsh
-  zplugin snippet OMZ::plugins/docker-compose/docker-compose.plugin.zsh
-  zplugin snippet OMZ::plugins/docker/_docker
-  zplugin load bbenne10/antigen-themes
-  
-  zplugin ice from"gh-r" as"program"; zplugin load junegunn/fzf-bin
-  zplugin load uvaes/fzf-marks
-  zplugin snippet 'https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh'
-  zplugin snippet 'https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh'
-  zplugin ice from"gh-r" as"program" mv"fd-*/fd -> fd"; zplugin load sharkdp/fd
-  zplugin ice from"gh-r" as"program" mv"ripgrep-*/rg -> rg"; zplugin load BurntSushi/ripgrep
-  zplugin ice from"gh-r" as"program" mv"direnv* -> direnv" atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' pick"direnv";zplugin light direnv/direnv
-  zplugin ice from"gh-r" as"program" mv"docker-compose* -> docker-compose" pick"docker-compose"; zplugin light docker/compose
-  zplugin ice from"gh-r" as"program" pick"drone"; zplugin light drone/drone-cli
-  zplugin ice from"gh-r" as"program" mv"exa-linux-x86_64 -> exa" pick"exa"; zplugin light ogham/exa
+    if [ ! -d "$HOME/.zinit/bin/.git" ]; then
+      mkdir -p "$HOME/.zinit/"
+      git clone https://github.com/zdharma/zinit.git "$HOME/.zinit/bin"
+    fi
 
-  if [ -f "$HOME/.zplugin/plugins/direnv---direnv/zhook.zsh" ]; then
-    . "$HOME/.zplugin/plugins/direnv---direnv/zhook.zsh"
-  fi
-  
-  autoload -Uz compinit
-  compinit
+    source "$HOME/.zinit/bin/zinit.zsh"
+
+    zinit load zuxfoucault/colored-man-pages_mod
+    zinit load zdharma/fast-syntax-highlighting
+    zinit load chrissicool/zsh-256color
+    zinit load zsh-users/zsh-completions
+    zinit load zsh-users/zsh-autosuggestions
+    zinit snippet OMZ::plugins/gpg-agent/gpg-agent.plugin.zsh
+    zinit snippet OMZ::plugins/docker-compose/docker-compose.plugin.zsh
+    zinit load bbenne10/antigen-themes
+
+    zinit ice from"gh-r" as"program"; zinit load junegunn/fzf-bin
+    zinit load uvaes/fzf-marks
+    zinit snippet 'https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh'
+    zinit snippet 'https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh'
+    # zinit snippet 'https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker'
+    zinit ice from"gh-r" as"program" mv"fd-*/fd -> fd"; zinit load sharkdp/fd
+    zinit ice from"gh-r" as"program" mv"ripgrep-*/rg -> rg"; zinit load BurntSushi/ripgrep
+    zinit ice from"gh-r" as"program" mv"direnv* -> direnv" atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' pick"direnv";zinit light direnv/direnv
+    zinit ice from"gh-r" as"program" mv"docker-compose* -> docker-compose" pick"docker-compose"; zinit light docker/compose
+    zinit ice from"gh-r" as"program" pick"drone"; zinit light drone/drone-cli
+    zinit ice from"gh-r" as"program" mv"exa-* -> exa" pick"exa"; zinit light ogham/exa
+
+    if [ -f "$HOME/.zinit/plugins/direnv---direnv/zhook.zsh" ]; then
+      . "$HOME/.zinit/plugins/direnv---direnv/zhook.zsh"
+    fi
+
+    autoload -Uz compinit
+    compinit
   #+end_src
 
 * VTerm Support in PROMPT
