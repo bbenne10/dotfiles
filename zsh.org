@@ -206,16 +206,14 @@
  #+end_src
 
 ** Add binary storage dir to PATH
- I really don't care to see ~~\/bin~, so I hide it in ~\~/.bin~
-
  #+begin_src sh :tangle ~/.zshenv
- PATH=~/.bin:~/.local/bin/:$PATH
- #+end_src
-
 ** Add pyenv to PATH
  #+begin_src sh :tangle ~/.zshenv
  export PYENV_ROOT="$HOME/.pyenv"
  PATH="$PYENV_ROOT/bin:$PATH"
+ if [[ "$PATH" != "*$HOME/.local/bin/*" ]]; then
+   PATH=~/.local/bin/:$PATH
+ fi
  #+end_src
 
 ** Set up some Rust build bits for Rustup/Racer
