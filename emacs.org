@@ -362,15 +362,25 @@ for debugging startup times :)
            web-mode-enable-css-colorization t
            web-mode-enable-current-column-highlight t
            web-mode-enable-auto-quoting nil
-     )
-   :config
-     (add-to-list 'eglot-server-programs '(web-mode . ("javascript-typescript-stdio")))
- )
+     ))
  #+end_src
 * Lua
 #+begin_src elisp :tangle ~/.config/emacs/init_programming.el
 (use-package lua-mode
   :mode (".lua$"))
+#+end_src
+* Reason
+  I also suggest (and use, but don't automate the install of) [[https://github.com/ocaml/ocaml-lsp][ocaml-lsp]].
+  It works well (much better, at the time of writing, than Reason-LS).
+
+  Still TODO: disable ~lsp-enable-symbol-highlighting~ For reason buffers.
+  Ocaml-lsp highlights the entire statement rather than a single identifier, as in pyls.
+  This gets old *really* fast.
+#+begin_src elisp :tangle ~/.config/emacs/init_programming.el
+  (use-package reason-mode
+    :mode ("\\.rei?'")
+    :init (setq refmt-command 'opam)
+  )
 #+end_src
 * YAML
  #+begin_src elisp :tangle ~/.config/emacs/init_editing.el
