@@ -77,7 +77,7 @@ Then we set a hook to set the gc and file-name-handler-alist back to their origi
   #+end_src
 
 * Set some variables (explained inline)
-  #+begin_src elisp :tangle ~/.config/emacs/init_editing.el
+#+begin_src elisp :tangle ~/.config/emacs/init_editing.el
   (setq initial-scratch-message ""                     ; disable the scratch message
         inhibit-startup-message t                      ; disable the startup screen
         scroll-conservatively 101                      ; move window one line at a time when point approaches edge
@@ -96,6 +96,7 @@ Then we set a hook to set the gc and file-name-handler-alist back to their origi
                 tab-width 2                            ; but when encountering a tab, how large is it?
                 tab-stop-list (number-sequence 3 120 2); and what are the tabstop points when shifting?
   )
+  (global-unset-key (kbd "C-x C-c"))                   ; Stop killing windows by fatfingering this
 #+end_src
 
 * Don't make me type 'yes' or 'no', even if it's important
