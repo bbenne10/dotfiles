@@ -322,23 +322,20 @@ for debugging startup times :)
     :hook (prog-mode . fic-mode))
   #+end_src
 * lsp, for some later languages
- #+begin_src elisp :tangle ~/.config/emacs/init_programming.el
- (use-package flymake-diagnostic-at-point
-   :commands (flymake-diagnostic-at-point-mode)
-   :hook (flymake-mode . flymake-diagnostic-at-point-mode)
-   :init
-     (defun bb-display-popup (text) (eldoc-box--display text))
-     (setq flymake-diagnostic-at-point-display-diagnostic-function #'bb-display-popup)
- )
- (use-package eglot
-   :commands (eglot eglot-ensure)
-   :hook ((python-mode . eglot-ensure)
-          (rust-mode . eglot-ensure))
- )
- (use-package eldoc-box
-   :commands (eldoc-box-hover-mode)
-   :hook (eglot--managed-mode . eldoc-box-hover-mode)
- )
+#+begin_src elisp :tangle ~/.config/emacs/init_programming.el
+  (use-package lsp-mode
+    :hook ((python-mode . lsp) (reason-mode . lsp))
+    :commands lsp
+  )
+  (use-package lsp-ui
+    :init
+      (setq lsp-ui-doc-enable t
+            lsp-ui-doc-position "top"
+            lsp-ui-sideline-show-hover t
+            lsp-ui-sideline-show-diagnostics t)
+    :commands lsp-ui-mode
+  )
+  (use-package dap-mode)
  #+end_src
 * Python
 
