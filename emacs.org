@@ -318,6 +318,9 @@ for debugging startup times :)
            (window-height . 15)))
      :hook (flycheck-mode . flycheck-set-indication-mode))
 
+  (use-package treemacs)
+  (use-package treemacs-projectile)
+  (use-package treemacs-evil)
   (use-package which-key
     :config (which-key-mode 1))
   (use-package lsp-mode
