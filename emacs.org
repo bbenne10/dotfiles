@@ -331,19 +331,6 @@ for debugging startup times :)
   )
   (use-package dap-mode)
  #+end_src
-* Python
-
- Blacken python buffers on save
- #+begin_src elisp :tangle ~/.config/emacs/init_programming.el
-      (use-package apheleia
-        :straight (apheleia
-                   :host github
-                   :repo "raxod502/apheleia")
-        :config
-          (add-to-list 'apheleia-formatters '(yapf . ("yapf")))
-          (apheleia-global-mode 1))
- #+end_src
-
 * Javascript
  #+begin_src elisp :tangle ~/.config/emacs/init_programming.el
  (use-package web-mode
