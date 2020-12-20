@@ -20,15 +20,17 @@ Then we set a hook to set the gc and file-name-handler-alist back to their origi
 
 * Set up font
   #+begin_src elisp :tangle ~/.config/emacs/early-init.el
+    (defvar bb-font-family "Iosevka SS01")
+    (defvar bb-font-size 130)
     (set-face-attribute 'default nil
-      :family "JetBrains Mono"
-      :height 120
+      :family bb-font-family
+      :height bb-font-size
       :width 'normal
       :weight 'normal)
 
     (set-face-attribute 'line-number-current-line nil
-      :family "JetBrains Mono"
-      :height 120
+      :family bb-font-family
+      :height bb-font-size
       :width 'expanded
       :weight 'normal
       :inverse-video nil)
