@@ -172,6 +172,7 @@ for debugging startup times :)
         :config
         (evil-leader/set-leader bb-default-leader-key)
         (global-evil-leader-mode))
+
     (use-package evil
         :demand t
         :after (evil-leader undo-tree)
@@ -189,18 +190,13 @@ for debugging startup times :)
         :config (global-evil-surround-mode 1))
   #+end_src
 
-* Selectrum + Prescient for filtering stuff
+* Ivy + Swiper + Counsel (for filtering and search)
+  Ivy replaces ~completing-read~ functions.
+  Counsel extends existing functions to use ivy (outside of ~completing-read~)
 #+begin_src elisp :tangle ~/.config/emacs/init_ui.el
-  (use-package selectrum
-    :config (selectrum-mode 1))
-  (use-package prescient)
-
-  (use-package selectrum-prescient
-    :config
-    (selectrum-prescient-mode)
-    (prescient-persist-mode))
+    (use-package ivy :config (ivy-mode))
+    (use-package counsel :config (counsel-mode))
 #+end_src
-
 * Set up Company as completion framework
   #+begin_src elisp :tangle ~/.config/emacs/init_ui.el
   (use-package company
@@ -228,7 +224,6 @@ for debugging startup times :)
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
     (use-package perspective
       :config
-        (evil-leader/set-key "B" 'persp-switch-to-buffer)
         (persp-mode))
 
     (use-package persp-projectile
@@ -243,13 +238,23 @@ for debugging startup times :)
       :commands (projectile-switch-project projectile-find-file projectile-mode)
       :after evil-leader
       :init
-        (setq projectile-completion-system 'default
+        (setq projectile-completion-system 'ivy
               projectile-require-project-root nil
               projectile-git-command "fd . --print0 --color never"
               projectile-indexing-method 'alien
               projectile-project-search-path '("~/code"))
       :config
         (projectile-mode))
+
+    (use-package counsel-projectile
+      :after projectile
+      :config
+        (setq counsel-projectile-rg-initial-input '(ivy-thing-at-point))
+        (evil-define-key 'normal 'global (kbd "<leader>b") 'counsel-projectile)
+        (evil-leader/set-key
+            "b" 'counsel-projectile
+            evil-leader/leader 'counsel-projectile
+            "/" 'counsel-projectile-rg))
   #+end_src
 * Set up integration with Git
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
