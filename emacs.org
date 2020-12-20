@@ -324,18 +324,57 @@ for debugging startup times :)
   (use-package which-key
     :config (which-key-mode 1))
   (use-package lsp-mode
-    :hook ((python-mode . lsp) (reason-mode . lsp))
-    :commands lsp
-  )
+    :config
+    (defun bb/lsp-setup()
+      (setq lsp-idle-delay 0.5
+            lsp-enable-symbol-highlighting nil
+            lsp-enable-snippet nil  ;; Not supported by company capf, which is the recommended company backend
+            lsp-pyls-configuration-sources ["flake8"]
+            ;; enable things we want!
+            lsp-pyls-plugins-flake8-enabled t
+            lsp-pyls-plugins-pydocstyle-enabled t
+            ;; and now disable stuff we don't want
+            lsp-pyls-plugins-pycodestyle-enabled nil
+            lsp-pyls-plugins-mccabe-enabled nil
+            lsp-pyls-plugins-pyflakes-enabled nil
+            lsp-pyls-plugins-autopep8-enabled nil
+
+       )
+
+      (lsp-register-custom-settings
+       '(("pyls.plugins.pyls_black.enabled" t t)
+         ("pyls.plugins.pyls_isort.enabled" t t))))
+    :hook
+    ((python-mode . lsp)
+     (reason-mode . lsp)
+     (lsp-mode . lsp-enable-which-key-integration)
+     (lsp-before-initialize . bb/lsp-setup)))
+
   (use-package lsp-ui
-    :init
-      (setq lsp-ui-doc-enable t
-            lsp-ui-doc-position "top"
-            lsp-ui-sideline-show-hover t
-            lsp-ui-sideline-show-diagnostics t)
+    :config
+    (defun bb/lsp-ui-setup ()
+      (lsp-headerline-breadcrumb-mode 1)
+      (setq lsp-ui-sideline-enable t
+            lsp-ui-sideline-delay 0.5
+            lsp-ui-sideline-ignore-duplicate t
+            lsp-ui-doc-delay 1
+            lsp-eldoc-enable-hover t
+            lsp-signature-doc-lines 2
+            lsp-signature-auto-activate t
+            lsp-ui-doc-position 'top
+            lsp-ui-doc-alignment 'window))
     :commands lsp-ui-mode
-  )
-  (use-package dap-mode)
+    :hook ((lsp-before-initialize . bb/lsp-ui-setup))
+     :bind (:map evil-normal-state-map
+                 ("gd" . lsp-ui-peek-find-definitions)
+                 ("gr" . lsp-ui-peek-find-references))
+                 ("C-e" . flycheck-next-error))
+  (use-package lsp-treemacs
+    :config
+      (defun bb/lsp-treemacs-setup ()
+        (setq lsp-treemacs-symbols-position-params `((side . right) (slot . 2) (window-width . 35))))
+    :hook ((lsp-ui-mode . lsp-treemacs-sync-mode)
+           (lsp-treemacs-sync-mode . bb/lsp-treemacs-setup)))
  #+end_src
 * Javascript
  #+begin_src elisp :tangle ~/.config/emacs/init_programming.el
