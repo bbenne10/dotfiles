@@ -142,7 +142,7 @@ for debugging startup times :)
   #+begin_src elisp :tangle ~/.config/emacs/init_ui.el
     (use-package doom-themes
       :config
-        (load-theme 'doom-spacegrey)
+        (load-theme 'doom-nord t)
         (doom-themes-visual-bell-config)
         (doom-themes-org-config))
     (use-package doom-modeline
