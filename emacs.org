@@ -303,6 +303,20 @@ for debugging startup times :)
   #+end_src
 * lsp, for some later languages
 #+begin_src elisp :tangle ~/.config/emacs/init_programming.el
+  (use-package flycheck
+    :config
+      (setq flycheck-highlighting-mode nil
+            flycheck-indication-mode 'left-margin
+      )
+      (global-flycheck-mode)
+      (add-to-list 'display-buffer-alist
+        `(,(rx bos "*Flycheck errors*" eos)
+           (display-buffer-reuse-window display-buffer-in-side-window)
+           (side . bottom)
+           (resulable-frames . visible)
+           (window-height . 15)))
+     :hook (flycheck-mode . flycheck-set-indication-mode))
+
   (use-package lsp-mode
     :hook ((python-mode . lsp) (reason-mode . lsp))
     :commands lsp
