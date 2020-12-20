@@ -149,6 +149,11 @@ for debugging startup times :)
       :config (doom-modeline-mode))
   #+end_src
 
+* Undo Tree
+  #+begin_src elisp :tangle ~/.config/emacs/init_core.el
+    (use-package undo-tree :config (global-undo-tree-mode))
+  #+end_src
+
 * Set up evil and plugins
 ** Instantiate a default leader key
   This key is just left of space on my Preonic.
@@ -158,6 +163,7 @@ for debugging startup times :)
   (if (string= (system-name) "tia-bxb-d01.ctisl.gtri.org") (setq bb-default-leader-key "<XF86TouchpadOff>"))
   #+end_src
 
+** And now Evil itself
   Set up evil, but defer JUUUUUST a bit, since it's pretty slow
   #+begin_src elisp :tangle ~/.config/emacs/init_core.el
     (use-package evil-leader
@@ -166,8 +172,9 @@ for debugging startup times :)
         (global-evil-leader-mode))
     (use-package evil
         :demand t
-        :after evil-leader
+        :after (evil-leader undo-tree)
         :defer 0.1
+        :custom (evil-undo-system 'undo-tree)
         :config
         (evil-mode 1))
 
