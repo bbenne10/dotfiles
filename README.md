@@ -1,3 +1,7 @@
+#Deprecated.
+
+If you're interested in any updates I'm making, check [here](https://github.com/bbenne10/nix).
+
 # dotfiles
 
 My dotfiles and some scaffolding for bootstrapping new boxes.
