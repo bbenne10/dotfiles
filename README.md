@@ -1,6 +1,6 @@
 # Deprecated.
 
-If you're interested in any updates I'm making, check [here](https://github.com/bbenne10/nix).
+If you're interested in any updates I'm making, check [here](https://code.bryan-bennett.com/bryan/nix-config).
 
 # dotfiles
 
